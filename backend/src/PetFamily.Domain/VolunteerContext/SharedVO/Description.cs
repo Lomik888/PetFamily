@@ -7,7 +7,7 @@ namespace PetFamily.Domain.VolunteerContext.SharedVO;
 public class Description : ValueObject
 {
     private const int VALUE_MIN_LENGHT = 1;
-    private const int VALUE_MAX_LENGHT = 500;
+    public const int VALUE_MAX_LENGHT = 500;
 
     public string Value { get; }
 

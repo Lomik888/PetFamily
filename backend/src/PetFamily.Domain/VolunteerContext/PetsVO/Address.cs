@@ -7,11 +7,11 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO;
 public class Address : ValueObject
 {
     private const int MIN_LENGHT = 1;
-    private const int COUNTRY_MAX_LENGHT = 75;
-    private const int CITY_MAX_LENGHT = 50;
-    private const int STREET_MAX_LENGHT = 50;
-    private const int HOUSENUMBER_MAX_LENGHT = 5;
-    private const int APARTMENTNUMBER_MAX_LENGHT = 5;
+    public const int COUNTRY_MAX_LENGHT = 75;
+    public const int CITY_MAX_LENGHT = 50;
+    public const int STREET_MAX_LENGHT = 50;
+    public const int HOUSENUMBER_MAX_LENGHT = 5;
+    public const int APARTMENTNUMBER_MAX_LENGHT = 5;
 
     public string Country { get; }
     public string City { get; }
@@ -19,7 +19,7 @@ public class Address : ValueObject
     public string HouseNumber { get; }
     public string ApartmentNumber { get; }
 
-    public string FullAddress => $"{Country} {City} {Street} {HouseNumber} {ApartmentNumber}";
+    public string FullAddress() => $"{Country} {City} {Street} {HouseNumber} {ApartmentNumber}";
 
     private Address(
         string country,

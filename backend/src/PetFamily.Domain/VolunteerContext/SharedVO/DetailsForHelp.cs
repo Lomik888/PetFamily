@@ -7,8 +7,8 @@ namespace PetFamily.Domain.VolunteerContext.SharedVO;
 public class DetailsForHelp : ValueObject
 {
     private const int MIN_LENGHT = 1;
-    private const int TITLE_MAX_LENGHT = 100;
-    private const int DESCRIPTION_MAX_LENGHT = 500;
+    public const int TITLE_MAX_LENGHT = 100;
+    public const int DESCRIPTION_MAX_LENGHT = 500;
 
     public string Title { get; }
     public string Description { get; }

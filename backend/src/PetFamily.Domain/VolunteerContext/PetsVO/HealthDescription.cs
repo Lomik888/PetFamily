@@ -7,10 +7,10 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO;
 public class HealthDescription : ValueObject
 {
     private const int MIN_LENGHT = 1;
-    private const int SHAREDHEALTHSTATUS_MAX_LENGHT = 500;
-    private const int SKINCONDITION_MAX_LENGHT = 500;
-    private const int MOUTHCONDITION_MAX_LENGHT = 500;
-    private const int DIGESTIVESYSTEMCONDITION_MAX_LENGHT = 500;
+    public const int SHAREDHEALTHSTATUS_MAX_LENGHT = 500;
+    public const int SKINCONDITION_MAX_LENGHT = 500;
+    public const int MOUTHCONDITION_MAX_LENGHT = 500;
+    public const int DIGESTIVESYSTEMCONDITION_MAX_LENGHT = 500;
 
     public string SharedHealthStatus { get; }
     public string SkinCondition { get; }

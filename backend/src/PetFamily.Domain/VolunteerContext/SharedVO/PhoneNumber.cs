@@ -16,7 +16,7 @@ public class PhoneNumber : ValueObject
 
     public string RegionCode { get; }
     public string Number { get; }
-    public string FullNumber => $"{RegionCode}{Number}";
+    public string FullNumber() => $"{RegionCode}{Number}";
 
     private PhoneNumber(string regionCode, string number)
     {

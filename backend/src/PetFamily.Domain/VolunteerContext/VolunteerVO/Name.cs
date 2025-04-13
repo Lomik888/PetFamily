@@ -6,16 +6,16 @@ namespace PetFamily.Domain.VolunteerContext.VolunteerVO;
 
 public class Name : ValueObject
 {
-    private const int FIRST_NAME_LENGTH = 15;
-    private const int LAST_NAME_LENGTH = 25;
-    private const int SURNAME_LENGTH = 15;
     private const int MIN_LENGTH = 1;
+    public const int FIRST_NAME_LENGTH = 15;
+    public const int LAST_NAME_LENGTH = 25;
+    public const int SURNAME_LENGTH = 15;
 
     public string FirstName { get; }
     public string LastName { get; }
     public string Surname { get; }
 
-    public string FullName => $"{FirstName} {LastName} {Surname}";
+    public string FullName() => $"{FirstName} {LastName} {Surname}";
 
     private Name(string firstName, string lastName, string surname)
     {

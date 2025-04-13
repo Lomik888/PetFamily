@@ -8,8 +8,8 @@ namespace PetFamily.Domain.VolunteerContext.VolunteerVO;
 public class SocialNetwork : ValueObject
 {
     private const int MIN_LENGTH = 1;
-    private const int TITLE_MAX_LENGTH = 20;
-    private const int URL_MAX_LENGTH = 100;
+    public const int TITLE_MAX_LENGTH = 20;
+    public const int URL_MAX_LENGTH = 100;
 
     private static readonly Regex UrlRegex = new Regex(
         REGULAR_URL,
