@@ -14,7 +14,7 @@ public class VolunteerController : ApplicationController
     )
     {
         var result = await handler.Create(request.ToCommand(), cancellationToken);
-        
-        return Ok(result.Value);
+
+        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
     }
 }

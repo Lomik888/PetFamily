@@ -232,7 +232,8 @@ namespace PetFamily.Infrastructure.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("text")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)")
                         .HasColumnName("email");
 
                     b.Property<int>("Experience")
@@ -268,12 +269,14 @@ namespace PetFamily.Infrastructure.Migrations
 
                             b1.Property<string>("Number")
                                 .IsRequired()
-                                .HasColumnType("text")
+                                .HasMaxLength(14)
+                                .HasColumnType("character varying(14)")
                                 .HasColumnName("number");
 
                             b1.Property<string>("RegionCode")
                                 .IsRequired()
-                                .HasColumnType("text")
+                                .HasMaxLength(2)
+                                .HasColumnType("character varying(2)")
                                 .HasColumnName("region_code");
                         });
 
