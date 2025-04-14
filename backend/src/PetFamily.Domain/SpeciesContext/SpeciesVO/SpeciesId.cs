@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Shared.Errors;
+
 
 namespace PetFamily.Domain.SpeciesContext.SpeciesVO;
 
@@ -11,7 +13,16 @@ public class SpeciesId : ValueObject, IComparable<SpeciesId>
         Value = value;
     }
 
-    public static SpeciesId Create(Guid id) => new(id);
+    public static Result<SpeciesId, Error> Create(Guid id)
+    {
+        if (id == Guid.Empty)
+        {
+            return ErrorsPreform.General.Validation("Species id is invalid", nameof(SpeciesId));
+        }
+
+        return new SpeciesId(id);
+    }
+
     public static SpeciesId Create() => new(Guid.NewGuid());
     public static SpeciesId CreateEmpty() => new(Guid.Empty);
 

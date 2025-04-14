@@ -23,7 +23,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
             .ValueGeneratedNever()
             .HasConversion(
                 volunteerId => volunteerId.Value,
-                value => VolunteerId.Create(value));
+                value => VolunteerId.Create(value).Value);
 
         builder.ComplexProperty(x => x.Name, xb =>
         {
@@ -46,6 +46,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         builder.Property(x => x.Email)
             .IsRequired()
             .HasColumnName("email")
+            .HasMaxLength(Email.EMAIL_MAX_LENGTH)
             .ValueGeneratedNever()
             .HasConversion(
                 email => email.Value,
@@ -72,10 +73,12 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
         {
             xb.Property(x => x.RegionCode)
                 .HasColumnName("region_code")
+                .HasMaxLength(PhoneNumber.PHONENUMBER_MIN_LENGTH)
                 .IsRequired();
 
             xb.Property(x => x.Number)
                 .HasColumnName("number")
+                .HasMaxLength(PhoneNumber.NUMBER_MAX_LENGTH)
                 .IsRequired();
         });
 

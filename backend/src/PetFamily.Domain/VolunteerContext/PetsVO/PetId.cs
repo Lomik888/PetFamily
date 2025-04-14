@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Shared.Errors;
 
 namespace PetFamily.Domain.VolunteerContext.PetsVO;
 
@@ -12,7 +13,17 @@ public class PetId : ValueObject, IComparable<PetId>
     }
 
     public static PetId Create() => new(Guid.NewGuid());
-    public static PetId Create(Guid id) => new(id);
+
+    public static Result<PetId, Error> Create(Guid id)
+    {
+        if (id == Guid.Empty)
+        {
+            return ErrorsPreform.General.Validation("Pet id invalid", nameof(PetId));
+        }
+
+        return new PetId(id);
+    }
+
     public static PetId CreateEmpty() => new(Guid.Empty);
 
     protected override IEnumerable<object> GetEqualityComponents()

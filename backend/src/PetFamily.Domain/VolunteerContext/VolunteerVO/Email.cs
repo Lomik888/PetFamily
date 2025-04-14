@@ -1,11 +1,15 @@
 ﻿using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using PetFamily.Shared.Errors;
+using PetFamily.Shared.Validation;
 
 namespace PetFamily.Domain.VolunteerContext.VolunteerVO;
 
 public class Email : ValueObject
 {
+    private const int EMAIL_MIN_LENGTH = 1;
+    public const int EMAIL_MAX_LENGTH = 50;
+
     private static readonly Regex EmailRegex = new Regex(
         REGULAR_Email,
         RegexOptions.Compiled |
@@ -23,9 +27,16 @@ public class Email : ValueObject
 
     public static Result<Email, Error> Create(string value)
     {
+        var result = FieldValidator.ValidationField(value, EMAIL_MIN_LENGTH, EMAIL_MAX_LENGTH);
+
+        if (result.IsFailure)
+        {
+            return ErrorsPreform.General.Validation("Email is invalid", nameof(Email));
+        }
+
         if (EmailRegex.IsMatch(value) == false)
         {
-            return Error.Validation("Email is invalid", nameof(Email));
+            return ErrorsPreform.General.Validation("Email is invalid", nameof(Email));
         }
 
         return new Email(value);

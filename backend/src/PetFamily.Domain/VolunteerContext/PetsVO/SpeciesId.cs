@@ -16,7 +16,7 @@ public class SpeciesId : ValueObject
     {
         if (value == Guid.Empty)
         {
-            return Error.Validation("Species is required", nameof(SpeciesId));
+            return ErrorsPreform.General.Validation("Species is required", nameof(SpeciesId));
         }
 
         return new SpeciesId(value);

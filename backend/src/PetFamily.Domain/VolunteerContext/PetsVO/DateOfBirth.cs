@@ -18,7 +18,7 @@ public class DateOfBirth : ValueObject
     {
         if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID)
         {
-            return Error.Validation("Date of Birth is invalid", nameof(CreatedAt));
+            return ErrorsPreform.General.Validation("Date of Birth is invalid", nameof(CreatedAt));
         }
 
         return new DateOfBirth(value);

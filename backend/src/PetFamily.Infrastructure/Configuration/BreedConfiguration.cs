@@ -20,7 +20,7 @@ public class BreedConfiguration : IEntityTypeConfiguration<Breed>
             .IsRequired()
             .HasConversion(
                 breedId => breedId.Value,
-                value => BreedId.Create(value));
+                value => BreedId.Create(value).Value);
 
         builder.Property(x => x.Name)
             .IsRequired()

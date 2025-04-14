@@ -16,7 +16,7 @@ public class BreedId : ValueObject
     {
         if (value == Guid.Empty)
         {
-            return Error.Validation("Breed is required", nameof(BreedId));
+            return ErrorsPreform.General.Validation("Breed is required", nameof(BreedId));
         }
 
         return new BreedId(value);

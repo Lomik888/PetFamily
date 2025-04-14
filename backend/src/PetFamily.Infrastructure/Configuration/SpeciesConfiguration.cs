@@ -20,7 +20,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
             .HasColumnName("id")
             .HasConversion(
                 breedId => breedId.Value,
-                value => SpeciesId.Create(value));
+                value => SpeciesId.Create(value).Value);
 
         builder.Property(x => x.Name)
             .IsRequired()

@@ -173,7 +173,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
             .HasColumnName("id")
             .HasConversion(
                 id => id.Value,
-                value => PetId.Create(value));
+                value => PetId.Create(value).Value);
 
         builder.OwnsOne(x => x.DetailsForHelps, xb =>
         {

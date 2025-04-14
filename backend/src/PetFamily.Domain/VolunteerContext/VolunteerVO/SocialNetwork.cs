@@ -47,7 +47,7 @@ public class SocialNetwork : ValueObject
 
         if (UrlRegex.IsMatch(url) == false)
         {
-            errors.Add(Error.Validation("Social network Url is invalid", nameof(SocialNetwork)));
+            errors.Add(ErrorsPreform.General.Validation("Social network Url is invalid", nameof(SocialNetwork)));
             return errors.ToArray();
         }
 

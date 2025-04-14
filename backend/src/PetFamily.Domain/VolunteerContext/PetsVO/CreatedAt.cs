@@ -18,7 +18,7 @@ public class CreatedAt : ValueObject
     {
         if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID)
         {
-            return Error.Validation("Date created is invalid", nameof(CreatedAt));
+            return ErrorsPreform.General.Validation("Date created is invalid", nameof(CreatedAt));
         }
 
         return new CreatedAt(value);

@@ -2,7 +2,6 @@
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
 using PetFamily.Domain.VolunteerContext.SharedVO;
 using PetFamily.Domain.VolunteerContext.VolunteerVO;
-using Name = PetFamily.Domain.VolunteerContext.VolunteerVO.Name;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
