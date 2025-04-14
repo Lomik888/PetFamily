@@ -7,7 +7,7 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO;
 public class Color : ValueObject
 {
     private const int VELUE_MIN_LENGHT = 1;
-    private const int VELUE_MAX_LENGHT = 500;
+    public const int VELUE_MAX_LENGHT = 500;
 
     public string Value { get; }
 

@@ -7,7 +7,7 @@ namespace PetFamily.Domain.SpeciesContext.SharedVO;
 public class Name : ValueObject
 {
     private const int VELUE_MIN_LENGHT = 1;
-    private const int VELUE_MAX_LENGHT = 30;
+    public const int VELUE_MAX_LENGHT = 30;
 
     public string Value { get; }
 
