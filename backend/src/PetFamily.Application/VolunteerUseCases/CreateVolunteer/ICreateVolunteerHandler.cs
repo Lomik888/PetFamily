@@ -5,6 +5,6 @@ namespace PetFamily.Application.VolunteerUseCases.CreateVolunteer;
 
 public interface ICreateVolunteerHandler
 {
-    public Task<Result<Guid, Error>> Create(CreateVolunteerCommand request,
+    public Task<Result<Guid, Error[]>> Create(CreateVolunteerCommand request,
         CancellationToken cancellationToken = default);
 }

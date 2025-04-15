@@ -15,29 +15,62 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
         _volunteerRepository = volunteerRepository;
     }
 
-    public async Task<Result<Guid, Error>> Create(
+    public async Task<Result<Guid, Error[]>> Create(
         CreateVolunteerCommand request,
         CancellationToken cancellationToken = default
     )
     {
+        var errors = new List<Error>();
+
         var id = VolunteerId.Create();
-        var name = Name.Create(request.Name.FirstName, request.Name.LastName, request.Name.Surname).Value;
-        var email = Email.Create(request.Email).Value;
-        var description = Description.Create(request.Description).Value;
-        var experience = Experience.Create(request.Experience).Value;
-        var phoneNumber = PhoneNumber.Create(request.Phone.RegionCode, request.Phone.Number).Value;
+
+        var nameResult = Name.Create(request.Name.FirstName, request.Name.LastName, request.Name.Surname);
+        if (nameResult.IsFailure)
+        {
+            errors.AddRange(nameResult.Error);
+        }
+
+        var emailResult = Email.Create(request.Email);
+        if (emailResult.IsFailure)
+        {
+            errors.Add(emailResult.Error);
+        }
+
+        var descriptionResult = Description.Create(request.Description);
+        if (descriptionResult.IsFailure)
+        {
+            errors.Add(descriptionResult.Error);
+        }
+
+        var experienceResult = Experience.Create(request.Experience);
+        if (experienceResult.IsFailure)
+        {
+            errors.Add(experienceResult.Error);
+        }
+
+        var phoneNumberResult = PhoneNumber.Create(request.Phone.RegionCode, request.Phone.Number);
+        if (phoneNumberResult.IsFailure)
+        {
+            errors.Add(phoneNumberResult.Error);
+        }
+
         var socialNetworks = SocialNetworks.CreateEmpty().Value;
         var detailsForHelps = DetailsForHelps.CreateEmpty().Value;
         var files = Files.CreateEmpty().Value;
         IEnumerable<Pet> pets = [];
 
+        if (errors.Count > 0)
+        {
+            return errors.ToArray();
+        }
+
         var volunteer = new Volunteer(
             id,
-            name,
-            email,
-            description,
-            experience,
-            phoneNumber,
+            nameResult.Value,
+            emailResult.Value,
+            descriptionResult.Value,
+            experienceResult.Value,
+            phoneNumberResult.Value,
             socialNetworks,
             detailsForHelps,
             files,
