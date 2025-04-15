@@ -16,7 +16,7 @@ public static class FieldValidator
     {
         if (string.IsNullOrWhiteSpace(fieldValue))
         {
-            errors.Add(Error.Validation(
+            errors.Add(ErrorsPreform.General.Validation(
                 $"{fieldName} is required",
                 fieldName));
             return;
@@ -24,7 +24,7 @@ public static class FieldValidator
 
         if (fieldValue.Length < minLenght || fieldValue.Length > maxLenght)
         {
-            errors.Add(Error.Validation(
+            errors.Add(ErrorsPreform.General.Validation(
                 $"{fieldName} min length is {minLenght} and max length is {maxLenght}",
                 fieldName));
         }
@@ -39,7 +39,7 @@ public static class FieldValidator
     {
         if (string.IsNullOrWhiteSpace(fieldValue))
         {
-            errors.Add(Error.Validation(
+            errors.Add(ErrorsPreform.General.Validation(
                 $"{fieldName} is required",
                 fieldName));
             return;
@@ -47,7 +47,7 @@ public static class FieldValidator
 
         if (fieldValue.Length < minLenght)
         {
-            errors.Add(Error.Validation(
+            errors.Add(ErrorsPreform.General.Validation(
                 $"{fieldName} min length is {minLenght}",
                 fieldName));
         }
@@ -61,17 +61,17 @@ public static class FieldValidator
         [CallerArgumentExpression("fieldValue")]
         string fieldName = "") where T : struct, IComparable<T>
     {
-        if (fieldName.CompareTo(maxValue) > 0 ||
+        if (fieldValue.CompareTo(maxValue) > 0 ||
             !isNegativeValue && fieldValue.CompareTo(default) < 0)
         {
-            return UnitResult.Failure(Error.Validation(
+            return UnitResult.Failure(ErrorsPreform.General.Validation(
                 $"{fieldName} can't be negative and max value is {maxValue}",
                 fieldName));
         }
 
         if (decimalPrecision != null && fieldValue.ToString()!.Split(',', '.').Last().Length > decimalPrecision)
         {
-            return UnitResult.Failure(Error.Validation(
+            return UnitResult.Failure(ErrorsPreform.General.Validation(
                 $"{fieldName} decimal precision is more than {decimalPrecision}",
                 fieldName));
         }
@@ -107,14 +107,14 @@ public static class FieldValidator
     {
         if (string.IsNullOrWhiteSpace(fieldValue))
         {
-            return UnitResult.Failure(Error.Validation(
+            return UnitResult.Failure(ErrorsPreform.General.Validation(
                 $"{fieldName} is required",
                 fieldName));
         }
 
         if (fieldValue.Length < minLenght || fieldValue.Length > maxLenght)
         {
-            return UnitResult.Failure(Error.Validation(
+            return UnitResult.Failure(ErrorsPreform.General.Validation(
                 $"{fieldName} min length is {minLenght} and max length is {maxLenght}",
                 fieldName));
         }
@@ -137,7 +137,7 @@ public static class FieldValidator
 
         if (string.IsNullOrEmpty(fieldValue?.Replace(" ", "")))
         {
-            errors.Add(Error.Validation(
+            errors.Add(ErrorsPreform.General.Validation(
                 $"{fieldName} can't be whiteSpace",
                 fieldName));
             return;
@@ -145,7 +145,7 @@ public static class FieldValidator
 
         if (fieldValue.Length < minLenght || fieldValue.Length > maxLenght)
         {
-            errors.Add(Error.Validation(
+            errors.Add(ErrorsPreform.General.Validation(
                 $"{fieldName} min length is {minLenght} and max length is {maxLenght}",
                 fieldName));
         }

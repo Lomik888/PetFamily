@@ -10,4 +10,13 @@
       <ProjectReference Include="..\PetFamily.Domain\PetFamily.Domain.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="DTO\PetDtos\" />
+    </ItemGroup>
+
 </Project>

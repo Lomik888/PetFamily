@@ -12,7 +12,16 @@ public class BreedId : ValueObject, IComparable<BreedId>
         Value = value;
     }
 
-    public static BreedId Create(Guid id) => new(id);
+    public static Result<BreedId, Error> Create(Guid id)
+    {
+        if (id == Guid.Empty)
+        {
+            return ErrorsPreform.General.Validation("Breed id is invalid", nameof(BreedId));
+        }
+
+        return new BreedId(id);
+    }
+
     public static BreedId Create() => new(Guid.NewGuid());
     public static BreedId CreateEmpty() => new(Guid.Empty);
 

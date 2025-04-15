@@ -18,14 +18,20 @@ public class Files : BaseCollectionVO<File, Files>
     {
     }
 
-    public override Result<Files, Error> Create(IEnumerable<File> items)
+    public static Result<Files, Error> Create(IEnumerable<File> items)
     {
         var enumerable = items.ToList();
         if (enumerable.Count > MAX_FILE_COUNT)
         {
-            return Error.Validation("Files count can't be more than 10.", nameof(Files));
+            return ErrorsPreform.General.Validation("Files count can't be more than 10.", nameof(Files));
         }
 
         return new Files(enumerable);
+    }
+
+    public static Result<Files, Error> CreateEmpty()
+    {
+        IEnumerable<File> filse = [];
+        return new Files(filse);
     }
 }

@@ -17,14 +17,21 @@ public class SocialNetworks : BaseCollectionVO<SocialNetwork, SocialNetworks>
     {
     }
 
-    public override Result<SocialNetworks, Error> Create(IEnumerable<SocialNetwork> items)
+    public static Result<SocialNetworks, Error> Create(IEnumerable<SocialNetwork> items)
     {
         var enumerable = items.ToList();
         if (enumerable.Count > MAX_SOCIAL_COUNT)
         {
-            return Error.Validation("SocialNetworks count can't be more than 10.", nameof(SocialNetworks));
+            return ErrorsPreform.General.Validation("SocialNetworks count can't be more than 10.",
+                nameof(SocialNetworks));
         }
 
         return new SocialNetworks(enumerable);
+    }
+
+    public static Result<SocialNetworks, Error> CreateEmpty()
+    {
+        IEnumerable<SocialNetwork> socialNetworks = [];
+        return new SocialNetworks(socialNetworks);
     }
 }

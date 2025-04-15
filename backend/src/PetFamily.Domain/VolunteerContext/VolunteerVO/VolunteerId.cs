@@ -14,7 +14,16 @@ public class VolunteerId : ValueObject, IComparable<VolunteerId>
 
     public static VolunteerId Create() => new(Guid.NewGuid());
     public static VolunteerId CreateEmpty() => new(Guid.Empty);
-    public static VolunteerId Create(Guid id) => new(id);
+
+    public static Result<VolunteerId, Error> Create(Guid id)
+    {
+        if (id == Guid.Empty)
+        {
+            return ErrorsPreform.General.Validation("Volunteer id is invalid", nameof(VolunteerId));
+        }
+
+        return new VolunteerId(id);
+    }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

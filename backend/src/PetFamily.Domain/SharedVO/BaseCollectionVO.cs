@@ -19,8 +19,6 @@ public abstract class BaseCollectionVO<TCollection, TResult> : ValueObject
         _items = items.ToList();
     }
 
-    public abstract Result<TResult, Error> Create(IEnumerable<TCollection> items);
-
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return Items;

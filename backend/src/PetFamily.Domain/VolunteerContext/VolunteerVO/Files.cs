@@ -16,8 +16,14 @@ public class Files : BaseCollectionVO<File, Files>
     {
     }
 
-    public override Result<Files, Error> Create(IEnumerable<File> items)
+    public static Result<Files, Error> Create(IEnumerable<File> items)
     {
         return new Files(items);
+    }
+
+    public static Result<Files, Error> CreateEmpty()
+    {
+        IEnumerable<File> files = [];
+        return new Files(files);
     }
 }
