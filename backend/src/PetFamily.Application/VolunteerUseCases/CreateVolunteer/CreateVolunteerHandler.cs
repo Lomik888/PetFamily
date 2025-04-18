@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using FluentValidation;
+using PetFamily.Application.Extensions;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.SharedVO;
 using PetFamily.Domain.VolunteerContext.VolunteerVO;
@@ -9,10 +11,13 @@ namespace PetFamily.Application.VolunteerUseCases.CreateVolunteer;
 public class CreateVolunteerHandler : ICreateVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
+    private readonly IValidator<CreateVolunteerCommand> _validator;
 
-    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository)
+    public CreateVolunteerHandler(IVolunteerRepository volunteerRepository,
+        IValidator<CreateVolunteerCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
+        _validator = validator;
     }
 
     public async Task<Result<Guid, Error[]>> Create(
@@ -20,61 +25,32 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
         CancellationToken cancellationToken = default
     )
     {
-        var errors = new List<Error>();
+        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
+        if (validationResult.IsValid == false)
+        {
+            return validationResult.Errors.ToErrors().ToArray();
+        }
 
         var id = VolunteerId.Create();
-
-        var nameResult = Name.Create(request.Name.FirstName, request.Name.LastName, request.Name.Surname);
-        if (nameResult.IsFailure)
-        {
-            errors.AddRange(nameResult.Error);
-        }
-
-        var emailResult = Email.Create(request.Email);
-        if (emailResult.IsFailure)
-        {
-            errors.Add(emailResult.Error);
-        }
-
-        var descriptionResult = Description.Create(request.Description);
-        if (descriptionResult.IsFailure)
-        {
-            errors.Add(descriptionResult.Error);
-        }
-
-        var experienceResult = Experience.Create(request.Experience);
-        if (experienceResult.IsFailure)
-        {
-            errors.Add(experienceResult.Error);
-        }
-
-        var phoneNumberResult = PhoneNumber.Create(request.Phone.RegionCode, request.Phone.Number);
-        if (phoneNumberResult.IsFailure)
-        {
-            errors.Add(phoneNumberResult.Error);
-        }
-
+        var nameResult = Name.Create(request.Name.FirstName, request.Name.LastName, request.Name.Surname).Value;
+        var emailResult = Email.Create(request.Email).Value;
+        var descriptionResult = Description.Create(request.Description).Value;
+        var experienceResult = Experience.Create(request.Experience).Value;
+        var phoneNumberResult = PhoneNumber.Create(request.Phone.RegionCode, request.Phone.Number).Value;
         var socialNetworks = SocialNetworks.CreateEmpty().Value;
         var detailsForHelps = DetailsForHelps.CreateEmpty().Value;
         var files = Files.CreateEmpty().Value;
-        IEnumerable<Pet> pets = [];
-
-        if (errors.Count > 0)
-        {
-            return errors.ToArray();
-        }
 
         var volunteer = new Volunteer(
             id,
-            nameResult.Value,
-            emailResult.Value,
-            descriptionResult.Value,
-            experienceResult.Value,
-            phoneNumberResult.Value,
+            nameResult,
+            emailResult,
+            descriptionResult,
+            experienceResult,
+            phoneNumberResult,
             socialNetworks,
             detailsForHelps,
-            files,
-            pets
+            files
         );
 
         await _volunteerRepository.AddAsync(volunteer, cancellationToken);

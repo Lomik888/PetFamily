@@ -1,5 +1,8 @@
-﻿using PetFamily.Application.DependencyInjection;
+﻿using FluentValidation;
+using PetFamily.API.Validations;
+using PetFamily.Application.DependencyInjection;
 using PetFamily.Infrastructure.DependencyInjection;
+using SharpGrip.FluentValidation.AutoValidation.Mvc.Extensions;
 
 namespace PetFamily.API;
 
@@ -11,6 +14,7 @@ public static class Startup
 
         services.AddLayers(configuration);
         services.AddSwagger();
+        services.AddValidation();
     }
 
     private static void AddLayers(this IServiceCollection services, IConfiguration configuration)
@@ -22,5 +26,15 @@ public static class Startup
     private static void AddSwagger(this IServiceCollection services)
     {
         services.AddSwaggerGen();
+    }
+
+    private static void AddValidation(this IServiceCollection services)
+    {
+        services.AddValidatorsFromAssembly(typeof(Startup).Assembly);
+
+        services.AddFluentValidationAutoValidation(options =>
+        {
+            options.OverrideDefaultResultFactoryWith<CustomResultFactory>();
+        });
     }
 }
