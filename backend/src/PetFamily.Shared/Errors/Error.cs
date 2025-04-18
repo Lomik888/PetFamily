@@ -5,6 +5,7 @@ namespace PetFamily.Shared.Errors;
 public class Error
 {
     private const int LENGHTFORMESSAGE = 25;
+    private const string SEPARATOR = " || ";
 
     public string? ErrorCode { get; }
 
@@ -37,8 +38,29 @@ public class Error
         );
     }
 
-    public static Error Create(string? message, string errorCode, ErrorType errorType, string? invalidField = null)
+    public static Error Create(string? message, string? errorCode, ErrorType errorType, string? invalidField = null)
     {
         return new Error(message, errorCode, errorType, invalidField);
+    }
+
+    public string Serialize()
+    {
+        return string.Join(SEPARATOR, ErrorCode, Message, ErrorType);
+    }
+
+    public static Error Deserialize(string serializedError)
+    {
+        var fields = serializedError.Split(SEPARATOR);
+        if (fields.Length != 3)
+        {
+            throw new FormatException("Invalid error format");
+        }
+
+        if (!Enum.TryParse(fields[2], out ErrorType errorType))
+        {
+            throw new FormatException("Invalid error format");
+        }
+
+        return new Error(fields[1], fields[0], errorType, null);
     }
 }

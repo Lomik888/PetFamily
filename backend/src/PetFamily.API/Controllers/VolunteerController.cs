@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Extensions;
 using PetFamily.API.Requests.Volunteer;
+using PetFamily.API.Response.Envelope;
 using PetFamily.Application.VolunteerUseCases.CreateVolunteer;
 
 namespace PetFamily.API.Controllers;
@@ -15,6 +17,11 @@ public class VolunteerController : ApplicationController
     {
         var result = await handler.Create(request.ToCommand(), cancellationToken);
 
-        return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        if (result.IsFailure)
+        {
+            return result.Error.ErrorActionResult();
+        }
+
+        return Ok(Envelope.Ok(result.Value));
     }
 }
