@@ -5,7 +5,7 @@ using PetFamily.Domain.VolunteerContext.VolunteerVO;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
-public class Volunteer : Entity<VolunteerId>
+public sealed class Volunteer : Entity<VolunteerId>
 {
     private readonly List<Pet> _pets = [];
     public Name Name { get; private set; }
@@ -31,8 +31,7 @@ public class Volunteer : Entity<VolunteerId>
         PhoneNumber phoneNumber,
         SocialNetworks socialNetworks,
         DetailsForHelps detailsForHelps,
-        Files files,
-        IEnumerable<Pet> pets) : base(id)
+        Files files) : base(id)
     {
         Name = name;
         Email = email;
@@ -42,15 +41,14 @@ public class Volunteer : Entity<VolunteerId>
         SocialNetworks = socialNetworks;
         DetailsForHelps = detailsForHelps;
         Files = files;
-        _pets = pets.ToList();
     }
 
     public Result<int> FoundHomePetsCount() =>
-        Pets.Count(p => p.HelpStatus.Value == HelpStatuses.FOUNDHOME);
+        _pets.Count(p => p.HelpStatus.Value == HelpStatuses.FOUNDHOME);
 
     public Result<int> SearchingHomePetsCount() =>
-        Pets.Count(p => p.HelpStatus.Value == HelpStatuses.SEARCHINGHOME);
+        _pets.Count(p => p.HelpStatus.Value == HelpStatuses.SEARCHINGHOME);
 
     public Result<int> UndergoingTreatmentPetsCount() =>
-        Pets.Count(p => p.HelpStatus.Value == HelpStatuses.UNDERGOINGTREATMENT);
+        _pets.Count(p => p.HelpStatus.Value == HelpStatuses.UNDERGOINGTREATMENT);
 }

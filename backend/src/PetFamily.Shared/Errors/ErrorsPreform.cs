@@ -23,5 +23,10 @@ public static class ErrorsPreform
 
             return Error.Create($"{id} not found", ErrorCodes.General.NotFound, ErrorType.NOTFOUND);
         }
+
+        public static Error None()
+        {
+            return Error.Create(string.Empty, string.Empty, ErrorType.NONE, string.Empty);
+        }
     }
 }

@@ -11,12 +11,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
       <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.3.0" />
       <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="DTO\PetDtos\" />
     </ItemGroup>
 
 </Project>

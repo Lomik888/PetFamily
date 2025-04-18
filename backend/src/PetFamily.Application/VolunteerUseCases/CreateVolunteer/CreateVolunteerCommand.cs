@@ -8,8 +8,5 @@ public record CreateVolunteerCommand(
     string Email,
     string Description,
     int Experience,
-    PhoneNumberDto Phone,
-    IEnumerable<FileDto> Files,
-    IEnumerable<SocialNetworkDto> SocialNetworks,
-    IEnumerable<DetailsForHelpDto> DetailsForHelps
+    PhoneNumberDto Phone
 );

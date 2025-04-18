@@ -6,8 +6,11 @@ builder.Services.AddConfiguration(builder.Configuration);
 
 var app = builder.Build();
 
-app.MapSwagger();
-app.UseSwaggerUI();
+if (app.Environment.IsDevelopment())
+{
+    app.MapSwagger();
+    app.UseSwaggerUI();
+}
 
 app.MapControllers();
 

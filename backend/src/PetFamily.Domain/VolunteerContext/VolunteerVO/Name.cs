@@ -24,7 +24,7 @@ public class Name : ValueObject
         Surname = surname;
     }
 
-    public static Result<Name, Error[]> Create(string firstName, string lastName, string surname)
+    public static Result<Name, IEnumerable<Error>> Create(string firstName, string lastName, string surname)
     {
         var errors = new List<Error>();
 

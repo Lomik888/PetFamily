@@ -1,5 +1,4 @@
-﻿using PetFamily.Application.DTO.SharedDtos;
-using PetFamily.Application.DTO.VolunteerDtos;
+﻿using PetFamily.Application.DTO.VolunteerDtos;
 using PetFamily.Application.VolunteerUseCases.CreateVolunteer;
 
 namespace PetFamily.API.Requests.Volunteer;
@@ -9,10 +8,7 @@ public record CreateVolunteerRequest(
     string Email,
     string Description,
     int Experience,
-    PhoneNumberDto Phone,
-    IEnumerable<FileDto> Files,
-    IEnumerable<SocialNetworkDto> SocialNetworks,
-    IEnumerable<DetailsForHelpDto> DetailsForHelps
+    PhoneNumberDto Phone
 )
 {
     public CreateVolunteerCommand ToCommand()
@@ -22,9 +18,6 @@ public record CreateVolunteerRequest(
             Email,
             Description,
             Experience,
-            Phone,
-            Files,
-            SocialNetworks,
-            DetailsForHelps);
+            Phone);
     }
 }

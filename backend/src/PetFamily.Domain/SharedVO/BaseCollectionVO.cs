@@ -6,9 +6,7 @@ namespace PetFamily.Domain.SharedVO;
 public abstract class BaseCollectionVO<TCollection, TResult> : ValueObject
     where TResult : BaseCollectionVO<TCollection, TResult>
 {
-    protected List<TCollection> _items = [];
-
-    public IReadOnlyList<TCollection> Items => _items;
+    public IReadOnlyList<TCollection> Items { get; }
 
     protected BaseCollectionVO()
     {
@@ -16,7 +14,7 @@ public abstract class BaseCollectionVO<TCollection, TResult> : ValueObject
 
     protected BaseCollectionVO(IEnumerable<TCollection> items)
     {
-        _items = items.ToList();
+        Items = items.ToList();
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
