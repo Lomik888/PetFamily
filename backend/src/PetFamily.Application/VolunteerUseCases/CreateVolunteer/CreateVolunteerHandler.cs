@@ -1,5 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.Logging;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.SharedVO;
@@ -12,12 +13,14 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<CreateVolunteerCommand> _validator;
+    private readonly ILogger<CreateVolunteerHandler> _logger;
 
     public CreateVolunteerHandler(IVolunteerRepository volunteerRepository,
-        IValidator<CreateVolunteerCommand> validator)
+        IValidator<CreateVolunteerCommand> validator, ILogger<CreateVolunteerHandler> logger)
     {
         _volunteerRepository = volunteerRepository;
         _validator = validator;
+        _logger = logger;
     }
 
     public async Task<Result<Guid, Error[]>> Create(
@@ -28,6 +31,7 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
         if (validationResult.IsValid == false)
         {
+            _logger.LogInformation("Invalid Validation request");
             return validationResult.Errors.ToErrors().ToArray();
         }
 
@@ -56,6 +60,7 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
         await _volunteerRepository.AddAsync(volunteer, cancellationToken);
         await _volunteerRepository.SaveChangesAsync(cancellationToken);
 
+        _logger.LogInformation("Volunteer Created {0}", volunteer.Id.Value);
         return volunteer.Id.Value;
     }
 }

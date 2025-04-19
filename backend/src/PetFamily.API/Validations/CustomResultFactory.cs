@@ -9,12 +9,20 @@ namespace PetFamily.API.Validations;
 
 public class CustomResultFactory : IFluentValidationAutoValidationResultFactory
 {
+    private readonly ILogger<CustomResultFactory> _logger;
+
+    public CustomResultFactory(ILogger<CustomResultFactory> logger)
+    {
+        _logger = logger;
+    }
+
     public IActionResult CreateActionResult(
         ActionExecutingContext context,
         ValidationProblemDetails? validationProblemDetails)
     {
         ArgumentNullException.ThrowIfNull(validationProblemDetails);
 
+        _logger.LogInformation("Invalid Validation Request");
         var errors = validationProblemDetails.Errors
             .SelectMany(x => x.Value.Select(y => Error.Deserialize(y).ToErrorResponse()))
             .ToList();

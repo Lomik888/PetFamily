@@ -25,8 +25,6 @@ public class Result : IResult
 
     public static Result Failure(Error error)
     {
-        ArgumentNullException.ThrowIfNull(error);
-
         return new Result(error);
     }
 
@@ -48,15 +46,11 @@ public class Result<TValue> : Result
 
     public new static Result<TValue> Success(TValue value)
     {
-        ArgumentNullException.ThrowIfNull(value);
-
         return new Result<TValue>(value);
     }
 
     public new static Result<TValue> Failure(Error error)
     {
-        ArgumentNullException.ThrowIfNull(error);
-
         return new Result<TValue>(error);
     }
 

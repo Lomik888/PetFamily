@@ -6,5 +6,6 @@ public static class ErrorCodes
     {
         public const string InvalidField = "invalid.field";
         public const string NotFound = "not.found";
+        public const string IternalServerError = "iternal.server.error";
     }
 }
