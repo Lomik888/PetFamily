@@ -8,14 +8,16 @@ namespace PetFamily.Infrastructure.DependencyInjection;
 
 public static class DependencyInjection
 {
+    private const string CONNECTION_STRING_KEY_FOR_POSTGRESSQL = "Postgres_SQL";
+
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
     {
-        var connectionString =
-            configuration.GetConnectionString("PostgresSQL") ??
+        var psqlConnectionString =
+            configuration.GetConnectionString(CONNECTION_STRING_KEY_FOR_POSTGRESSQL) ??
             throw new InvalidOperationException("connection string is missing");
 
         services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));
+            options.UseNpgsql(psqlConnectionString));
 
         services.AddRepositories();
     }

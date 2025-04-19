@@ -50,6 +50,7 @@ public static class ResponseExtensions
             ErrorType.VALIDATION => HttpStatusCode.BadRequest,
             ErrorType.NOTFOUND => HttpStatusCode.NotFound,
             ErrorType.NONE => HttpStatusCode.BadRequest,
+            ErrorType.EXCEPTION => HttpStatusCode.InternalServerError,
             _ => HttpStatusCode.InternalServerError,
         };
 
