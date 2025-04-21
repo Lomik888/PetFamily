@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PetFamily.Domain.SpeciesContext.Entities;
 using PetFamily.Domain.SpeciesContext.SharedVO;
-using BreedId = PetFamily.Domain.SpeciesContext.BreedVO.BreedId;
+using BreedId = PetFamily.Domain.SpeciesContext.Ids.BreedId;
 
 namespace PetFamily.Infrastructure.Configuration;
 

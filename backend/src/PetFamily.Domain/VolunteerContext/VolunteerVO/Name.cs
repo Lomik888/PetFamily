@@ -6,7 +6,7 @@ namespace PetFamily.Domain.VolunteerContext.VolunteerVO;
 
 public class Name : ValueObject
 {
-    private const int MIN_LENGTH = 1;
+    public const int MIN_LENGTH = 1;
     public const int FIRST_NAME_LENGTH = 15;
     public const int LAST_NAME_LENGTH = 25;
     public const int SURNAME_LENGTH = 15;
@@ -17,14 +17,20 @@ public class Name : ValueObject
 
     public string FullName() => $"{FirstName} {LastName} {Surname}";
 
-    private Name(string firstName, string lastName, string surname)
+    private Name(
+        string firstName,
+        string lastName, 
+        string surname)
     {
         FirstName = firstName;
         LastName = lastName;
         Surname = surname;
     }
 
-    public static Result<Name, IEnumerable<Error>> Create(string firstName, string lastName, string surname)
+    public static Result<Name, ErrorCollection> Create(
+        string firstName,
+        string lastName,
+        string surname)
     {
         var errors = new List<Error>();
 
@@ -34,7 +40,7 @@ public class Name : ValueObject
 
         if (errors.Count > 0)
         {
-            return errors.ToArray();
+            return ErrorCollection.Create(errors);
         }
 
         return new Name(firstName, lastName, surname);

@@ -1,7 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
 using PetFamily.Domain.VolunteerContext.SharedVO;
+using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
 using PetFamily.Domain.VolunteerContext.VolunteerVO;
+using PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
@@ -51,4 +54,24 @@ public sealed class Volunteer : Entity<VolunteerId>
 
     public Result<int> UndergoingTreatmentPetsCount() =>
         _pets.Count(p => p.HelpStatus.Value == HelpStatuses.UNDERGOINGTREATMENT);
+
+    public void UpdateMainInfo(
+        Name name,
+        Description description,
+        Experience experience)
+    {
+        Name = name;
+        Description = description;
+        Experience = experience;
+    }
+
+    public void SetSocialNetworks(SocialNetworks socialNetworks)
+    {
+        SocialNetworks = socialNetworks;
+    }
+
+    public void SetDetailsForHelps(DetailsForHelps detailsForHelps)
+    {
+        DetailsForHelps = detailsForHelps;
+    }
 }

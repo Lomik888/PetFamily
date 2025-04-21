@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Text.Json.Serialization;
+using CSharpFunctionalExtensions;
 using PetFamily.Shared.Errors;
 using PetFamily.Shared.Validation;
 
@@ -13,13 +14,14 @@ public class DetailsForHelp : ValueObject
     public string Title { get; }
     public string Description { get; }
 
+    [JsonConstructor]
     private DetailsForHelp(string title, string description)
     {
         Title = title;
         Description = description;
     }
 
-    public static Result<DetailsForHelp, Error[]> Create(string title, string description)
+    public static Result<DetailsForHelp, ErrorCollection> Create(string title, string description)
     {
         var errors = new List<Error>();
 
@@ -28,7 +30,7 @@ public class DetailsForHelp : ValueObject
 
         if (errors.Count > 0)
         {
-            return errors.ToArray();
+            return ErrorCollection.Create(errors);
         }
 
         return new DetailsForHelp(title, description);

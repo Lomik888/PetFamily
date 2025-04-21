@@ -8,17 +8,27 @@ public static class ErrorsPreform
     {
         public static Error Validation(string message, string invalidField)
         {
-            return Error.Create(message, ErrorCodes.General.InvalidField, ErrorType.VALIDATION, invalidField);
+            return Error.Create(
+                message,
+                ErrorCodes.General.InvalidField,
+                ErrorType.VALIDATION, invalidField);
         }
 
         public static Error NotFound(Guid? id)
         {
-            return Error.Create($"{id} not found", ErrorCodes.General.NotFound, ErrorType.NOTFOUND);
+            return Error.Create(
+                $"{id} not found",
+                ErrorCodes.General.NotFound,
+                ErrorType.NOTFOUND);
         }
 
         public static Error None()
         {
-            return Error.Create(string.Empty, string.Empty, ErrorType.NONE, string.Empty);
+            return Error.Create(
+                string.Empty,
+                string.Empty,
+                ErrorType.NONE,
+                string.Empty);
         }
 
         public static Error IternalServerError(string message)

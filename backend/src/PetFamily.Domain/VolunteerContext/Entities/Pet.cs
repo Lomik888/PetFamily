@@ -1,6 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.VolunteerContext.PetsVO;
+using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
 using PetFamily.Domain.VolunteerContext.SharedVO;
+using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
