@@ -2,7 +2,12 @@
 using PetFamily.API.Extensions;
 using PetFamily.API.Requests.Volunteer;
 using PetFamily.API.Response.Envelope;
-using PetFamily.Application.VolunteerUseCases.CreateVolunteer;
+using PetFamily.Application.SharedInterfaces;
+using PetFamily.Application.VolunteerUseCases.Create;
+using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
+using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
+using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
+using PetFamily.Shared.Errors;
 
 namespace PetFamily.API.Controllers;
 
@@ -10,18 +15,72 @@ public class VolunteerController : ApplicationController
 {
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
-        [FromServices] ICreateVolunteerHandler handler,
+        [FromServices] ICommandHandler<Guid, ErrorCollection, CreateVolunteerCommand> handler,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default
     )
     {
-        var result = await handler.Create(request.ToCommand(), cancellationToken);
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
 
         if (result.IsFailure)
         {
-            return result.Error.ErrorActionResult();
+            return result.Error.Errors.ToErrorActionResult();
         }
 
         return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpPatch("{volunteerId:guid}/main-info")]
+    public async Task<ActionResult<Guid>> Update(
+        [FromRoute] Guid volunteerId,
+        [FromServices] ICommandHandler<Guid, ErrorCollection, UpdateMainInfoVolunteerCommand> handler,
+        [FromBody] UpdateMainInfoVolunteerRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpPut("{volunteerId:guid}/socials")]
+    public async Task<ActionResult> Update(
+        [FromRoute] Guid volunteerId,
+        [FromServices] ICommandHandler<ErrorCollection, UpdateVolunteersSocialNetworksCommand> handler,
+        [FromBody] UpdateVolunteersSocialNetworksRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpPut("{volunteerId:guid}/details-for-help")]
+    public async Task<ActionResult> Update(
+        [FromRoute] Guid volunteerId,
+        [FromServices] ICommandHandler<ErrorCollection, UpdateVolunteersDetailsForHelpCommand> handler,
+        [FromBody] UpdateVolunteersDetailsForHelpRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
     }
 }

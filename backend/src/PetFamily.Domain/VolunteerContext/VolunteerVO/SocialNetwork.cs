@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using PetFamily.Shared.Errors;
 using PetFamily.Shared.Validation;
@@ -27,13 +28,14 @@ public class SocialNetwork : ValueObject
     public string Title { get; }
     public string Url { get; }
 
+    [JsonConstructor]
     private SocialNetwork(string title, string url)
     {
         Url = url;
         Title = title;
     }
 
-    public static Result<SocialNetwork, Error[]> Create(string title, string url)
+    public static Result<SocialNetwork, ErrorCollection> Create(string title, string url)
     {
         var errors = new List<Error>();
 
@@ -42,13 +44,13 @@ public class SocialNetwork : ValueObject
 
         if (errors.Count > 0)
         {
-            return errors.ToArray();
+            return ErrorCollection.Create(errors);
         }
 
         if (UrlRegex.IsMatch(url) == false)
         {
             errors.Add(ErrorsPreform.General.Validation("Social network Url is invalid", nameof(SocialNetwork)));
-            return errors.ToArray();
+            return ErrorCollection.Create(errors);
         }
 
         return new SocialNetwork(title, url);

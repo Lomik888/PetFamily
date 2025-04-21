@@ -13,6 +13,7 @@ public record Envelope
     }
 
     public static Envelope Ok(object data) => new(data, null);
+    public static Envelope OkEmpty() => new(null, null);
     public static Envelope Error(IEnumerable<ErrorResponse> errors) => new(null, errors);
     public static Envelope Error(ErrorResponse errors) => new(null, new[] { errors });
 }

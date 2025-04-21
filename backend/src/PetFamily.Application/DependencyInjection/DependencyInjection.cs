@@ -1,6 +1,11 @@
 ﻿using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.VolunteerUseCases.CreateVolunteer;
+using PetFamily.Application.SharedInterfaces;
+using PetFamily.Application.VolunteerUseCases.Create;
+using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
+using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
+using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
+using PetFamily.Shared.Errors;
 
 namespace PetFamily.Application.DependencyInjection;
 
@@ -14,7 +19,21 @@ public static class DependencyInjection
 
     private static void AddServices(this IServiceCollection services)
     {
-        services.AddScoped<ICreateVolunteerHandler, CreateVolunteerHandler>();
+        services
+            .AddScoped<ICommandHandler<Guid, ErrorCollection, CreateVolunteerCommand>,
+                CreateVolunteerHandler>();
+
+        services
+            .AddScoped<ICommandHandler<Guid, ErrorCollection, UpdateMainInfoVolunteerCommand>,
+                UpdateMainInfoVolunteerHandler>();
+
+        services
+            .AddScoped<ICommandHandler<ErrorCollection, UpdateVolunteersSocialNetworksCommand>,
+                UpdateVolunteersSocialNetworksHandler>();
+
+        services
+            .AddScoped<ICommandHandler<ErrorCollection, UpdateVolunteersDetailsForHelpCommand>,
+                UpdateVolunteersDetailsForHelpHandler>();
     }
 
     private static void AddValidation(this IServiceCollection services)

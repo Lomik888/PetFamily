@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Text.Json.Serialization;
+using CSharpFunctionalExtensions;
 using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Shared.Errors;
 
@@ -8,6 +9,7 @@ public class File : ValueObject
 {
     public string Path { get; }
 
+    [JsonConstructor]
     private File(string path)
     {
         Path = path;

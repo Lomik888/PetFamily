@@ -135,7 +135,7 @@ public static class FieldValidator
             return;
         }
 
-        if (string.IsNullOrEmpty(fieldValue?.Replace(" ", "")))
+        if (string.IsNullOrWhiteSpace(fieldValue))
         {
             errors.Add(ErrorsPreform.General.Validation(
                 $"{fieldName} can't be whiteSpace",
@@ -149,5 +149,34 @@ public static class FieldValidator
                 $"{fieldName} min length is {minLenght} and max length is {maxLenght}",
                 fieldName));
         }
+    }
+
+    public static Result ValidationNullableField(
+        string? fieldValue,
+        int minLenght,
+        int maxLenght,
+        [CallerArgumentExpression("fieldValue")]
+        string fieldName = "")
+    {
+        if (fieldValue is not null)
+        {
+            return Result.Success();
+        }
+
+        if (string.IsNullOrWhiteSpace(fieldValue))
+        {
+            return Result.Failure(ErrorsPreform.General.Validation(
+                $"{fieldName} can't be whiteSpace",
+                fieldName).Serialize());
+        }
+
+        if (fieldValue.Length < minLenght || fieldValue.Length > maxLenght)
+        {
+            return Result.Failure(ErrorsPreform.General.Validation(
+                $"{fieldName} min length is {minLenght} and max length is {maxLenght}",
+                fieldName).Serialize());
+        }
+
+        return Result.Success();
     }
 }

@@ -8,7 +8,7 @@ namespace PetFamily.API.Extensions;
 
 public static class ResponseExtensions
 {
-    public static ActionResult ErrorActionResult(this Error error)
+    public static ActionResult ToErrorActionResult(this Error error)
     {
         var status = GetStatusCode(error.ErrorType);
         var envelope = Envelope.Error(error.ToErrorResponse());
@@ -19,7 +19,7 @@ public static class ResponseExtensions
         };
     }
 
-    public static ActionResult ErrorActionResult(this IEnumerable<Error> errors)
+    public static ActionResult ToErrorActionResult(this IEnumerable<Error> errors)
     {
         var array = errors.ToList();
 

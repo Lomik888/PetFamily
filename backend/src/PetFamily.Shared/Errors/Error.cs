@@ -1,8 +1,9 @@
 ﻿using PetFamily.Shared.Errors.Enums;
+using PetFamily.Shared.Errors.Interfaces;
 
 namespace PetFamily.Shared.Errors;
 
-public class Error
+public class Error : IError
 {
     private const int LENGHTFORMESSAGE = 25;
     private const string SEPARATOR = " || ";
@@ -15,7 +16,11 @@ public class Error
 
     public string? InvalidField { get; }
 
-    private Error(string? message, string? errorCode, ErrorType errorType, string? invalidField)
+    private Error(
+        string? message, 
+        string? errorCode, 
+        ErrorType errorType, 
+        string? invalidField)
     {
         Message = message;
         ErrorType = errorType;
@@ -38,7 +43,11 @@ public class Error
         );
     }
 
-    public static Error Create(string? message, string? errorCode, ErrorType errorType, string? invalidField = null)
+    public static Error Create(
+        string? message,
+        string? errorCode,
+        ErrorType errorType,
+        string? invalidField = null)
     {
         return new Error(message, errorCode, errorType, invalidField);
     }
