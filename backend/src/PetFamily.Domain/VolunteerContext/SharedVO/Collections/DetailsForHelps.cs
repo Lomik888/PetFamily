@@ -6,7 +6,7 @@ namespace PetFamily.Domain.VolunteerContext.SharedVO.Collections;
 
 public class DetailsForHelps : BaseCollectionVO<DetailsForHelp, DetailsForHelps>
 {
-    private const int MAX_DETAILS_COUNT = 10;
+    public const int MAX_DETAILS_COUNT = 10;
 
     private DetailsForHelps(IEnumerable<DetailsForHelp> items) : base(items)
     {
