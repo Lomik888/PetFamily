@@ -45,20 +45,18 @@ public static class Startup
     private static void AddLogging(this IServiceCollection services, IConfiguration configuration)
     {
         var seqConnectionString =
-            configuration.GetSection(SeqOptions.SECTION_FOR_SEQ)
-                .GetValue<string>(SeqOptions.CONNECTIONSTRING_FOR_SEQ) ??
-            throw new InvalidOperationException("connection string is missing");
+            configuration.GetRequiredSection(SeqOptions.SECTION_FOR_SEQ)
+                .GetValue<string>(SeqOptions.CONNECTIONSTRING_FOR_SEQ) ;
 
         var seqApiKey =
-            configuration.GetSection(SeqOptions.SECTION_FOR_SEQ)
-                .GetValue<string>(SeqOptions.API_KEY_FOR_SEQ) ??
-            throw new InvalidOperationException("Key is missing");
+            configuration.GetRequiredSection(SeqOptions.SECTION_FOR_SEQ)
+                .GetValue<string>(SeqOptions.API_KEY_FOR_SEQ);
 
         Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
             .WriteTo.Seq(
                 restrictedToMinimumLevel: LogEventLevel.Information,
-                serverUrl: seqConnectionString,
+                serverUrl: seqConnectionString!,
                 apiKey: seqApiKey)
             .WriteTo.Console(
                 restrictedToMinimumLevel: LogEventLevel.Debug)

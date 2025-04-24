@@ -10,9 +10,9 @@ public class VolunteerRepository : IVolunteerRepository
 {
     private readonly ApplicationDbContext _dbContext;
 
-    public VolunteerRepository(ApplicationDbContext context)
+    public VolunteerRepository(ApplicationDbContext dbContext)
     {
-        _dbContext = context;
+        _dbContext = dbContext;
     }
 
     public async Task AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
