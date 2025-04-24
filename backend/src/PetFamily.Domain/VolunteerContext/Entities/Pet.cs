@@ -1,4 +1,5 @@
-﻿using CSharpFunctionalExtensions;
+﻿using PetFamily.Domain.Contracts.Abstractions;
+using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
 using PetFamily.Domain.VolunteerContext.SharedVO;
@@ -6,7 +7,7 @@ using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
-public sealed class Pet : Entity<PetId>
+public sealed class Pet : SoftDeletableEntity<PetId>
 {
     public Name Name { get; private set; }
     public SpeciesId SpeciesId { get; private set; }
@@ -18,15 +19,15 @@ public sealed class Pet : Entity<PetId>
     public Weight Weight { get; private set; }
     public Height Height { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
-    public Sterilize Sterilize { get; private set; }
+    public bool Sterilize { get; private set; }
     public DateOfBirth DateOfBirth { get; private set; }
-    public Vaccinated Vaccinated { get; private set; }
+    public bool Vaccinated { get; private set; }
     public HelpStatus HelpStatus { get; private set; }
     public CreatedAt CreatedAt { get; private set; }
     public DetailsForHelps DetailsForHelps { get; private set; }
     public Files Files { get; private set; }
 
-    private Pet()
+    private Pet(PetId id) : base(id)
     {
     }
 
@@ -42,9 +43,9 @@ public sealed class Pet : Entity<PetId>
         Weight weight,
         Height height,
         PhoneNumber phoneNumber,
-        Sterilize sterilize,
+        bool sterilize,
         DateOfBirth dateOfBirth,
-        Vaccinated vaccinated,
+        bool vaccinated,
         HelpStatus helpStatus,
         CreatedAt createdAt,
         DetailsForHelps detailsForHelps,

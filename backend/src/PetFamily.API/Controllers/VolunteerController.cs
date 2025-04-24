@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.API.Extensions;
 using PetFamily.API.Requests.Volunteer;
 using PetFamily.API.Response.Envelope;
-using PetFamily.Application.SharedInterfaces;
+using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Application.VolunteerUseCases.Activate;
 using PetFamily.Application.VolunteerUseCases.Create;
+using PetFamily.Application.VolunteerUseCases.Delete;
 using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
@@ -75,6 +78,41 @@ public class VolunteerController : ApplicationController
     )
     {
         var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpPut("{volunteerId:guid}/active-status")]
+    public async Task<ActionResult> Update(
+        [FromRoute] Guid volunteerId,
+        [FromServices] ICommandHandler<ErrorCollection, SoftDeleteVolunteerCommand> handler,
+        [FromBody] DeleteVolunteersRequest request,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpPut("{volunteerId:guid}/activate-volunteer-page")]
+    public async Task<ActionResult> Update(
+        [FromRoute] Guid volunteerId,
+        [FromServices] ICommandHandler<ErrorCollection, ActivateVolunteerCommand> handler,
+        CancellationToken cancellationToken = default
+    )
+    {
+        var result = await handler.Handle(new ActivateVolunteerCommand(volunteerId), cancellationToken);
 
         if (result.IsFailure)
         {

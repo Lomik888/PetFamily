@@ -15,6 +15,11 @@ public class HelpStatus : ValueObject
 
     public static Result<HelpStatus, Error> Create(HelpStatuses value)
     {
+        if (Enum.TryParse(typeof(HelpStatus), value.ToString(), out var result) == false)
+        {
+            return ErrorsPreform.General.Validation("invalid help status", nameof(HelpStatus));
+        }
+
         return new HelpStatus(value);
     }
 

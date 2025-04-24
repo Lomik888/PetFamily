@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.SharedInterfaces;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.SharedVO;
 using PetFamily.Domain.VolunteerContext.SharedVO.Collections;

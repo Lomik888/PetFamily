@@ -1,0 +1,60 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using PetFamily.Application.VolunteerUseCases;
+
+namespace PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
+
+public class HardDeleteUnActiveEntitiesWorker : BackgroundService
+{
+    private readonly ILogger<HardDeleteUnActiveEntitiesWorker> _logger;
+    private readonly IServiceScopeFactory _scope;
+    private readonly IOptions<HardDeleteUnActiveEntitiesWorkerOptions> _workersOptions;
+
+    public HardDeleteUnActiveEntitiesWorker(
+        ILogger<HardDeleteUnActiveEntitiesWorker> logger,
+        IServiceScopeFactory scope,
+        IOptions<HardDeleteUnActiveEntitiesWorkerOptions> workersOptions)
+    {
+        _logger = logger;
+        _scope = scope;
+        _workersOptions = workersOptions.Value;
+    }
+
+    protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+    {
+        _logger.LogInformation(
+            "Worker started. Hard delete delay: {0}h entity to delete delay: {1}days",
+            _workersOptions.Value.BackgroundServiceDelay,
+            _workersOptions.Value.AddDaysToFindOutLastDateValidVolunteer);
+
+        using var timer = new PeriodicTimer(
+            TimeSpan.FromHours(_workersOptions.Value.BackgroundServiceDelay));
+
+        do
+        {
+            _logger.LogInformation("HardDeleteUnActiveEntitiesWorker is working");
+            await PerformHardDeleteAsync(stoppingToken);
+            _logger.LogInformation("HardDeleteUnActiveEntitiesWorker done");
+        } while (await timer.WaitForNextTickAsync(stoppingToken));
+    }
+
+    private async Task PerformHardDeleteAsync(CancellationToken stoppingToken)
+    {
+        using var scope = _scope.CreateScope();
+
+        var volunteerRepository = scope
+            .ServiceProvider
+            .GetRequiredService<IVolunteerRepository>();
+
+        var dateTimeLasDateValidVolunteer = DateTime
+            .UtcNow
+            .AddDays(_workersOptions.Value.AddDaysToFindOutLastDateValidVolunteer);
+
+        await volunteerRepository.HardDeleteAllSofDeletedAsync(
+            false,
+            dateTimeLasDateValidVolunteer,
+            stoppingToken);
+    }
+}

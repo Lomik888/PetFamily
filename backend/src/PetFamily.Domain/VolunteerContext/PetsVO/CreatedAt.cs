@@ -13,7 +13,7 @@ public class CreatedAt : ValueObject
     {
         Value = value;
     }
-
+    
     public static Result<CreatedAt, Error> Create(DateTime value)
     {
         if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID)

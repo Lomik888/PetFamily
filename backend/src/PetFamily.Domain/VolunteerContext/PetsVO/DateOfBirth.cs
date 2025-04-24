@@ -13,7 +13,7 @@ public class DateOfBirth : ValueObject
     {
         Value = value;
     }
-
+    
     public static Result<DateOfBirth, Error> Create(DateTime value)
     {
         if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID)

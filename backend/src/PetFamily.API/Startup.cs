@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using PetFamily.API.Options;
 using PetFamily.API.Validations;
 using PetFamily.Application.DependencyInjection;
 using PetFamily.Infrastructure.DependencyInjection;
@@ -10,9 +11,6 @@ namespace PetFamily.API;
 
 public static class Startup
 {
-    private const string CONNECTION_STRING_KEY_FOR_SEQ = "Seq";
-    private const string API_KEY_FOR_SEQ = "Seq_Api_Key";
-
     public static void AddConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddControllers();
@@ -26,7 +24,7 @@ public static class Startup
     private static void AddLayers(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddInfrastructure(configuration);
-        services.AddApplicationLayer();
+        services.AddApplicationLayer(configuration);
     }
 
     private static void AddSwagger(this IServiceCollection services)
@@ -47,11 +45,13 @@ public static class Startup
     private static void AddLogging(this IServiceCollection services, IConfiguration configuration)
     {
         var seqConnectionString =
-            configuration.GetConnectionString(CONNECTION_STRING_KEY_FOR_SEQ) ??
+            configuration.GetSection(SeqOptions.SECTION_FOR_SEQ)
+                .GetValue<string>(SeqOptions.CONNECTIONSTRING_FOR_SEQ) ??
             throw new InvalidOperationException("connection string is missing");
 
         var seqApiKey =
-            configuration.GetSection("Keys").GetValue<string>(API_KEY_FOR_SEQ) ??
+            configuration.GetSection(SeqOptions.SECTION_FOR_SEQ)
+                .GetValue<string>(SeqOptions.API_KEY_FOR_SEQ) ??
             throw new InvalidOperationException("Key is missing");
 
         Log.Logger = new LoggerConfiguration()

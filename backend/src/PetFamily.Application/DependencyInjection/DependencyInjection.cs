@@ -1,7 +1,11 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.SharedInterfaces;
+using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
+using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Application.VolunteerUseCases.Activate;
 using PetFamily.Application.VolunteerUseCases.Create;
+using PetFamily.Application.VolunteerUseCases.Delete;
 using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
@@ -11,10 +15,12 @@ namespace PetFamily.Application.DependencyInjection;
 
 public static class DependencyInjection
 {
-    public static void AddApplicationLayer(this IServiceCollection services)
+    public static void AddApplicationLayer(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddServices();
         services.AddValidation();
+        services.AddBackgroundServices();
+        services.AddOptions(configuration);
     }
 
     private static void AddServices(this IServiceCollection services)
@@ -34,10 +40,29 @@ public static class DependencyInjection
         services
             .AddScoped<ICommandHandler<ErrorCollection, UpdateVolunteersDetailsForHelpCommand>,
                 UpdateVolunteersDetailsForHelpHandler>();
+
+        services
+            .AddScoped<ICommandHandler<ErrorCollection, SoftDeleteVolunteerCommand>,
+                SoftDeleteVolunteerHandler>();
+        services
+            .AddScoped<ICommandHandler<ErrorCollection, ActivateVolunteerCommand>,
+                ActivateVolunteerHandle>();
     }
 
     private static void AddValidation(this IServiceCollection services)
     {
         services.AddValidatorsFromAssembly(typeof(DependencyInjection).Assembly);
+    }
+
+    private static void AddBackgroundServices(this IServiceCollection services)
+    {
+        services.AddHostedService<HardDeleteUnActiveEntitiesWorker>();
+    }
+
+    private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddOptions<HardDeleteUnActiveEntitiesWorkerOptions>()
+            .Bind(configuration.GetRequiredSection(HardDeleteUnActiveEntitiesWorkerOptions.OPTIONSECTION))
+            .ValidateOnStart();
     }
 }

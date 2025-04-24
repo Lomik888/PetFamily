@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Shared.Errors;
 
-namespace PetFamily.Domain.VolunteerContext.PetsVO;
+namespace PetFamily.Domain.VolunteerContext.IdsVO;
 
 public class PetId : ValueObject, IComparable<PetId>
 {
