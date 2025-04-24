@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
-using PetFamily.Infrastructure;
 using PetFamily.Infrastructure.DbContext.PostgresSQL;
 
 #nullable disable
@@ -14,8 +13,8 @@ using PetFamily.Infrastructure.DbContext.PostgresSQL;
 namespace PetFamily.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250422115500_addedSoftDeleteProperties")]
-    partial class addedSoftDeleteProperties
+    [Migration("20250424112923_AddedSoftDelete")]
+    partial class AddedSoftDelete
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,8 +115,8 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_active")
-                        .HasDefaultValueSql("TRUE");
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -137,13 +136,13 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("boolean")
                         .HasColumnName("vaccinated");
 
-                    b.Property<Guid?>("VolunteerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("volunteer_id");
-
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
+
+                    b.Property<Guid>("volunteer_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("volunteer_id");
 
                     b.ComplexProperty<Dictionary<string, object>>("Address", "PetFamily.Domain.VolunteerContext.Entities.Pet.Address#Address", b1 =>
                         {
@@ -226,7 +225,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
-                    b.HasIndex("VolunteerId")
+                    b.HasIndex("volunteer_id")
                         .HasDatabaseName("ix_pets_volunteer_id");
 
                     b.ToTable("pets", (string)null);
@@ -261,8 +260,8 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_active")
-                        .HasDefaultValueSql("TRUE");
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
 
                     b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.VolunteerContext.Entities.Volunteer.Name#Name", b1 =>
                         {
@@ -324,7 +323,9 @@ namespace PetFamily.Infrastructure.Migrations
                 {
                     b.HasOne("PetFamily.Domain.VolunteerContext.Entities.Volunteer", null)
                         .WithMany("Pets")
-                        .HasForeignKey("VolunteerId")
+                        .HasForeignKey("volunteer_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
 
                     b.OwnsOne("PetFamily.Domain.VolunteerContext.SharedVO.Collections.DetailsForHelps", "DetailsForHelps", b1 =>

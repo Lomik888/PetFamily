@@ -19,7 +19,7 @@ public class HardDeleteUnActiveEntitiesWorker : BackgroundService
     {
         _logger = logger;
         _scope = scope;
-        _workersOptions = workersOptions.Value;
+        _workersOptions = workersOptions;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

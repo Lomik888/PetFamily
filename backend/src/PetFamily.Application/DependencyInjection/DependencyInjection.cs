@@ -61,8 +61,7 @@ public static class DependencyInjection
 
     private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<HardDeleteUnActiveEntitiesWorkerOptions>()
-            .Bind(configuration.GetRequiredSection(HardDeleteUnActiveEntitiesWorkerOptions.OPTIONSECTION))
-            .ValidateOnStart();
+        services.Configure<HardDeleteUnActiveEntitiesWorkerOptions>(
+            configuration.GetRequiredSection(HardDeleteUnActiveEntitiesWorkerOptions.OPTIONSECTION));
     }
 }

@@ -112,8 +112,8 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_active")
-                        .HasDefaultValueSql("TRUE");
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -257,8 +257,8 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
-                        .HasColumnName("is_active")
-                        .HasDefaultValueSql("TRUE");
+                        .HasDefaultValue(true)
+                        .HasColumnName("is_active");
 
                     b.ComplexProperty<Dictionary<string, object>>("Name", "PetFamily.Domain.VolunteerContext.Entities.Volunteer.Name#Name", b1 =>
                         {

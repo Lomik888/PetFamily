@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.BackgroundWorkers;
 using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
 using PetFamily.Application.VolunteerUseCases;
 using PetFamily.Infrastructure.DbContext.PostgresSQL;
@@ -15,8 +14,8 @@ public static class DependencyInjection
     {
         var psqlConnectionString =
             configuration
-                .GetConnectionString(ApplicationDbContextOptions.CONNECTIONSTRING_SECTION_FOR_POSTGRESSQL) ??
-            throw new InvalidOperationException("connection string is missing");
+                .GetSection(ApplicationDbContextOptions.CONNECTIONSTRING_SECTION_FOR_POSTGRESSQL)
+                .GetValue<string>(ApplicationDbContextOptions.CONNECTIONSTRING_FOR_POSTGRESSQL);
 
         services.AddDbContext<ApplicationDbContext>(options =>
             options.UseNpgsql(psqlConnectionString));
@@ -37,11 +36,7 @@ public static class DependencyInjection
 
     private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<ApplicationDbContextOptions>()
-            .Bind(configuration.GetRequiredSection("ConnectionStrings"))
-            .Validate(x =>
-                    x.ConnectionString is not null,
-                "connection string is missing")
-            .ValidateOnStart();
+        services.Configure<ApplicationDbContextOptions>(
+            configuration.GetSection(ApplicationDbContextOptions.CONNECTIONSTRING_SECTION_FOR_POSTGRESSQL));
     }
 }

@@ -208,7 +208,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(x => x.IsActive)
             .HasColumnName("is_active")
-            .HasDefaultValueSql("TRUE")
+            .HasDefaultValue(true)
             .IsRequired(true);
 
         builder.Property(x => x.DeletedAt)

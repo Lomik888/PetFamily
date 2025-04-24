@@ -134,7 +134,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.Property(x => x.IsActive)
             .HasColumnName("is_active")
-            .HasDefaultValueSql("TRUE")
+            .HasDefaultValue(true)
             .IsRequired();
 
         builder.Property(x => x.DeletedAt)
