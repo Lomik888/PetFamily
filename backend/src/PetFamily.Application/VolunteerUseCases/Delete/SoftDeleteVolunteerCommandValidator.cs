@@ -14,6 +14,6 @@ public class SoftDeleteVolunteerCommandValidator : AbstractValidator<SoftDeleteV
 
         RuleFor(x => x.DeleteType)
             .Must(x => Enum.IsDefined(typeof(DeleteType), x))
-            .WithMessage("Invalid deleteType value.");
+            .WithMessageCustom("Invalid deleteType value.");
     }
 }

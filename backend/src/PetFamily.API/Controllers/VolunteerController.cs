@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts.Requests.Volunteer;
+using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
-using PetFamily.API.Requests.Volunteer;
-using PetFamily.API.Response.Envelope;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Activate;
 using PetFamily.Application.VolunteerUseCases.Create;

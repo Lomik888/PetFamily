@@ -35,12 +35,12 @@ public class HardDeleteUnActiveEntitiesWorker : BackgroundService
         do
         {
             _logger.LogInformation("HardDeleteUnActiveEntitiesWorker is working");
-            await PerformHardDeleteAsync(stoppingToken);
-            _logger.LogInformation("HardDeleteUnActiveEntitiesWorker done");
+            var count = await PerformHardDeleteAsync(stoppingToken);
+            _logger.LogInformation("HardDeleteUnActiveEntitiesWorker done. Deleted: {0}", count);
         } while (await timer.WaitForNextTickAsync(stoppingToken));
     }
 
-    private async Task PerformHardDeleteAsync(CancellationToken stoppingToken)
+    private async Task<int> PerformHardDeleteAsync(CancellationToken stoppingToken)
     {
         using var scope = _scope.CreateScope();
 
@@ -52,9 +52,11 @@ public class HardDeleteUnActiveEntitiesWorker : BackgroundService
             .UtcNow
             .AddDays(_workersOptions.Value.AddDaysToFindOutLastDateValidVolunteer);
 
-        await volunteerRepository.HardDeleteAllSofDeletedAsync(
+        var countDeleted = await volunteerRepository.HardDeleteAllSofDeletedAsync(
             false,
             dateTimeLasDateValidVolunteer,
             stoppingToken);
+
+        return countDeleted;
     }
 }

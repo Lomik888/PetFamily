@@ -5,12 +5,12 @@ using PetFamily.Application.VolunteerUseCases.SoftDelete;
 
 namespace PetFamily.API.Validations.Validators;
 
-public class UpdateVolunteersRequestValidator : AbstractValidator<DeleteVolunteersRequest>
+public class DeleteVolunteersRequestValidator : AbstractValidator<DeleteVolunteersRequest>
 {
-    public UpdateVolunteersRequestValidator()
+    public DeleteVolunteersRequestValidator()
     {
         RuleFor(x => x.DeleteType)
             .Must(x => Enum.IsDefined(typeof(DeleteType), x))
-            .WithMessageCustom("Invalid deleteType value.");
+            .WithMessageCustom("Invalid delete type");
     }
 }

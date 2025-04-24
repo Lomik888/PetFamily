@@ -1,8 +1,8 @@
-﻿using PetFamily.API.Requests.Interfaces;
+﻿using PetFamily.API.Contracts.Requests.Interfaces;
 using PetFamily.Application.Contracts.DTO.VolunteerDtos;
 using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 
-namespace PetFamily.API.Requests.Volunteer;
+namespace PetFamily.API.Contracts.Requests.Volunteer;
 
 public record UpdateMainInfoVolunteerRequest(
     NameUpdateDto? Name,

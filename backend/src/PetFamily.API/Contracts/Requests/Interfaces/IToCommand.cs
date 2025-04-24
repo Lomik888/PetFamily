@@ -1,4 +1,4 @@
-﻿namespace PetFamily.API.Requests.Interfaces;
+﻿namespace PetFamily.API.Contracts.Requests.Interfaces;
 
 public interface IToCommand<TReturn, TParameter>
 {

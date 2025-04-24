@@ -1,4 +1,4 @@
-﻿using PetFamily.API.Requests.Interfaces;
+﻿using PetFamily.API.Contracts.Requests.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Delete;
 using PetFamily.Application.VolunteerUseCases.SoftDelete;
 

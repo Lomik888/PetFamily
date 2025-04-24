@@ -1,4 +1,4 @@
-﻿namespace PetFamily.API.Response.Envelope;
+﻿namespace PetFamily.API.Contracts.Response.Envelope;
 
 public record Envelope
 {
