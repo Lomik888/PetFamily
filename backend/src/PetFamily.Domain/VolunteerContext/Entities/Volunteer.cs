@@ -86,7 +86,7 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
 
         var dateTimeUtcNow = DateTime.UtcNow;
 
-        DeletedAt = DeletedAt.Create(dateTimeUtcNow).Value;
+        DeletedAt = dateTimeUtcNow;
         IsActive = false;
 
         foreach (var pet in Pets)

@@ -5,9 +5,9 @@ using PetFamily.Domain.VolunteerContext.IdsVO;
 
 namespace PetFamily.Application.VolunteerUseCases.Delete;
 
-public class SoftDeleteVolunteerCommandValidator : AbstractValidator<SoftDeleteVolunteerCommand>
+public class DeleteVolunteerCommandValidator : AbstractValidator<DeleteVolunteerCommand>
 {
-    public SoftDeleteVolunteerCommandValidator()
+    public DeleteVolunteerCommandValidator()
     {
         RuleFor(x => x.VolunteerId)
             .MustBeValueObject(x => VolunteerId.Create(x));

@@ -3,7 +3,7 @@ using PetFamily.Application.VolunteerUseCases.SoftDelete;
 
 namespace PetFamily.Application.VolunteerUseCases.Delete;
 
-public record SoftDeleteVolunteerCommand(
+public record DeleteVolunteerCommand(
     Guid VolunteerId,
     DeleteType DeleteType
 ) : ICommand;

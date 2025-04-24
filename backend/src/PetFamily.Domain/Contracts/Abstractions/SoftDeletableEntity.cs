@@ -1,12 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.SharedVO;
 
 namespace PetFamily.Domain.Contracts.Abstractions;
 
 public abstract class SoftDeletableEntity<TId> : Entity<TId> where TId : IComparable<TId>
 {
     public bool IsActive { get; protected set; } = true;
-    public DeletedAt? DeletedAt { get; protected set; } = null;
+
+    public DateTime? DeletedAt { get; protected set; } = null;
 
     protected SoftDeletableEntity(TId id) :
         base(id)
@@ -20,7 +20,9 @@ public abstract class SoftDeletableEntity<TId> : Entity<TId> where TId : ICompar
             return;
         }
 
-        DeletedAt = DeletedAt.Create(DateTime.UtcNow).Value;
+        var dateTimeUtcNow = DateTime.UtcNow;
+
+        DeletedAt = dateTimeUtcNow;
         IsActive = false;
     }
 
@@ -31,7 +33,6 @@ public abstract class SoftDeletableEntity<TId> : Entity<TId> where TId : ICompar
             return;
         }
 
-        DeletedAt = null;
         IsActive = false;
     }
 }

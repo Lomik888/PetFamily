@@ -73,13 +73,14 @@ public class VolunteerRepository : IVolunteerRepository
                 "the delay between the current and transmitted time is more than 5 minutes");
         }
 
-        var query = await _dbContext.Volunteers
+        var query = _dbContext.Volunteers
             .Where(x =>
-                x.IsActive == isActive )//&&
-              //  x.DeletedAt != null &&
-             //   x.DeletedAt!.Value <= deletedAtUtcNow)
-            .ExecuteDeleteAsync(cancellationToken);
+                x.IsActive == isActive &&
+                x.DeletedAt != null &&
+                x.DeletedAt.Value <= deletedAtUtcNow);
 
-        return query;
+        var count = await query.ExecuteDeleteAsync(cancellationToken);
+
+        return count;
     }
 }

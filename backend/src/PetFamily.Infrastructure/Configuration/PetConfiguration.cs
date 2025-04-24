@@ -213,10 +213,6 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(x => x.DeletedAt)
             .HasColumnName("deleted_at")
-            .IsRequired(false)
-            .HasConversion(
-                deletedAt => deletedAt == null ? (DateTime?)null : deletedAt.Value,
-                value => value == null ? null : DeletedAt.Create((DateTime)value).Value
-            );
+            .IsRequired(false);
     }
 }

@@ -11,17 +11,17 @@ using PetFamily.Shared.Errors.Enums;
 
 namespace PetFamily.Application.VolunteerUseCases.Delete;
 
-public class SoftDeleteVolunteerHandler :
-    ICommandHandler<ErrorCollection, SoftDeleteVolunteerCommand>
+public class DeleteVolunteerHandler :
+    ICommandHandler<ErrorCollection, DeleteVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly IValidator<SoftDeleteVolunteerCommand> _validator;
-    private readonly ILogger<SoftDeleteVolunteerHandler> _logger;
+    private readonly IValidator<DeleteVolunteerCommand> _validator;
+    private readonly ILogger<DeleteVolunteerHandler> _logger;
 
-    public SoftDeleteVolunteerHandler(
+    public DeleteVolunteerHandler(
         IVolunteerRepository volunteerRepository,
-        ILogger<SoftDeleteVolunteerHandler> logger,
-        IValidator<SoftDeleteVolunteerCommand> validator)
+        ILogger<DeleteVolunteerHandler> logger,
+        IValidator<DeleteVolunteerCommand> validator)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
@@ -29,7 +29,7 @@ public class SoftDeleteVolunteerHandler :
     }
 
     public async Task<UnitResult<ErrorCollection>> Handle(
-        SoftDeleteVolunteerCommand request,
+        DeleteVolunteerCommand request,
         CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);

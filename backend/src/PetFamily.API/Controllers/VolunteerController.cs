@@ -89,7 +89,7 @@ public class VolunteerController : ApplicationController
     [HttpPut("{volunteerId:guid}/active-status")]
     public async Task<ActionResult> Update(
         [FromRoute] Guid volunteerId,
-        [FromServices] ICommandHandler<ErrorCollection, SoftDeleteVolunteerCommand> handler,
+        [FromServices] ICommandHandler<ErrorCollection, DeleteVolunteerCommand> handler,
         [FromBody] DeleteVolunteersRequest request,
         CancellationToken cancellationToken = default
     )

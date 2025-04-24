@@ -6,10 +6,10 @@ namespace PetFamily.API.Contracts.Requests.Volunteer;
 
 public record DeleteVolunteersRequest(
     DeleteType DeleteType
-) : IToCommand<SoftDeleteVolunteerCommand, Guid>
+) : IToCommand<DeleteVolunteerCommand, Guid>
 {
-    public SoftDeleteVolunteerCommand ToCommand(Guid volunteerId)
+    public DeleteVolunteerCommand ToCommand(Guid volunteerId)
     {
-        return new SoftDeleteVolunteerCommand(volunteerId, DeleteType);
+        return new DeleteVolunteerCommand(volunteerId, DeleteType);
     }
 }

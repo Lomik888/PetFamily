@@ -42,8 +42,8 @@ public static class DependencyInjection
                 UpdateVolunteersDetailsForHelpHandler>();
 
         services
-            .AddScoped<ICommandHandler<ErrorCollection, SoftDeleteVolunteerCommand>,
-                SoftDeleteVolunteerHandler>();
+            .AddScoped<ICommandHandler<ErrorCollection, DeleteVolunteerCommand>,
+                DeleteVolunteerHandler>();
         services
             .AddScoped<ICommandHandler<ErrorCollection, ActivateVolunteerCommand>,
                 ActivateVolunteerHandle>();

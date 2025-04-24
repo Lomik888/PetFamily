@@ -13,7 +13,7 @@ using PetFamily.Infrastructure.DbContext.PostgresSQL;
 namespace PetFamily.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250424112923_AddedSoftDelete")]
+    [Migration("20250424123503_AddedSoftDelete")]
     partial class AddedSoftDelete
     {
         /// <inheritdoc />

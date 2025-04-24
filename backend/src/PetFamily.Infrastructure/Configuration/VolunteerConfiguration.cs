@@ -139,11 +139,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 
         builder.Property(x => x.DeletedAt)
             .HasColumnName("deleted_at")
-            .IsRequired(false)
-            .HasConversion(
-                deletedAt => deletedAt == null ? (DateTime?)null : deletedAt.Value,
-                value => value == null ? null : DeletedAt.Create((DateTime)value).Value
-            );
+            .IsRequired(false);
 
         builder.HasMany(x => x.Pets)
             .WithOne()
