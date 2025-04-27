@@ -28,7 +28,7 @@ public class SocialNetworks : BaseCollectionVO<SocialNetwork, SocialNetworks>
         return new SocialNetworks(enumerable);
     }
 
-    public static Result<SocialNetworks, Error> CreateEmpty()
+    public static Result<SocialNetworks> CreateEmpty()
     {
         IEnumerable<SocialNetwork> socialNetworks = [];
         return new SocialNetworks(socialNetworks);

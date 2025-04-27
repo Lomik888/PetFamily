@@ -19,8 +19,7 @@ public class VolunteerController : ApplicationController
     public async Task<ActionResult<Guid>> Create(
         [FromServices] ICommandHandler<Guid, ErrorCollection, CreateVolunteerCommand> handler,
         [FromBody] CreateVolunteerRequest request,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request.ToCommand(), cancellationToken);
 
@@ -37,8 +36,7 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<Guid, ErrorCollection, UpdateMainInfoVolunteerCommand> handler,
         [FromBody] UpdateMainInfoVolunteerRequest request,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
 
@@ -55,8 +53,7 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<ErrorCollection, UpdateVolunteersSocialNetworksCommand> handler,
         [FromBody] UpdateVolunteersSocialNetworksRequest request,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
 
@@ -73,8 +70,7 @@ public class VolunteerController : ApplicationController
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<ErrorCollection, UpdateVolunteersDetailsForHelpCommand> handler,
         [FromBody] UpdateVolunteersDetailsForHelpRequest request,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
 
@@ -86,13 +82,12 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
-    [HttpPut("{volunteerId:guid}/active-status")]
-    public async Task<ActionResult> Update(
+    [HttpPut("{volunteerId:guid}/account-status")]
+    public async Task<ActionResult> DeleteAccount(
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<ErrorCollection, DeleteVolunteerCommand> handler,
         [FromBody] DeleteVolunteersRequest request,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(request.ToCommand(volunteerId), cancellationToken);
 
@@ -104,12 +99,11 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
-    [HttpPut("{volunteerId:guid}/activate-volunteer-page")]
-    public async Task<ActionResult> Update(
+    [HttpPut("{volunteerId:guid}/")]
+    public async Task<ActionResult> ActivateAccount(
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<ErrorCollection, ActivateVolunteerCommand> handler,
-        CancellationToken cancellationToken = default
-    )
+        CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(new ActivateVolunteerCommand(volunteerId), cancellationToken);
 

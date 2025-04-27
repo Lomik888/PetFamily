@@ -22,12 +22,12 @@ public class BreedId : ValueObject, IComparable<BreedId>
         return new BreedId(id);
     }
 
-    public static Result<BreedId, Error> Create()
+    public static Result<BreedId> Create()
     {
         return new BreedId(Guid.NewGuid());
     }
 
-    public static Result<BreedId, Error> CreateEmpty()
+    public static Result<BreedId> CreateEmpty()
     {
         return new BreedId(Guid.Empty);
     }

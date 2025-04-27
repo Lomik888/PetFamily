@@ -12,12 +12,12 @@ public class VolunteerId : ValueObject, IComparable<VolunteerId>
         Value = value;
     }
 
-    public static Result<VolunteerId, Error> Create()
+    public static Result<VolunteerId> Create()
     {
         return new VolunteerId(Guid.NewGuid());
     }
 
-    public static Result<VolunteerId, Error> CreateEmpty()
+    public static Result<VolunteerId> CreateEmpty()
     {
         return new VolunteerId(Guid.Empty);
     }

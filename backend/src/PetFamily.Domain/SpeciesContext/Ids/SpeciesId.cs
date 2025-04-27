@@ -22,12 +22,12 @@ public class SpeciesId : ValueObject, IComparable<SpeciesId>
         return new SpeciesId(id);
     }
 
-    public static Result<SpeciesId, Error> Create()
+    public static Result<SpeciesId> Create()
     {
         return new SpeciesId(Guid.NewGuid());
     }
 
-    public static Result<SpeciesId, Error> CreateEmpty()
+    public static Result<SpeciesId> CreateEmpty()
     {
         return new SpeciesId(Guid.Empty);
     }

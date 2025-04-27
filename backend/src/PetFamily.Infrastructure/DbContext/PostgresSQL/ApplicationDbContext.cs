@@ -7,8 +7,8 @@ namespace PetFamily.Infrastructure.DbContext.PostgresSQL;
 
 public class ApplicationDbContext : Microsoft.EntityFrameworkCore.DbContext
 {
-    public DbSet<Volunteer> Volunteers { get; set; }
-    public DbSet<Species> Species { get; set; }
+    public DbSet<Volunteer> Volunteers { get; init; }
+    public DbSet<Species> Species { get; init; }
 
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
     {

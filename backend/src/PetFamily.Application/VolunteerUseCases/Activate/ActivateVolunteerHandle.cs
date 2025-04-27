@@ -43,7 +43,7 @@ public class ActivateVolunteerHandle :
         var isActivate = false;
 
         var volunteer = await _volunteerRepository
-            .GetByIdWitchPetsAsync(
+            .GetByIdWithPetsAsync(
                 VolunteerId.Create(request.VolunteerId).Value,
                 isActivate,
                 cancellationToken);

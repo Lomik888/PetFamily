@@ -27,7 +27,7 @@ public class PetId : ValueObject, IComparable<PetId>
         return new PetId(id);
     }
 
-    public static Result<PetId, Error> CreateEmpty()
+    public static Result<PetId> CreateEmpty()
     {
         return new PetId(Guid.Empty);
     }

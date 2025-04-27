@@ -13,10 +13,10 @@ public class CreatedAt : ValueObject
     {
         Value = value;
     }
-    
+
     public static Result<CreatedAt, Error> Create(DateTime value)
     {
-        if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID)
+        if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID || value.Kind != DateTimeKind.Utc)
         {
             return ErrorsPreform.General.Validation("Date created is invalid", nameof(CreatedAt));
         }

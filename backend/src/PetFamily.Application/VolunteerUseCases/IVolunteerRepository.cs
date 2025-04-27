@@ -15,7 +15,7 @@ public interface IVolunteerRepository
         bool volunteerIsActive,
         CancellationToken cancellationToken = default);
 
-    public Task<Volunteer> GetByIdWitchPetsAsync(
+    public Task<Volunteer> GetByIdWithPetsAsync(
         VolunteerId value,
         bool volunteerIsActive,
         CancellationToken cancellationToken);

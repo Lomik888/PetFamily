@@ -15,12 +15,12 @@ public class Files : BaseCollectionVO<File, Files>
     {
     }
 
-    public static Result<Files, Error> Create(IEnumerable<File> items)
+    public static Result<Files> Create(IEnumerable<File> items)
     {
         return new Files(items);
     }
 
-    public static Result<Files, Error> CreateEmpty()
+    public static Result<Files> CreateEmpty()
     {
         IEnumerable<File> files = [];
         return new Files(files);

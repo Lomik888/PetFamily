@@ -15,7 +15,7 @@ public class File : ValueObject
         Path = path;
     }
 
-    public static Result<File, Error> Create(string path) => new File(path);
+    public static Result<File> Create(string path) => new File(path);
 
     protected override IEnumerable<object> GetEqualityComponents()
     {

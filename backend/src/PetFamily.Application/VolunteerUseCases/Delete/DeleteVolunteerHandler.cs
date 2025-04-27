@@ -46,7 +46,7 @@ public class DeleteVolunteerHandler :
         {
             case DeleteType.SOFT:
                 volunteer = await _volunteerRepository
-                    .GetByIdWitchPetsAsync(
+                    .GetByIdWithPetsAsync(
                         VolunteerId.Create(request.VolunteerId).Value,
                         isActivate,
                         cancellationToken);
