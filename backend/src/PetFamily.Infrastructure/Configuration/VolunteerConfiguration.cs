@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using PetFamily.Domain.SharedVO;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.SharedVO;
@@ -130,6 +131,15 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
                 .HasColumnName("details_for_help")
                 .HasColumnType("jsonb");
         });
+
+        builder.Property(x => x.IsActive)
+            .HasColumnName("is_active")
+            .HasDefaultValue(true)
+            .IsRequired();
+
+        builder.Property(x => x.DeletedAt)
+            .HasColumnName("deleted_at")
+            .IsRequired(false);
 
         builder.HasMany(x => x.Pets)
             .WithOne()

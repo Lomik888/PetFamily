@@ -17,9 +17,9 @@ public class Error : IError
     public string? InvalidField { get; }
 
     private Error(
-        string? message, 
-        string? errorCode, 
-        ErrorType errorType, 
+        string? message,
+        string? errorCode,
+        ErrorType errorType,
         string? invalidField)
     {
         Message = message;
@@ -30,9 +30,10 @@ public class Error : IError
 
     public override string ToString()
     {
-        var messageLength = Message?.Length > LENGHTFORMESSAGE
-            ? LENGHTFORMESSAGE * (int)Math.Ceiling((double)Message.Length / LENGHTFORMESSAGE)
-            : LENGHTFORMESSAGE;
+        var messageLength =
+            Message?.Length > LENGHTFORMESSAGE
+                ? LENGHTFORMESSAGE * (int)Math.Ceiling((double)Message.Length / LENGHTFORMESSAGE)
+                : LENGHTFORMESSAGE;
 
         return string.Format(
             "{0" + "}:{1} {2,-" + messageLength + "} {3" + "}",

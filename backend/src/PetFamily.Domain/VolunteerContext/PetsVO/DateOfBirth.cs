@@ -16,7 +16,7 @@ public class DateOfBirth : ValueObject
 
     public static Result<DateOfBirth, Error> Create(DateTime value)
     {
-        if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID)
+        if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID || value.Kind != DateTimeKind.Utc)
         {
             return ErrorsPreform.General.Validation("Date of Birth is invalid", nameof(CreatedAt));
         }

@@ -29,7 +29,7 @@ public class HealthDescription : ValueObject
         DigestiveSystemCondition = digestiveSystemCondition;
     }
 
-    public static Result<HealthDescription, Error[]> Create(
+    public static Result<HealthDescription, ErrorCollection> Create(
         string sharedHealthStatus,
         string skinCondition,
         string mouthCondition,
@@ -45,7 +45,7 @@ public class HealthDescription : ValueObject
 
         if (errors.Count > 0)
         {
-            return errors.ToArray();
+            return ErrorCollection.Create(errors);
         }
 
         return new HealthDescription(

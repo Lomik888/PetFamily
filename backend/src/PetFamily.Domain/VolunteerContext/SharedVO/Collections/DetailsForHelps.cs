@@ -27,7 +27,7 @@ public class DetailsForHelps : BaseCollectionVO<DetailsForHelp, DetailsForHelps>
         return new DetailsForHelps(enumerable);
     }
 
-    public static Result<DetailsForHelps, Error> CreateEmpty()
+    public static Result<DetailsForHelps> CreateEmpty()
     {
         IEnumerable<DetailsForHelp> detailsForHelp = [];
         return new DetailsForHelps(detailsForHelp);

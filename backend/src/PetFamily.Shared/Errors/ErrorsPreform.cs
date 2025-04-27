@@ -39,5 +39,14 @@ public static class ErrorsPreform
                 ErrorType.EXCEPTION,
                 string.Empty);
         }
+
+        public static Error Unknown(string message)
+        {
+            return Error.Create(
+                message,
+                ErrorCodes.General.Unknown,
+                ErrorType.UNKNOWNERROR,
+                string.Empty);
+        }
     }
 }

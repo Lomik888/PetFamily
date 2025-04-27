@@ -1,5 +1,5 @@
-﻿using PetFamily.Application.DTO.SharedDtos;
-using PetFamily.Application.SharedInterfaces;
+﻿using PetFamily.Application.Contracts.DTO.SharedDtos;
+using PetFamily.Application.Contracts.SharedInterfaces;
 
 namespace PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 

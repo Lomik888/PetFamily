@@ -1,4 +1,4 @@
-﻿using PetFamily.API.Response;
+﻿using PetFamily.API.Contracts.Response;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.API.Extensions;

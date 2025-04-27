@@ -2,15 +2,13 @@
 
 namespace PetFamily.Shared.Errors;
 
-public class ErrorCollection : IError
+public record ErrorCollection : IError
 {
-    private List<Error> _errors;
-
-    public IReadOnlyList<Error> Errors => _errors;
+    public readonly IReadOnlyList<Error> Errors;
 
     private ErrorCollection(IEnumerable<Error> errors)
     {
-        _errors = errors.ToList();
+        Errors = errors.ToList();
     }
 
     public static ErrorCollection Create(IEnumerable<Error> errors) => new(errors);

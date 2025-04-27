@@ -1,13 +1,14 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Create;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.SharedVO;
 using PetFamily.Domain.VolunteerContext.VolunteerVO;
 using PetFamily.Shared.Errors;
+using PetFamily.Shared.Errors.Enums;
 
 namespace PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 
@@ -69,6 +70,11 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorCollect
                 case "Surname":
                     sureName = req.Value!.ToString()!;
                     break;
+                default:
+                    return ErrorCollection.Create(new[]
+                    {
+                        Error.Create("Nothing to update", null, ErrorType.NONE)
+                    });
             }
         }
 
@@ -83,7 +89,7 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorCollect
         );
 
         await _volunteerRepository.UpdateAsAlreadyTrackingAsync(volunteer, cancellationToken);
-        
+
         _logger.LogInformation("Volunteer updated");
         return volunteer.Id.Value;
     }

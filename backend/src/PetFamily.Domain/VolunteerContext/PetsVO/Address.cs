@@ -35,7 +35,7 @@ public class Address : ValueObject
         ApartmentNumber = apartmentNumber;
     }
 
-    public static Result<Address, Error[]> Create(
+    public static Result<Address, ErrorCollection> Create(
         string country,
         string city,
         string street,
@@ -52,7 +52,7 @@ public class Address : ValueObject
 
         if (errors.Count > 0)
         {
-            return errors.ToArray();
+            return ErrorCollection.Create(errors);
         }
 
         return new Address(

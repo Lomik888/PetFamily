@@ -1,4 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Domain.Contracts.Abstractions;
+using PetFamily.Domain.SharedVO;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
 using PetFamily.Domain.VolunteerContext.SharedVO;
@@ -8,7 +10,7 @@ using PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
-public sealed class Volunteer : Entity<VolunteerId>
+public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
 {
     private readonly List<Pet> _pets = [];
     public Name Name { get; private set; }
@@ -21,7 +23,7 @@ public sealed class Volunteer : Entity<VolunteerId>
     public DetailsForHelps DetailsForHelps { get; private set; }
     public IReadOnlyList<Pet> Pets => _pets;
 
-    private Volunteer()
+    private Volunteer(VolunteerId id) : base(id)
     {
     }
 
@@ -73,5 +75,39 @@ public sealed class Volunteer : Entity<VolunteerId>
     public void SetDetailsForHelps(DetailsForHelps detailsForHelps)
     {
         DetailsForHelps = detailsForHelps;
+    }
+
+    public override void UnActivate()
+    {
+        if (IsActive == false)
+        {
+            return;
+        }
+
+        var dateTimeUtcNow = DateTime.UtcNow;
+
+        DeletedAt = dateTimeUtcNow;
+        IsActive = false;
+
+        foreach (var pet in Pets)
+        {
+            pet.UnActivate();
+        }
+    }
+
+    public override void Activate()
+    {
+        if (IsActive == true)
+        {
+            return;
+        }
+
+        DeletedAt = null;
+        IsActive = true;
+
+        foreach (var pet in Pets)
+        {
+            pet.Activate();
+        }
     }
 }

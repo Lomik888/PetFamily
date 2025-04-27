@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using PetFamily.API.Requests.Volunteer;
+using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.Application.Extensions;
 using PetFamily.Domain.VolunteerContext.VolunteerVO;
 using PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;

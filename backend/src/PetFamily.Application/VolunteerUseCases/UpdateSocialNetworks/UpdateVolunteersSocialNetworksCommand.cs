@@ -1,5 +1,5 @@
-﻿using PetFamily.Application.DTO.VolunteerDtos;
-using PetFamily.Application.SharedInterfaces;
+﻿using PetFamily.Application.Contracts.DTO.VolunteerDtos;
+using PetFamily.Application.Contracts.SharedInterfaces;
 
 namespace PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
 

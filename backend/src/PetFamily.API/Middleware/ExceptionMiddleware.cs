@@ -1,5 +1,5 @@
-﻿using PetFamily.API.Extensions;
-using PetFamily.API.Response.Envelope;
+﻿using PetFamily.API.Contracts.Response.Envelope;
+using PetFamily.API.Extensions;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.API.Middleware;

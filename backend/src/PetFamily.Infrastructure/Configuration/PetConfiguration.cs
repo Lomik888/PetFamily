@@ -2,7 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using PetFamily.Domain.SharedVO;
 using PetFamily.Domain.VolunteerContext.Entities;
+using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
 using PetFamily.Domain.VolunteerContext.SharedVO;
@@ -34,10 +37,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(x => x.Vaccinated)
             .IsRequired()
-            .HasColumnName("vaccinated")
-            .HasConversion(
-                vaccinated => vaccinated.Value,
-                value => Vaccinated.Create(value).Value);
+            .HasColumnName("vaccinated");
 
         builder.Property(x => x.DateOfBirth)
             .IsRequired()
@@ -48,10 +48,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
 
         builder.Property(x => x.Sterilize)
             .IsRequired()
-            .HasColumnName("sterilize")
-            .HasConversion(
-                sterilize => sterilize.Value,
-                value => Sterilize.Create(value).Value);
+            .HasColumnName("sterilize");
 
         builder.ComplexProperty(x => x.PhoneNumber, xb =>
         {
@@ -208,5 +205,14 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("files")
                 .HasColumnType("jsonb");
         });
+
+        builder.Property(x => x.IsActive)
+            .HasColumnName("is_active")
+            .HasDefaultValue(true)
+            .IsRequired(true);
+
+        builder.Property(x => x.DeletedAt)
+            .HasColumnName("deleted_at")
+            .IsRequired(false);
     }
 }

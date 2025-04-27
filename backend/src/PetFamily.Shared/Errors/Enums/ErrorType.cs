@@ -6,4 +6,5 @@ public enum ErrorType
     NOTFOUND,
     NONE,
     EXCEPTION,
+    UNKNOWNERROR
 }

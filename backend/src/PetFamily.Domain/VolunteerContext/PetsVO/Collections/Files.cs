@@ -28,9 +28,9 @@ public class Files : BaseCollectionVO<File, Files>
         return new Files(enumerable);
     }
 
-    public static Result<Files, Error> CreateEmpty()
+    public static Result<Files> CreateEmpty()
     {
-        IEnumerable<File> filse = [];
-        return new Files(filse);
+        IEnumerable<File> files = [];
+        return new Files(files);
     }
 }

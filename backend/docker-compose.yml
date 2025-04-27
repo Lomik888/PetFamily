@@ -19,6 +19,20 @@ services:
       - ACCEPT_EULA=Y
     ports:
       - "5433:80"
+  minio:
+    container_name: minio
+    image: minio/minio
+    restart: always
+    environment:
+      MINIO_ROOT_USER: root
+      MINIO_ROOT_PASSWORD: rootroot
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio-data:/var/minio/data
+    command: server --console-address ":9001" /var/minio/data
 
 volumes:
   postgres-data:
+  minio-data:
