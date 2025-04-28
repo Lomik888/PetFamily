@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Contracts.Abstractions;
-using PetFamily.Domain.SharedVO;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
 using PetFamily.Domain.VolunteerContext.SharedVO;

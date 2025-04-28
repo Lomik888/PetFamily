@@ -1,10 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.SharedVO;
+using PetFamily.Domain.Contracts;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.Domain.VolunteerContext.SharedVO.Collections;
 
-public class DetailsForHelps : BaseCollectionVO<DetailsForHelp, DetailsForHelps>
+public class DetailsForHelps : ValueObjectList<DetailsForHelp>
 {
     public const int MAX_DETAILS_COUNT = 10;
 

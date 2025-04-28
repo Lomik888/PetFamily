@@ -11,7 +11,7 @@ using PetFamily.Shared.Errors;
 namespace PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 
 public class UpdateVolunteersDetailsForHelpHandler :
-    ICommandHandler<ErrorCollection, UpdateVolunteersDetailsForHelpCommand>
+    ICommandHandler<ErrorList, UpdateVolunteersDetailsForHelpCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<UpdateVolunteersDetailsForHelpCommand> _validator;
@@ -28,7 +28,7 @@ public class UpdateVolunteersDetailsForHelpHandler :
     }
 
 
-    public async Task<UnitResult<ErrorCollection>> Handle(
+    public async Task<UnitResult<ErrorList>> Handle(
         UpdateVolunteersDetailsForHelpCommand request,
         CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ public class UpdateVolunteersDetailsForHelpHandler :
         if (validationResult.IsValid == false)
         {
             _logger.LogInformation("Invalid validation request");
-            return ErrorCollection.Create(validationResult.Errors.ToErrors());
+            return ErrorList.Create(validationResult.Errors.ToErrors());
         }
 
         var volunteer = await _volunteerRepository.GetByIdAsync(
@@ -53,6 +53,6 @@ public class UpdateVolunteersDetailsForHelpHandler :
         await _volunteerRepository.UpdateAsAlreadyTrackingAsync(volunteer, cancellationToken);
 
         _logger.LogInformation("Updated volunteer details for helps");
-        return UnitResult.Success<ErrorCollection>();
+        return UnitResult.Success<ErrorList>();
     }
 }

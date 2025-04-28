@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.SharedVO;
+using PetFamily.Domain.Contracts;
 using PetFamily.Shared.Errors;
 using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 
 namespace PetFamily.Domain.VolunteerContext.PetsVO.Collections;
 
-public class Files : BaseCollectionVO<File, Files>
+public class Files : ValueObjectList<File>
 {
     private const int MAX_FILE_COUNT = 10;
 
@@ -16,7 +16,7 @@ public class Files : BaseCollectionVO<File, Files>
     private Files()
     {
     }
-
+    
     public static Result<Files, Error> Create(IEnumerable<File> items)
     {
         var enumerable = items.ToList();

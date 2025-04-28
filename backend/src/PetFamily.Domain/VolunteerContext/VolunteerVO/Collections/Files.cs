@@ -1,11 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.SharedVO;
+using PetFamily.Domain.Contracts;
 using PetFamily.Shared.Errors;
 using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 
 namespace PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
 
-public class Files : BaseCollectionVO<File, Files>
+public class Files : ValueObjectList<File>
 {
     private Files(IEnumerable<File> items) : base(items)
     {

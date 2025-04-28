@@ -21,16 +21,16 @@ public class DetailsForHelp : ValueObject
         Description = description;
     }
 
-    public static Result<DetailsForHelp, ErrorCollection> Create(string title, string description)
+    public static Result<DetailsForHelp, ErrorList> Create(string title, string description)
     {
         var errors = new List<Error>();
 
-        FieldValidator.ValidationField(title, MIN_LENGHT, TITLE_MAX_LENGHT, errors);
-        FieldValidator.ValidationField(description, MIN_LENGHT, DESCRIPTION_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(title, MIN_LENGHT, TITLE_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(description, MIN_LENGHT, DESCRIPTION_MAX_LENGHT, errors);
 
         if (errors.Count > 0)
         {
-            return ErrorCollection.Create(errors);
+            return ErrorList.Create(errors);
         }
 
         return new DetailsForHelp(title, description);

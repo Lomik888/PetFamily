@@ -20,8 +20,8 @@ public interface IVolunteerRepository
         bool volunteerIsActive,
         CancellationToken cancellationToken);
 
-    public Task<int> HardDeleteAllSofDeletedAsync(
-        bool isActive,
+    Task<int> HardDeleteAllSofDeletedAsync(
         DateTime deletedAtUtcNow,
-        CancellationToken cancellationToken);
+        int delay,
+        CancellationToken cancellationToken = default);
 }

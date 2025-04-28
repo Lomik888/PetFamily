@@ -17,7 +17,7 @@ public class Experience : ValueObject
 
     public static Result<Experience, Error> Create(int value)
     {
-        var result = FieldValidator.ValidationNumberField<int>(
+        var result = Validator.FieldValueObject.ValidationNumber<int>(
             value,
             VELUE_CAN_BE_NEGATIVE,
             null,

@@ -12,7 +12,7 @@ using PetFamily.Shared.Errors.Enums;
 
 namespace PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 
-public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorCollection, UpdateMainInfoVolunteerCommand>
+public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorList, UpdateMainInfoVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<UpdateMainInfoVolunteerCommand> _validator;
@@ -28,7 +28,7 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorCollect
         _validator = validator;
     }
 
-    public async Task<Result<Guid, ErrorCollection>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         UpdateMainInfoVolunteerCommand request,
         CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorCollect
         if (validationResult.IsValid == false)
         {
             _logger.LogInformation("Invalid Validation request");
-            return ErrorCollection.Create(validationResult.Errors.ToErrors());
+            return ErrorList.Create(validationResult.Errors.ToErrors());
         }
 
         var volunteer = await _volunteerRepository.GetByIdAsync(
@@ -71,7 +71,7 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorCollect
                     sureName = req.Value!.ToString()!;
                     break;
                 default:
-                    return ErrorCollection.Create(new[]
+                    return ErrorList.Create(new[]
                     {
                         Error.Create("Nothing to update", null, ErrorType.NONE)
                     });

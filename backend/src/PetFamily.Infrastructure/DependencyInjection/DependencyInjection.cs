@@ -24,7 +24,6 @@ public static class DependencyInjection
             options.UseNpgsql(psqlConnectionString));
 
         services.AddRepositories();
-        services.AddOptions(configuration);
         services.AddMinIo(configuration);
         services.AddProviders();
     }
@@ -38,24 +37,19 @@ public static class DependencyInjection
     {
         services.AddHostedService<HardDeleteUnActiveEntitiesWorker>();
     }
-
-    private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.Configure<ApplicationDbContextOptions>(
-            configuration.GetRequiredSection(ApplicationDbContextOptions.CONNECTIONSTRING_SECTION_FOR_POSTGRESSQL));
-    }
-
+    
     private static void AddMinIo(this IServiceCollection services, IConfiguration configuration)
     {
         var minIoSection = configuration.GetRequiredSection(MinIoProviderOptions.SECTION_NAME);
         var minIoEndpoint = minIoSection.GetValue<string>(MinIoProviderOptions.ENDPOINT_NAME);
         var minIoAccessKey = minIoSection.GetValue<string>(MinIoProviderOptions.ACCESSKEY_NAME);
         var minIoSecretKey = minIoSection.GetValue<string>(MinIoProviderOptions.SECRETKEY_NAME);
+        var minIoSsl = minIoSection.GetValue<bool>(MinIoProviderOptions.WITH_SSL);
 
         services.AddMinio(options =>
         {
             options.WithEndpoint(minIoEndpoint);
-            options.WithSSL(false);
+            options.WithSSL(minIoSsl);
             options.WithCredentials(minIoAccessKey, minIoSecretKey);
             options.Build();
         });

@@ -41,7 +41,7 @@ public static class FluentValidationExtensions
 
     public static IRuleBuilderOptionsConditions<T, TElement> MustBeValueObject<T, TElement, TValueObject>(
         this IRuleBuilder<T, TElement> ruleBuilder,
-        Func<TElement, Result<TValueObject, ErrorCollection>> factoryMethod)
+        Func<TElement, Result<TValueObject, ErrorList>> factoryMethod)
     {
         return ruleBuilder.Custom((value, context) =>
         {

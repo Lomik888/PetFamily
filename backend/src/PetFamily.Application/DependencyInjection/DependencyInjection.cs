@@ -26,26 +26,26 @@ public static class DependencyInjection
     private static void AddServices(this IServiceCollection services)
     {
         services
-            .AddScoped<ICommandHandler<Guid, ErrorCollection, CreateVolunteerCommand>,
+            .AddScoped<ICommandHandler<Guid, ErrorList, CreateVolunteerCommand>,
                 CreateVolunteerHandler>();
 
         services
-            .AddScoped<ICommandHandler<Guid, ErrorCollection, UpdateMainInfoVolunteerCommand>,
+            .AddScoped<ICommandHandler<Guid, ErrorList, UpdateMainInfoVolunteerCommand>,
                 UpdateMainInfoVolunteerHandler>();
 
         services
-            .AddScoped<ICommandHandler<ErrorCollection, UpdateVolunteersSocialNetworksCommand>,
+            .AddScoped<ICommandHandler<ErrorList, UpdateVolunteersSocialNetworksCommand>,
                 UpdateVolunteersSocialNetworksHandler>();
 
         services
-            .AddScoped<ICommandHandler<ErrorCollection, UpdateVolunteersDetailsForHelpCommand>,
+            .AddScoped<ICommandHandler<ErrorList, UpdateVolunteersDetailsForHelpCommand>,
                 UpdateVolunteersDetailsForHelpHandler>();
 
         services
-            .AddScoped<ICommandHandler<ErrorCollection, DeleteVolunteerCommand>,
+            .AddScoped<ICommandHandler<ErrorList, DeleteVolunteerCommand>,
                 DeleteVolunteerHandler>();
         services
-            .AddScoped<ICommandHandler<ErrorCollection, ActivateVolunteerCommand>,
+            .AddScoped<ICommandHandler<ErrorList, ActivateVolunteerCommand>,
                 ActivateVolunteerHandle>();
     }
 

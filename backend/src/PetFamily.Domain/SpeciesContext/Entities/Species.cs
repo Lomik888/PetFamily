@@ -10,7 +10,7 @@ public sealed class Species : Entity<SpeciesId>
     public Name Name { get; private set; }
     public IReadOnlyList<Breed> Breeds => _breeds;
 
-    public Species()
+    private Species()
     {
     }
 

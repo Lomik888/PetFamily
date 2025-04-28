@@ -10,9 +10,8 @@ namespace PetFamily.Domain.VolunteerContext.Entities;
 public sealed class Pet : SoftDeletableEntity<PetId>
 {
     public Name Name { get; private set; }
-    public SpeciesId SpeciesId { get; private set; }
+    public SpeciesBreedId SpeciesBreedId { get; private set; }
     public Description Description { get; private set; }
-    public BreedId BreedId { get; private set; }
     public Color Color { get; private set; }
     public HealthDescription HealthDescription { get; private set; }
     public Address Address { get; private set; }
@@ -34,9 +33,8 @@ public sealed class Pet : SoftDeletableEntity<PetId>
     public Pet(
         PetId id,
         Name name,
-        SpeciesId speciesId,
+        SpeciesBreedId speciesBreedId,
         Description description,
-        BreedId breedId,
         Color color,
         HealthDescription healthDescription,
         Address address,
@@ -52,9 +50,8 @@ public sealed class Pet : SoftDeletableEntity<PetId>
         Files files) : base(id)
     {
         Name = name;
-        SpeciesId = speciesId;
+        SpeciesBreedId = speciesBreedId;
         Description = description;
-        BreedId = breedId;
         Color = color;
         HealthDescription = healthDescription;
         Address = address;

@@ -5,7 +5,6 @@ using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.VolunteerUseCases.Delete;
 using PetFamily.Application.VolunteerUseCases.SoftDelete;
-using PetFamily.Domain.SharedVO;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Shared.Errors;
 using PetFamily.Shared.Errors.Enums;
@@ -13,7 +12,7 @@ using PetFamily.Shared.Errors.Enums;
 namespace PetFamily.Application.VolunteerUseCases.Activate;
 
 public class ActivateVolunteerHandle :
-    ICommandHandler<ErrorCollection, ActivateVolunteerCommand>
+    ICommandHandler<ErrorList, ActivateVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<ActivateVolunteerCommand> _validator;
@@ -29,7 +28,7 @@ public class ActivateVolunteerHandle :
         _validator = validator;
     }
 
-    public async Task<UnitResult<ErrorCollection>> Handle(
+    public async Task<UnitResult<ErrorList>> Handle(
         ActivateVolunteerCommand request,
         CancellationToken cancellationToken = default)
     {
@@ -37,7 +36,7 @@ public class ActivateVolunteerHandle :
         if (validationResult.IsValid == false)
         {
             _logger.LogInformation("Invalid validation request");
-            return ErrorCollection.Create(validationResult.Errors.ToErrors());
+            return ErrorList.Create(validationResult.Errors.ToErrors());
         }
 
         var isActivate = false;
@@ -53,6 +52,6 @@ public class ActivateVolunteerHandle :
         await _volunteerRepository.UpdateAsAlreadyTrackingAsync(volunteer, cancellationToken);
 
         _logger.LogInformation("Activated volunteer {0} and volunteer's pets", volunteer.Id.Value);
-        return UnitResult.Success<ErrorCollection>();
+        return UnitResult.Success<ErrorList>();
     }
 }

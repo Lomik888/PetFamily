@@ -18,7 +18,7 @@ public class Color : ValueObject
 
     public static Result<Color, Error> Create(string value)
     {
-        var result = FieldValidator.ValidationField(value, VELUE_MIN_LENGHT, VELUE_MAX_LENGHT);
+        var result = Validator.FieldValueObject.Validation(value, VELUE_MIN_LENGHT, VELUE_MAX_LENGHT);
 
         if (result.IsFailure)
         {

@@ -7,6 +7,7 @@ public class Error : IError
 {
     private const int LENGHTFORMESSAGE = 25;
     private const string SEPARATOR = " || ";
+    private const int FIELD_SERILIZED_ERROR = 3;
 
     public string? ErrorCode { get; }
 
@@ -50,6 +51,9 @@ public class Error : IError
         ErrorType errorType,
         string? invalidField = null)
     {
+        if (Enum.IsDefined(typeof(ErrorType), errorType))
+            throw new ArgumentException("Invalid error type", nameof(errorType));
+
         return new Error(message, errorCode, errorType, invalidField);
     }
 
@@ -60,16 +64,16 @@ public class Error : IError
 
     public static Error Deserialize(string serializedError)
     {
+        if (string.IsNullOrWhiteSpace(serializedError))
+            throw new ArgumentNullException(nameof(serializedError), "serializedError can't be null or white space");
+
         var fields = serializedError.Split(SEPARATOR);
-        if (fields.Length != 3)
-        {
+
+        if (fields.Length != FIELD_SERILIZED_ERROR)
             throw new FormatException("Invalid error format");
-        }
 
         if (!Enum.TryParse(fields[2], out ErrorType errorType))
-        {
             throw new FormatException("Invalid error format");
-        }
 
         return new Error(fields[1], fields[0], errorType, null);
     }

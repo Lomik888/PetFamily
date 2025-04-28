@@ -3,6 +3,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PetFamily.Application.VolunteerUseCases;
+using PetFamily.Shared.Validation;
 
 namespace PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
 
@@ -17,6 +18,10 @@ public class HardDeleteUnActiveEntitiesWorker : BackgroundService
         IServiceScopeFactory scope,
         IOptions<HardDeleteUnActiveEntitiesWorkerOptions> workersOptions)
     {
+        Validator.Guard.NotNull(logger);
+        Validator.Guard.NotNull(scope);
+        Validator.Guard.NotNull(workersOptions);
+
         _logger = logger;
         _scope = scope;
         _workersOptions = workersOptions;
@@ -52,9 +57,10 @@ public class HardDeleteUnActiveEntitiesWorker : BackgroundService
             .UtcNow
             .AddDays(_workersOptions.Value.AddDaysToFindOutLastDateValidVolunteer);
 
+
         var countDeleted = await volunteerRepository.HardDeleteAllSofDeletedAsync(
-            false,
             dateTimeLasDateValidVolunteer,
+            _workersOptions.Value.AddMinutesDelay,
             stoppingToken);
 
         return countDeleted;

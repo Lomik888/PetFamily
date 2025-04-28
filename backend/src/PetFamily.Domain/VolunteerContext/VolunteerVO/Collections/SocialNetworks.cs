@@ -1,10 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.SharedVO;
+using PetFamily.Domain.Contracts;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
 
-public class SocialNetworks : BaseCollectionVO<SocialNetwork, SocialNetworks>
+public class SocialNetworks : ValueObjectList<SocialNetwork>
 {
     public const int MAX_SOCIAL_COUNT = 5;
 

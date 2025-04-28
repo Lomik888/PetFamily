@@ -35,7 +35,7 @@ public class Address : ValueObject
         ApartmentNumber = apartmentNumber;
     }
 
-    public static Result<Address, ErrorCollection> Create(
+    public static Result<Address, ErrorList> Create(
         string country,
         string city,
         string street,
@@ -44,15 +44,15 @@ public class Address : ValueObject
     {
         var errors = new List<Error>();
 
-        FieldValidator.ValidationField(country, MIN_LENGHT, COUNTRY_MAX_LENGHT, errors);
-        FieldValidator.ValidationField(city, MIN_LENGHT, CITY_MAX_LENGHT, errors);
-        FieldValidator.ValidationField(street, MIN_LENGHT, STREET_MAX_LENGHT, errors);
-        FieldValidator.ValidationField(houseNumber, MIN_LENGHT, HOUSENUMBER_MAX_LENGHT, errors);
-        FieldValidator.ValidationNullableField(apartmentNumber, MIN_LENGHT, APARTMENTNUMBER_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(country, MIN_LENGHT, COUNTRY_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(city, MIN_LENGHT, CITY_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(street, MIN_LENGHT, STREET_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(houseNumber, MIN_LENGHT, HOUSENUMBER_MAX_LENGHT, errors);
+        Validator.FieldValueObject.ValidationNullable(apartmentNumber, MIN_LENGHT, APARTMENTNUMBER_MAX_LENGHT, errors);
 
         if (errors.Count > 0)
         {
-            return ErrorCollection.Create(errors);
+            return ErrorList.Create(errors);
         }
 
         return new Address(

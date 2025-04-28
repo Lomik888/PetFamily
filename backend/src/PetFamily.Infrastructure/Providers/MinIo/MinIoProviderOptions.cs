@@ -6,4 +6,5 @@ public sealed record MinIoProviderOptions
     public const string ACCESSKEY_NAME = "AccessKey";
     public const string SECRETKEY_NAME = "SecretKey";
     public const string ENDPOINT_NAME = "Endpoint";
+    public const string WITH_SSL = "SSL";
 }

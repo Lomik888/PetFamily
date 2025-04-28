@@ -23,19 +23,19 @@ public class UpdateMainInfoVolunteerRequestValidator : AbstractValidator<UpdateM
         {
             RuleFor(x => x.Name)
                 .MustBeValueObject(x =>
-                    FieldValidator.ValidationNullableField(
+                    Validator.FieldValueObject.ValidationNullable(
                         x?.FirstName,
                         Name.MIN_LENGTH,
                         Name.FIRST_NAME_LENGTH))
                 .When(x => string.IsNullOrWhiteSpace(x.Name?.FirstName) == false)
                 .MustBeValueObject(x =>
-                    FieldValidator.ValidationNullableField(
+                    Validator.FieldValueObject.ValidationNullable(
                         x?.LastName,
                         Name.MIN_LENGTH,
                         Name.FIRST_NAME_LENGTH))
                 .When(x => string.IsNullOrWhiteSpace(x.Name?.LastName) == false)
                 .MustBeValueObject(x =>
-                    FieldValidator.ValidationNullableField(
+                    Validator.FieldValueObject.ValidationNullable(
                         x?.Surname,
                         Name.MIN_LENGTH,
                         Name.FIRST_NAME_LENGTH))

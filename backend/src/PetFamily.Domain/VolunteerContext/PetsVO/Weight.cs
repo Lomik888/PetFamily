@@ -21,7 +21,7 @@ public class Weight : ValueObject
     {
         value = Math.Round(value, VALUE_DECIMAL_PRECISION);
 
-        var result = FieldValidator.ValidationNumberField<double>(
+        var result = Validator.FieldValueObject.ValidationNumber<double>(
             value,
             VALUE_CAN_BE_NEGATIVE,
             VALUE_DECIMAL_PRECISION,
