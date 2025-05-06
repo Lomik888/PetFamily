@@ -2,6 +2,7 @@
 using Minio;
 using Minio.DataModel.Args;
 using PetFamily.Application.Providers;
+using PetFamily.Shared.Validation;
 
 namespace PetFamily.Infrastructure.Providers.MinIo;
 
@@ -10,12 +11,15 @@ public class MinIoProvider : IFilesProvider
     private readonly IMinioClient _minioClient;
     private readonly ILogger<MinIoProvider> _logger;
 
-    public MinIoProvider(IMinioClient minioClient, ILogger<MinIoProvider> logger)
+    public MinIoProvider(
+        IMinioClient minioClient,
+        ILogger<MinIoProvider> logger)
     {
-        _minioClient = minioClient ??
-                       throw new ArgumentNullException(nameof(minioClient), "MinioClient missing");
-        _logger = logger ??
-                  throw new ArgumentNullException(nameof(logger), "Logger missing");
+        Validator.Guard.NotNull(minioClient);
+        Validator.Guard.NotNull(logger);
+
+        _minioClient = minioClient;
+        _logger = logger;
     }
 
     public async Task<string> PresignedGetAsync(

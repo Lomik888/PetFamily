@@ -18,7 +18,7 @@ public class Description : ValueObject
 
     public static Result<Description, Error> Create(string value)
     {
-        var result = FieldValidator.ValidationField(value, VALUE_MIN_LENGHT, VALUE_MAX_LENGHT);
+        var result = Validator.FieldValueObject.Validation(value, VALUE_MIN_LENGHT, VALUE_MAX_LENGHT);
 
         if (result.IsFailure)
         {

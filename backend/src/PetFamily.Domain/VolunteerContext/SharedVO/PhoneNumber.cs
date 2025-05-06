@@ -33,8 +33,7 @@ public class PhoneNumber : ValueObject
     {
         var fullNumber = $"{regionCode}{number}";
 
-        var result = FieldValidator.ValidationField(fullNumber, PHONENUMBER_MIN_LENGTH, PHONENUMBER_MAX_LENGTH);
-
+        var result = Validator.FieldValueObject.Validation(fullNumber, PHONENUMBER_MIN_LENGTH, PHONENUMBER_MAX_LENGTH);
         if (result.IsFailure)
         {
             return ErrorsPreform.General.Validation("Phone number is invalid", nameof(PhoneNumber));

@@ -29,7 +29,7 @@ public class HealthDescription : ValueObject
         DigestiveSystemCondition = digestiveSystemCondition;
     }
 
-    public static Result<HealthDescription, ErrorCollection> Create(
+    public static Result<HealthDescription, ErrorList> Create(
         string sharedHealthStatus,
         string skinCondition,
         string mouthCondition,
@@ -37,15 +37,18 @@ public class HealthDescription : ValueObject
     {
         var errors = new List<Error>();
 
-        FieldValidator.ValidationField(sharedHealthStatus, MIN_LENGHT, SHAREDHEALTHSTATUS_MAX_LENGHT, errors);
-        FieldValidator.ValidationField(skinCondition, MIN_LENGHT, SKINCONDITION_MAX_LENGHT, errors);
-        FieldValidator.ValidationField(mouthCondition, MIN_LENGHT, MOUTHCONDITION_MAX_LENGHT, errors);
-        FieldValidator.ValidationField(digestiveSystemCondition, MIN_LENGHT, DIGESTIVESYSTEMCONDITION_MAX_LENGHT,
+        Validator.FieldValueObject.Validation(sharedHealthStatus, MIN_LENGHT, SHAREDHEALTHSTATUS_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(skinCondition, MIN_LENGHT, SKINCONDITION_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(mouthCondition, MIN_LENGHT, MOUTHCONDITION_MAX_LENGHT, errors);
+        Validator.FieldValueObject.Validation(
+            digestiveSystemCondition,
+            MIN_LENGHT,
+            DIGESTIVESYSTEMCONDITION_MAX_LENGHT,
             errors);
 
         if (errors.Count > 0)
         {
-            return ErrorCollection.Create(errors);
+            return ErrorList.Create(errors);
         }
 
         return new HealthDescription(

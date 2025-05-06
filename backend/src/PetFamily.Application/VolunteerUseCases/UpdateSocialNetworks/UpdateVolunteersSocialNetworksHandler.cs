@@ -11,7 +11,7 @@ using PetFamily.Shared.Errors;
 namespace PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
 
 public class UpdateVolunteersSocialNetworksHandler :
-    ICommandHandler<ErrorCollection, UpdateVolunteersSocialNetworksCommand>
+    ICommandHandler<ErrorList, UpdateVolunteersSocialNetworksCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<UpdateVolunteersSocialNetworksCommand> _validator;
@@ -27,7 +27,7 @@ public class UpdateVolunteersSocialNetworksHandler :
         _validator = validator;
     }
 
-    public async Task<UnitResult<ErrorCollection>> Handle(
+    public async Task<UnitResult<ErrorList>> Handle(
         UpdateVolunteersSocialNetworksCommand request,
         CancellationToken cancellationToken = default)
     {
@@ -35,7 +35,7 @@ public class UpdateVolunteersSocialNetworksHandler :
         if (validationResult.IsValid == false)
         {
             _logger.LogInformation("Invalid Validation request");
-            return UnitResult.Failure(ErrorCollection.Create(validationResult.Errors.ToErrors()));
+            return UnitResult.Failure(ErrorList.Create(validationResult.Errors.ToErrors()));
         }
 
         var volunteer = await _volunteerRepository.GetByIdAsync(
@@ -52,6 +52,6 @@ public class UpdateVolunteersSocialNetworksHandler :
         await _volunteerRepository.UpdateAsAlreadyTrackingAsync(volunteer, cancellationToken);
 
         _logger.LogInformation("Socials updated");
-        return UnitResult.Success<ErrorCollection>();
+        return UnitResult.Success<ErrorList>();
     }
 }

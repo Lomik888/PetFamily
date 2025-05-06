@@ -72,10 +72,6 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<Guid>("BreedId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("breed_id");
-
                     b.Property<string>("Color")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -120,10 +116,6 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
                         .HasColumnName("name");
-
-                    b.Property<Guid>("SpeciesId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("species_id");
 
                     b.Property<bool>("Sterilize")
                         .HasColumnType("boolean")
@@ -217,6 +209,19 @@ namespace PetFamily.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("region_code");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("SpeciesBreedId", "PetFamily.Domain.VolunteerContext.Entities.Pet.SpeciesBreedId#SpeciesBreedId", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<Guid>("BreedId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("breed_id");
+
+                            b1.Property<Guid>("SpeciesId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("species_id");
                         });
 
                     b.HasKey("Id")

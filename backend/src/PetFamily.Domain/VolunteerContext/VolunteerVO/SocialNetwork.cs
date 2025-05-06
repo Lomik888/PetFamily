@@ -35,22 +35,22 @@ public class SocialNetwork : ValueObject
         Title = title;
     }
 
-    public static Result<SocialNetwork, ErrorCollection> Create(string title, string url)
+    public static Result<SocialNetwork, ErrorList> Create(string title, string url)
     {
         var errors = new List<Error>();
 
-        FieldValidator.ValidationField(title, MIN_LENGTH, TITLE_MAX_LENGTH, errors);
-        FieldValidator.ValidationField(url, MIN_LENGTH, URL_MAX_LENGTH, errors);
+        Validator.FieldValueObject.Validation(title, MIN_LENGTH, TITLE_MAX_LENGTH, errors);
+        Validator.FieldValueObject.Validation(url, MIN_LENGTH, URL_MAX_LENGTH, errors);
 
         if (errors.Count > 0)
         {
-            return ErrorCollection.Create(errors);
+            return ErrorList.Create(errors);
         }
 
         if (UrlRegex.IsMatch(url) == false)
         {
             errors.Add(ErrorsPreform.General.Validation("Social network Url is invalid", nameof(SocialNetwork)));
-            return ErrorCollection.Create(errors);
+            return ErrorList.Create(errors);
         }
 
         return new SocialNetwork(title, url);

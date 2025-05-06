@@ -16,12 +16,16 @@ public interface IVolunteerRepository
         CancellationToken cancellationToken = default);
 
     public Task<Volunteer> GetByIdWithPetsAsync(
-        VolunteerId value,
+        VolunteerId volunteerId,
         bool volunteerIsActive,
         CancellationToken cancellationToken);
 
-    public Task<int> HardDeleteAllSofDeletedAsync(
-        bool isActive,
-        DateTime deletedAtUtcNow,
+    public Task<Volunteer> GetByIdWithPetsAsync(
+        VolunteerId volunteerId,
         CancellationToken cancellationToken);
+
+    Task<int> HardDeleteAllSofDeletedAsync(
+        DateTime deletedAtUtcNow,
+        int delay,
+        CancellationToken cancellationToken = default);
 }

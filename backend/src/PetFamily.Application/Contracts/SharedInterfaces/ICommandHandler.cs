@@ -1,11 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Shared.Errors;
 using PetFamily.Shared.Errors.Interfaces;
 
 namespace PetFamily.Application.Contracts.SharedInterfaces;
 
 public interface ICommandHandler<TResultValue, TResultError, in TCommand>
     where TCommand : ICommand
-    where TResultError : IError
+    where TResultError : IEnumerable<Error>
 {
     public Task<Result<TResultValue, TResultError>> Handle(
         TCommand request,
@@ -14,7 +15,7 @@ public interface ICommandHandler<TResultValue, TResultError, in TCommand>
 
 public interface ICommandHandler<TResultError, in TCommand>
     where TCommand : ICommand
-    where TResultError : IError
+    where TResultError : IEnumerable<Error>
 {
     public Task<UnitResult<TResultError>> Handle(
         TCommand request,

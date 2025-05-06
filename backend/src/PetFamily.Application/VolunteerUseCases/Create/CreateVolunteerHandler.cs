@@ -13,7 +13,7 @@ using PetFamily.Shared.Errors;
 
 namespace PetFamily.Application.VolunteerUseCases.Create;
 
-public class CreateVolunteerHandler : ICommandHandler<Guid, ErrorCollection, CreateVolunteerCommand>
+public class CreateVolunteerHandler : ICommandHandler<Guid, ErrorList, CreateVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<CreateVolunteerCommand> _validator;
@@ -29,7 +29,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, ErrorCollection, Cre
         _logger = logger;
     }
 
-    public async Task<Result<Guid, ErrorCollection>> Handle(
+    public async Task<Result<Guid, ErrorList>> Handle(
         CreateVolunteerCommand request,
         CancellationToken cancellationToken = default
     )
@@ -38,7 +38,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, ErrorCollection, Cre
         if (validationResult.IsValid == false)
         {
             _logger.LogInformation("Invalid Validation request");
-            return ErrorCollection.Create(validationResult.Errors.ToErrors());
+            return ErrorList.Create(validationResult.Errors.ToErrors());
         }
 
         // добавить инвариант проверки уникальности номера телефона

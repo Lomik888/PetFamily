@@ -12,4 +12,7 @@ public sealed record HardDeleteUnActiveEntitiesWorkerOptions
 
     [ConfigurationKeyName("House_Delay")] 
     public int BackgroundServiceDelay { get; init; }
+
+    [ConfigurationKeyName("Add_Minutes_Delay")]
+    public int AddMinutesDelay { get; init; }
 }

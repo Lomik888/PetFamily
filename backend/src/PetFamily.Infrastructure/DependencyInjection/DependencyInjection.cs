@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using PetFamily.Application;
 using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
 using PetFamily.Application.Providers;
 using PetFamily.Application.VolunteerUseCases;
@@ -24,7 +25,6 @@ public static class DependencyInjection
             options.UseNpgsql(psqlConnectionString));
 
         services.AddRepositories();
-        services.AddOptions(configuration);
         services.AddMinIo(configuration);
         services.AddProviders();
     }
@@ -32,17 +32,12 @@ public static class DependencyInjection
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        services.AddScoped<ISpeciesRepository, SpeciesRepository>();
     }
 
     private static void AddBackgroundService(this IServiceCollection services)
     {
         services.AddHostedService<HardDeleteUnActiveEntitiesWorker>();
-    }
-
-    private static void AddOptions(this IServiceCollection services, IConfiguration configuration)
-    {
-        services.Configure<ApplicationDbContextOptions>(
-            configuration.GetRequiredSection(ApplicationDbContextOptions.CONNECTIONSTRING_SECTION_FOR_POSTGRESSQL));
     }
 
     private static void AddMinIo(this IServiceCollection services, IConfiguration configuration)
@@ -51,11 +46,12 @@ public static class DependencyInjection
         var minIoEndpoint = minIoSection.GetValue<string>(MinIoProviderOptions.ENDPOINT_NAME);
         var minIoAccessKey = minIoSection.GetValue<string>(MinIoProviderOptions.ACCESSKEY_NAME);
         var minIoSecretKey = minIoSection.GetValue<string>(MinIoProviderOptions.SECRETKEY_NAME);
+        var minIoSsl = minIoSection.GetValue<bool>(MinIoProviderOptions.WITH_SSL);
 
         services.AddMinio(options =>
         {
             options.WithEndpoint(minIoEndpoint);
-            options.WithSSL(false);
+            options.WithSSL(minIoSsl);
             options.WithCredentials(minIoAccessKey, minIoSecretKey);
             options.Build();
         });

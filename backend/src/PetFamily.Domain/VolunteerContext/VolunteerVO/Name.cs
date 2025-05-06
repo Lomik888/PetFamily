@@ -19,7 +19,7 @@ public class Name : ValueObject
 
     private Name(
         string firstName,
-        string lastName, 
+        string lastName,
         string surname)
     {
         FirstName = firstName;
@@ -27,20 +27,20 @@ public class Name : ValueObject
         Surname = surname;
     }
 
-    public static Result<Name, ErrorCollection> Create(
+    public static Result<Name, ErrorList> Create(
         string firstName,
         string lastName,
         string surname)
     {
         var errors = new List<Error>();
 
-        FieldValidator.ValidationField(firstName, MIN_LENGTH, FIRST_NAME_LENGTH, errors);
-        FieldValidator.ValidationField(lastName, MIN_LENGTH, LAST_NAME_LENGTH, errors);
-        FieldValidator.ValidationField(surname, MIN_LENGTH, SURNAME_LENGTH, errors);
+        Validator.FieldValueObject.Validation(firstName, MIN_LENGTH, FIRST_NAME_LENGTH, errors);
+        Validator.FieldValueObject.Validation(lastName, MIN_LENGTH, LAST_NAME_LENGTH, errors);
+        Validator.FieldValueObject.Validation(surname, MIN_LENGTH, SURNAME_LENGTH, errors);
 
         if (errors.Count > 0)
         {
-            return ErrorCollection.Create(errors);
+            return ErrorList.Create(errors);
         }
 
         return new Name(firstName, lastName, surname);

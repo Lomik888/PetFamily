@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using PetFamily.Domain.SharedVO;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO;
@@ -134,12 +133,16 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 color => color.Value,
                 value => Color.Create(value).Value);
 
-        builder.Property(x => x.BreedId)
-            .IsRequired()
-            .HasColumnName("breed_id")
-            .HasConversion(
-                breedId => breedId.Value,
-                value => BreedId.Create(value).Value);
+        builder.ComplexProperty(x => x.SpeciesBreedId, xb =>
+        {
+            xb.Property(x => x.SpeciesId)
+                .IsRequired()
+                .HasColumnName("species_id");
+
+            xb.Property(x => x.BreedId)
+                .IsRequired()
+                .HasColumnName("breed_id");
+        });
 
         builder.Property(x => x.Description)
             .IsRequired()
@@ -149,20 +152,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 description => description.Value,
                 value => Description.Create(value).Value);
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.NickName)
             .IsRequired()
             .HasColumnName("name")
-            .HasMaxLength(Name.VELUE_MAX_LENGHT)
+            .HasMaxLength(NickName.VELUE_MAX_LENGHT)
             .HasConversion(
                 name => name.Value,
-                value => Name.Create(value).Value);
-
-        builder.Property(x => x.SpeciesId)
-            .IsRequired()
-            .HasColumnName("species_id")
-            .HasConversion(
-                speciesId => speciesId.Value,
-                value => SpeciesId.Create(value).Value);
+                value => NickName.Create(value).Value);
 
         builder.Property(x => x.Id)
             .ValueGeneratedNever()
@@ -189,7 +185,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnType("jsonb");
         });
 
-        builder.OwnsOne(x => x.Files, xb =>
+        builder.OwnsOne(x => x.FilesPet, xb =>
         {
             xb.Property(x => x.Items)
                 .HasConversion(
@@ -205,6 +201,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("files")
                 .HasColumnType("jsonb");
         });
+
+        builder.Property(x => x.SerialNumber)
+            .HasColumnName("serial_number")
+            .IsRequired()
+            .HasConversion(
+                serialNumber => serialNumber.Value,
+                value => SerialNumber.Create(value).Value);
 
         builder.Property(x => x.IsActive)
             .HasColumnName("is_active")

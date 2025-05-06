@@ -27,7 +27,7 @@ public class Email : ValueObject
 
     public static Result<Email, Error> Create(string value)
     {
-        var result = FieldValidator.ValidationField(value, EMAIL_MIN_LENGTH, EMAIL_MAX_LENGTH);
+        var result = Validator.FieldValueObject.Validation(value, EMAIL_MIN_LENGTH, EMAIL_MAX_LENGTH);
 
         if (result.IsFailure)
         {

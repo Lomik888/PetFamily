@@ -12,7 +12,7 @@ using PetFamily.Shared.Errors.Enums;
 namespace PetFamily.Application.VolunteerUseCases.Delete;
 
 public class DeleteVolunteerHandler :
-    ICommandHandler<ErrorCollection, DeleteVolunteerCommand>
+    ICommandHandler<ErrorList, DeleteVolunteerCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
     private readonly IValidator<DeleteVolunteerCommand> _validator;
@@ -28,7 +28,7 @@ public class DeleteVolunteerHandler :
         _validator = validator;
     }
 
-    public async Task<UnitResult<ErrorCollection>> Handle(
+    public async Task<UnitResult<ErrorList>> Handle(
         DeleteVolunteerCommand request,
         CancellationToken cancellationToken = default)
     {
@@ -36,7 +36,7 @@ public class DeleteVolunteerHandler :
         if (validationResult.IsValid == false)
         {
             _logger.LogInformation("Invalid validation request");
-            return ErrorCollection.Create(validationResult.Errors.ToErrors());
+            return ErrorList.Create(validationResult.Errors.ToErrors());
         }
 
         var isActivate = true;
@@ -66,12 +66,12 @@ public class DeleteVolunteerHandler :
                 break;
             
             default:
-                return ErrorCollection.Create(new[]
+                return ErrorList.Create(new[]
                 {
                     Error.Create("Something Wrong", null, ErrorType.EXCEPTION)
                 });
         }
 
-        return UnitResult.Success<ErrorCollection>();
+        return UnitResult.Success<ErrorList>();
     }
 }

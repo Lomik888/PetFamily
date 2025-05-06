@@ -17,7 +17,7 @@ public class VolunteerController : ApplicationController
 {
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
-        [FromServices] ICommandHandler<Guid, ErrorCollection, CreateVolunteerCommand> handler,
+        [FromServices] ICommandHandler<Guid, ErrorList, CreateVolunteerCommand> handler,
         [FromBody] CreateVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -34,7 +34,7 @@ public class VolunteerController : ApplicationController
     [HttpPatch("{volunteerId:guid}/main-info")]
     public async Task<ActionResult<Guid>> Update(
         [FromRoute] Guid volunteerId,
-        [FromServices] ICommandHandler<Guid, ErrorCollection, UpdateMainInfoVolunteerCommand> handler,
+        [FromServices] ICommandHandler<Guid, ErrorList, UpdateMainInfoVolunteerCommand> handler,
         [FromBody] UpdateMainInfoVolunteerRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -51,7 +51,7 @@ public class VolunteerController : ApplicationController
     [HttpPut("{volunteerId:guid}/socials")]
     public async Task<ActionResult> Update(
         [FromRoute] Guid volunteerId,
-        [FromServices] ICommandHandler<ErrorCollection, UpdateVolunteersSocialNetworksCommand> handler,
+        [FromServices] ICommandHandler<ErrorList, UpdateVolunteersSocialNetworksCommand> handler,
         [FromBody] UpdateVolunteersSocialNetworksRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -68,7 +68,7 @@ public class VolunteerController : ApplicationController
     [HttpPut("{volunteerId:guid}/details-for-help")]
     public async Task<ActionResult> Update(
         [FromRoute] Guid volunteerId,
-        [FromServices] ICommandHandler<ErrorCollection, UpdateVolunteersDetailsForHelpCommand> handler,
+        [FromServices] ICommandHandler<ErrorList, UpdateVolunteersDetailsForHelpCommand> handler,
         [FromBody] UpdateVolunteersDetailsForHelpRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -85,7 +85,7 @@ public class VolunteerController : ApplicationController
     [HttpPut("{volunteerId:guid}/account-status")]
     public async Task<ActionResult> DeleteAccount(
         [FromRoute] Guid volunteerId,
-        [FromServices] ICommandHandler<ErrorCollection, DeleteVolunteerCommand> handler,
+        [FromServices] ICommandHandler<ErrorList, DeleteVolunteerCommand> handler,
         [FromBody] DeleteVolunteersRequest request,
         CancellationToken cancellationToken = default)
     {
@@ -102,7 +102,7 @@ public class VolunteerController : ApplicationController
     [HttpPut("{volunteerId:guid}/")]
     public async Task<ActionResult> ActivateAccount(
         [FromRoute] Guid volunteerId,
-        [FromServices] ICommandHandler<ErrorCollection, ActivateVolunteerCommand> handler,
+        [FromServices] ICommandHandler<ErrorList, ActivateVolunteerCommand> handler,
         CancellationToken cancellationToken = default)
     {
         var result = await handler.Handle(new ActivateVolunteerCommand(volunteerId), cancellationToken);

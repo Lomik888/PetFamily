@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Infrastructure", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Shared", "src\PetFamily.Shared\PetFamily.Shared.csproj", "{BEC39479-C9C2-479D-827A-F31F4EE4F6E3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{047153CD-A20C-4673-8263-B6BAD5EAB030}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Domain.UnitTests", "Tests\PetFamily.Domain.UnitTests\PetFamily.Domain.UnitTests.csproj", "{0DAE0075-2445-471C-A283-C0C07455E734}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +46,12 @@ Global
 		{BEC39479-C9C2-479D-827A-F31F4EE4F6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BEC39479-C9C2-479D-827A-F31F4EE4F6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BEC39479-C9C2-479D-827A-F31F4EE4F6E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0DAE0075-2445-471C-A283-C0C07455E734}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DAE0075-2445-471C-A283-C0C07455E734}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DAE0075-2445-471C-A283-C0C07455E734}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DAE0075-2445-471C-A283-C0C07455E734}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0DAE0075-2445-471C-A283-C0C07455E734} = {047153CD-A20C-4673-8263-B6BAD5EAB030}
 	EndGlobalSection
 EndGlobal

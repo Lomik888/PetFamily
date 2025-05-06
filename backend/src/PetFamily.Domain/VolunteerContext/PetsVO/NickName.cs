@@ -4,28 +4,28 @@ using PetFamily.Shared.Validation;
 
 namespace PetFamily.Domain.VolunteerContext.PetsVO;
 
-public class Name : ValueObject
+public class NickName : ValueObject
 {
     public const int VELUE_MIN_LENGHT = 1;
     public const int VELUE_MAX_LENGHT = 30;
 
     public string Value { get; }
 
-    private Name(string value)
+    private NickName(string value)
     {
         Value = value;
     }
 
-    public static Result<Name, Error> Create(string value)
+    public static Result<NickName, Error> Create(string value)
     {
-        var result = FieldValidator.ValidationField(value, VELUE_MIN_LENGHT, VELUE_MAX_LENGHT);
+        var result = Validator.FieldValueObject.Validation(value, VELUE_MIN_LENGHT, VELUE_MAX_LENGHT);
 
         if (result.IsFailure)
         {
             return result.Error;
         }
 
-        return new Name(value);
+        return new NickName(value);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()
