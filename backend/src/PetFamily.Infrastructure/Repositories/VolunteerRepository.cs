@@ -15,11 +15,10 @@ public class VolunteerRepository : IVolunteerRepository
 
     public VolunteerRepository(ApplicationDbContext dbContext, ILogger<VolunteerRepository> logger)
     {
-        Validator.Guard.NotNull(dbContext);
-        Validator.Guard.NotNull(logger);
-
-        _dbContext = dbContext;
-        _logger = logger;
+        _dbContext = dbContext ??
+                     throw new ArgumentNullException(nameof(dbContext), "dbContext cannot be null");
+        _logger = logger ??
+                  throw new ArgumentNullException(nameof(logger), "logger cannot be null");
     }
 
     public async Task AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
@@ -85,6 +84,22 @@ public class VolunteerRepository : IVolunteerRepository
             .Where(x =>
                 x.Id == volunteerId &&
                 x.IsActive == volunteerIsActive)
+            .Include(x => x.Pets)
+            .SingleAsync(cancellationToken);
+
+        _logger.LogInformation("Volunteer returned by id: {volunteer}", volunteer);
+
+        return volunteer;
+    }
+
+    public async Task<Volunteer> GetByIdWithPetsAsync(VolunteerId volunteerId, CancellationToken cancellationToken)
+    {
+        Validator.Guard.NotNull(volunteerId);
+        Validator.Guard.NotEmpty(volunteerId.Value);
+
+        var volunteer = await _dbContext.Volunteers
+            .Where(x =>
+                x.Id == volunteerId)
             .Include(x => x.Pets)
             .SingleAsync(cancellationToken);
 

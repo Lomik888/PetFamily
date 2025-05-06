@@ -15,11 +15,11 @@ public class SpeciesBreedId : ValueObject
         BreedId = breedId;
     }
 
-    public static Result<SpeciesBreedId, Error> Create(Guid speciesIdValue, Guid breedId)
+    public static Result<SpeciesBreedId, Error> Create(Guid speciesId, Guid breedId)
     {
-        if (speciesIdValue == Guid.Empty)
+        if (speciesId == Guid.Empty)
         {
-            return ErrorsPreform.General.Validation("Species is required", nameof(speciesIdValue));
+            return ErrorsPreform.General.Validation("Species is required", nameof(speciesId));
         }
 
         if (breedId == Guid.Empty)
@@ -27,7 +27,7 @@ public class SpeciesBreedId : ValueObject
             return ErrorsPreform.General.Validation("Breed is required", nameof(breedId));
         }
 
-        return new SpeciesBreedId(speciesIdValue, breedId);
+        return new SpeciesBreedId(speciesId, breedId);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

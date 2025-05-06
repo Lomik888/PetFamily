@@ -5,32 +5,32 @@ using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 
 namespace PetFamily.Domain.VolunteerContext.PetsVO.Collections;
 
-public class Files : ValueObjectList<File>
+public class FilesPet : ValueObjectList<File>
 {
     private const int MAX_FILE_COUNT = 10;
 
-    private Files(IEnumerable<File> items) : base(items)
+    private FilesPet(IEnumerable<File> items) : base(items)
     {
     }
 
-    private Files()
+    private FilesPet()
     {
     }
     
-    public static Result<Files, Error> Create(IEnumerable<File> items)
+    public static Result<FilesPet, Error> Create(IEnumerable<File> items)
     {
         var enumerable = items.ToList();
         if (enumerable.Count > MAX_FILE_COUNT)
         {
-            return ErrorsPreform.General.Validation("Files count can't be more than 10.", nameof(Files));
+            return ErrorsPreform.General.Validation("Files count can't be more than 10.", nameof(FilesPet));
         }
 
-        return new Files(enumerable);
+        return new FilesPet(enumerable);
     }
 
-    public static Result<Files> CreateEmpty()
+    public static Result<FilesPet> CreateEmpty()
     {
         IEnumerable<File> files = [];
-        return new Files(files);
+        return new FilesPet(files);
     }
 }

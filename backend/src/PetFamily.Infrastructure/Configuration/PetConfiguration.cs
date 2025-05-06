@@ -152,13 +152,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 description => description.Value,
                 value => Description.Create(value).Value);
 
-        builder.Property(x => x.Name)
+        builder.Property(x => x.NickName)
             .IsRequired()
             .HasColumnName("name")
-            .HasMaxLength(Name.VELUE_MAX_LENGHT)
+            .HasMaxLength(NickName.VELUE_MAX_LENGHT)
             .HasConversion(
                 name => name.Value,
-                value => Name.Create(value).Value);
+                value => NickName.Create(value).Value);
 
         builder.Property(x => x.Id)
             .ValueGeneratedNever()
@@ -185,7 +185,7 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnType("jsonb");
         });
 
-        builder.OwnsOne(x => x.Files, xb =>
+        builder.OwnsOne(x => x.FilesPet, xb =>
         {
             xb.Property(x => x.Items)
                 .HasConversion(
@@ -201,6 +201,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 .HasColumnName("files")
                 .HasColumnType("jsonb");
         });
+
+        builder.Property(x => x.SerialNumber)
+            .HasColumnName("serial_number")
+            .IsRequired()
+            .HasConversion(
+                serialNumber => serialNumber.Value,
+                value => SerialNumber.Create(value).Value);
 
         builder.Property(x => x.IsActive)
             .HasColumnName("is_active")

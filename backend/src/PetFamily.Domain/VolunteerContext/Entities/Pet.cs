@@ -9,7 +9,8 @@ namespace PetFamily.Domain.VolunteerContext.Entities;
 
 public sealed class Pet : SoftDeletableEntity<PetId>
 {
-    public Name Name { get; private set; }
+    public NickName NickName { get; private set; }
+    public SerialNumber SerialNumber { get; private set; }
     public SpeciesBreedId SpeciesBreedId { get; private set; }
     public Description Description { get; private set; }
     public Color Color { get; private set; }
@@ -24,7 +25,7 @@ public sealed class Pet : SoftDeletableEntity<PetId>
     public HelpStatus HelpStatus { get; private set; }
     public CreatedAt CreatedAt { get; private set; }
     public DetailsForHelps DetailsForHelps { get; private set; }
-    public Files Files { get; private set; }
+    public FilesPet FilesPet { get; private set; }
 
     private Pet(PetId id) : base(id)
     {
@@ -32,7 +33,8 @@ public sealed class Pet : SoftDeletableEntity<PetId>
 
     public Pet(
         PetId id,
-        Name name,
+        NickName nickName,
+        SerialNumber serialNumber,
         SpeciesBreedId speciesBreedId,
         Description description,
         Color color,
@@ -47,9 +49,10 @@ public sealed class Pet : SoftDeletableEntity<PetId>
         HelpStatus helpStatus,
         CreatedAt createdAt,
         DetailsForHelps detailsForHelps,
-        Files files) : base(id)
+        FilesPet filesPet) : base(id)
     {
-        Name = name;
+        NickName = nickName;
+        SerialNumber = serialNumber;
         SpeciesBreedId = speciesBreedId;
         Description = description;
         Color = color;
@@ -64,6 +67,11 @@ public sealed class Pet : SoftDeletableEntity<PetId>
         HelpStatus = helpStatus;
         CreatedAt = createdAt;
         DetailsForHelps = detailsForHelps;
-        Files = files;
+        FilesPet = filesPet;
+    }
+
+    public void SetSerialNumber(SerialNumber serialNumber)
+    {
+        SerialNumber = serialNumber;
     }
 }

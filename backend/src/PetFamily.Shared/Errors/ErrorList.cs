@@ -28,6 +28,13 @@ public class ErrorList : IEnumerable<Error>
         return new ErrorList(errorsList);
     }
 
+    public static ErrorList Create(Error error)
+    {
+        Validator.Guard.NotNull(error);
+
+        return new ErrorList([error]);
+    }
+
     public IEnumerator<Error> GetEnumerator()
     {
         return _errors.GetEnumerator();

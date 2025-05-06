@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
+using PetFamily.Application;
 using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
 using PetFamily.Application.Providers;
 using PetFamily.Application.VolunteerUseCases;
@@ -31,13 +32,14 @@ public static class DependencyInjection
     private static void AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+        services.AddScoped<ISpeciesRepository, SpeciesRepository>();
     }
 
     private static void AddBackgroundService(this IServiceCollection services)
     {
         services.AddHostedService<HardDeleteUnActiveEntitiesWorker>();
     }
-    
+
     private static void AddMinIo(this IServiceCollection services, IConfiguration configuration)
     {
         var minIoSection = configuration.GetRequiredSection(MinIoProviderOptions.SECTION_NAME);

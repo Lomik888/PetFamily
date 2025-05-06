@@ -51,8 +51,8 @@ public class Error : IError
         ErrorType errorType,
         string? invalidField = null)
     {
-        if (Enum.IsDefined(typeof(ErrorType), errorType))
-            throw new ArgumentException("Invalid error type", nameof(errorType));
+        if (Enum.IsDefined(typeof(ErrorType), errorType) == false)
+            throw new FormatException("Invalid error type");
 
         return new Error(message, errorCode, errorType, invalidField);
     }
