@@ -3,7 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.VolunteerUseCases.SoftDelete;
+using PetFamily.Application.Repositories;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Shared.Errors;

@@ -1,7 +1,7 @@
 ﻿using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 
-namespace PetFamily.Application.VolunteerUseCases;
+namespace PetFamily.Application.Repositories;
 
 public interface IVolunteerRepository
 {

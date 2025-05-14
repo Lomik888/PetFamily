@@ -5,10 +5,13 @@ using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Activate;
 using PetFamily.Application.VolunteerUseCases.Create;
+using PetFamily.Application.VolunteerUseCases.CreatePet;
 using PetFamily.Application.VolunteerUseCases.Delete;
+using PetFamily.Application.VolunteerUseCases.DeletePetFiles;
 using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
+using PetFamily.Application.VolunteerUseCases.UploadPetFiles;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.Application.DependencyInjection;
@@ -44,9 +47,18 @@ public static class DependencyInjection
         services
             .AddScoped<ICommandHandler<ErrorList, DeleteVolunteerCommand>,
                 DeleteVolunteerHandler>();
+
         services
             .AddScoped<ICommandHandler<ErrorList, ActivateVolunteerCommand>,
                 ActivateVolunteerHandle>();
+        services
+            .AddScoped<ICommandHandler<ErrorList, UploadPetFilesCommand>, UploadPetFilesHandler>();
+
+        services
+            .AddScoped<ICommandHandler<ErrorList, CreatePetCommand>, CreatePetHandler>();
+
+        services
+            .AddScoped<ICommandHandler<ErrorList, DeletePetFilesCommand>, DeletePetFilesHandler>();
     }
 
     private static void AddValidation(this IServiceCollection services)

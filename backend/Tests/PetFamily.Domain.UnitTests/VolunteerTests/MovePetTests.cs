@@ -14,12 +14,19 @@ public class MovePetTests
         var random = new Random();
         var numberForSerialNumber = random.Next(SerialNumber.INITIAL_VALUE, VolunteerFixture.COUNT_PET + 1);
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
+        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
 
-        var volunteerFixture = VolunteerFixture.CreateWithOutPets(requestVolunteer, requestSomePet);
+        var volunteerFixture = VolunteerFixture.CreateWithOutPets(
+            requestVolunteer,
+            requestSomeVolunteer,
+            requestSomePet);
 
         var volunteer = volunteerFixture.Volunteer;
         var volunteerForEqual = volunteerFixture.VolunteerForEqual;
+
+        var someVolunteerWithOnePet = volunteerFixture.SomeVolunteerWithOnePet;
+        var someVolunteerWithOnePetForEqual = volunteerFixture.SomeVolunteerWithOnePetForEqual;
 
         var somePet = volunteerFixture.SomePet;
         var somePetForEqual = volunteerFixture.SomePetForEqual;
@@ -42,11 +49,13 @@ public class MovePetTests
         var random = new Random();
         var numberForSerialNumber = random.Next(SerialNumber.INITIAL_VALUE, VolunteerFixture.COUNT_PET + 1);
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
+        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
         var requestPets = RequestPetBuilder.PetsBuild().ToList();
 
         var volunteerFixture = VolunteerFixture.Create(
             requestVolunteer,
+            requestSomeVolunteer,
             requestSomePet,
             requestPets);
 
@@ -77,11 +86,13 @@ public class MovePetTests
         uint newSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
+        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
         var requestPets = RequestPetBuilder.PetsBuild().ToList();
 
         var volunteerFixture = VolunteerFixture.Create(
             requestVolunteer,
+            requestSomeVolunteer,
             requestSomePet,
             requestPets);
 
@@ -110,11 +121,13 @@ public class MovePetTests
         uint oldSerialNumber, uint newSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
+        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
         var requestPets = RequestPetBuilder.PetsBuild().ToList();
 
         var volunteerFixture = VolunteerFixture.Create(
             requestVolunteer,
+            requestSomeVolunteer,
             requestSomePet,
             requestPets);
 
@@ -163,11 +176,13 @@ public class MovePetTests
         uint oldSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
+        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
         var requestPets = RequestPetBuilder.PetsBuild().ToList();
 
         var volunteerFixture = VolunteerFixture.Create(
             requestVolunteer,
+            requestSomeVolunteer,
             requestSomePet,
             requestPets);
 
@@ -215,11 +230,13 @@ public class MovePetTests
         uint oldSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
+        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
         var requestPets = RequestPetBuilder.PetsBuild().ToList();
 
         var volunteerFixture = VolunteerFixture.Create(
             requestVolunteer,
+            requestSomeVolunteer,
             requestSomePet,
             requestPets);
 

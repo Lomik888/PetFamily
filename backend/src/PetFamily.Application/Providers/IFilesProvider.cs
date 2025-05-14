@@ -1,21 +1,25 @@
-﻿namespace PetFamily.Application.Providers;
+﻿using CSharpFunctionalExtensions;
+using PetFamily.Shared.Errors;
+
+namespace PetFamily.Application.Providers;
 
 public interface IFilesProvider
 {
-    Task UploadAsync(
+    Task<Result<string, Error>> UploadAsync(
         string bucketName,
-        string userId,
+        string subBucketName,
+        Guid userId,
+        Guid petId,
         string objectName,
+        string extension,
         Stream stream,
         CancellationToken cancellationToken = default);
 
-    Task RemoveAsync(
-        string bucketName,
-        string userId,
-        string objectName,
+    Task<Result<string, Error>> RemoveAsync(
+        string fullPath,
         CancellationToken cancellationToken = default);
 
-    Task<string> PresignedGetAsync(
+    Task<Result<string, Error>> PredefinedGetAsync(
         string bucketName,
         string userId,
         string objectName,

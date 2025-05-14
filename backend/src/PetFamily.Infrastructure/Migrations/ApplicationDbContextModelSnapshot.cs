@@ -111,11 +111,15 @@ namespace PetFamily.Infrastructure.Migrations
                         .HasDefaultValue(true)
                         .HasColumnName("is_active");
 
-                    b.Property<string>("Name")
+                    b.Property<string>("NickName")
                         .IsRequired()
                         .HasMaxLength(30)
                         .HasColumnType("character varying(30)")
                         .HasColumnName("name");
+
+                    b.Property<uint>("SerialNumber")
+                        .HasColumnType("bigint")
+                        .HasColumnName("serial_number");
 
                     b.Property<bool>("Sterilize")
                         .HasColumnType("boolean")
@@ -350,7 +354,7 @@ namespace PetFamily.Infrastructure.Migrations
                                 .HasConstraintName("fk_pets_pets_id");
                         });
 
-                    b.OwnsOne("PetFamily.Domain.VolunteerContext.PetsVO.Collections.Files", "Files", b1 =>
+                    b.OwnsOne("PetFamily.Domain.VolunteerContext.PetsVO.Collections.FilesPet", "FilesPet", b1 =>
                         {
                             b1.Property<Guid>("PetId")
                                 .HasColumnType("uuid")
@@ -373,7 +377,7 @@ namespace PetFamily.Infrastructure.Migrations
                     b.Navigation("DetailsForHelps")
                         .IsRequired();
 
-                    b.Navigation("Files")
+                    b.Navigation("FilesPet")
                         .IsRequired();
                 });
 

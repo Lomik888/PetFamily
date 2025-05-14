@@ -15,16 +15,12 @@ public static class RequestPetBuilder
     {
         return _autoFixture
             .Build<RequestPet>()
-            .With(x => x.SerialNumber, _petSerialNumber)
             .With(x => x.SpeciesId, Guid.NewGuid())
             .With(x => x.BreedId, Guid.NewGuid())
             .With(x =>
                     x.DateOfBirth,
                 new DateTime(2025, 1, 2, 1, 1, 1, DateTimeKind.Utc))
             .With(x => x.HelpStatus, HelpStatuses.DONE)
-            .With(x =>
-                    x.CreatedAt,
-                new DateTime(2025, 1, 2, 1, 1, 1, DateTimeKind.Utc))
             .With(x => x.HouseNumber, "4")
             .With(x => x.ApartmentNumber, "4")
             .With(x => x.Height, 10D)

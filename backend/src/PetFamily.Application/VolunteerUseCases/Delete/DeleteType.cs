@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Application.VolunteerUseCases.SoftDelete;
+﻿namespace PetFamily.Application.VolunteerUseCases.Delete;
 
 public enum DeleteType
 {

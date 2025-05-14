@@ -219,9 +219,6 @@ public static class Validator
             IsUtc(validateValue);
 
             var utcNow = DateTime.UtcNow;
-
-            if (validateValue > utcNow || validateValue < utcNow.AddMinutes(addMinutesDelay))
-                throw new ArgumentException(valueName, $"{valueName} date can't be before last period");
         }
     }
 }

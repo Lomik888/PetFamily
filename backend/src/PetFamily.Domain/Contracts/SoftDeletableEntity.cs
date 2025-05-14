@@ -1,6 +1,6 @@
 ﻿using CSharpFunctionalExtensions;
 
-namespace PetFamily.Domain.Contracts.Abstractions;
+namespace PetFamily.Domain.Contracts;
 
 public abstract class SoftDeletableEntity<TId> : Entity<TId> where TId : IComparable<TId>
 {

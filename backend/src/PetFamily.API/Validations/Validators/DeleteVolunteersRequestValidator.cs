@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.VolunteerUseCases.SoftDelete;
+using PetFamily.Application.VolunteerUseCases.Delete;
 
 namespace PetFamily.API.Validations.Validators;
 

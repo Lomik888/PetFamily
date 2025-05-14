@@ -5,6 +5,7 @@ using Minio;
 using PetFamily.Application;
 using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
 using PetFamily.Application.Providers;
+using PetFamily.Application.Repositories;
 using PetFamily.Application.VolunteerUseCases;
 using PetFamily.Infrastructure.DbContext.PostgresSQL;
 using PetFamily.Infrastructure.Providers.MinIo;
@@ -27,6 +28,9 @@ public static class DependencyInjection
         services.AddRepositories();
         services.AddMinIo(configuration);
         services.AddProviders();
+        services.AddUnitOfWork();
+        services.AddLimits();
+        services.AddOptionsPattern(configuration);
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -35,9 +39,24 @@ public static class DependencyInjection
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
     }
 
+    private static void AddLimits(this IServiceCollection services)
+    {
+        services.AddSingleton<IMinIoLimiter, MinIoLimiter>();
+    }
+
+    private static void AddUnitOfWork(this IServiceCollection services)
+    {
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
+    }
+
     private static void AddBackgroundService(this IServiceCollection services)
     {
         services.AddHostedService<HardDeleteUnActiveEntitiesWorker>();
+    }
+
+    private static void AddOptionsPattern(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<MinIoProviderOptions>(configuration.GetRequiredSection("MinIO"));
     }
 
     private static void AddMinIo(this IServiceCollection services, IConfiguration configuration)

@@ -15,7 +15,7 @@ public class HelpStatus : ValueObject
 
     public static Result<HelpStatus, Error> Create(HelpStatuses value)
     {
-        if (Enum.IsDefined(typeof(HelpStatus), value) == false)
+        if (Enum.IsDefined(typeof(HelpStatuses), value) == false)
         {
             return ErrorsPreform.General.Validation("invalid help status", nameof(HelpStatus));
         }
