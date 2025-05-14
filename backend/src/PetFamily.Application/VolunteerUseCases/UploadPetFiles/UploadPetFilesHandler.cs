@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Contracts.DTO;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.Extensions;
 using PetFamily.Application.Providers;
@@ -153,13 +154,16 @@ public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadPetFilesCo
                         $"Or File extension is {x.FileInfoDto.Extension}.");
             }
 
-            var result = await _filesProvider.UploadAsync(
+            var filePathDto = new FilePathDto(
                 "volunteers",
                 "pets",
                 request.VolunteerId,
                 request.PetId,
                 x.FileInfoDto.Name,
-                x.FileInfoDto.Extension,
+                x.FileInfoDto.Extension);
+
+            var result = await _filesProvider.UploadAsync(
+                filePathDto,
                 x.FileStream,
                 cancellationToken);
 

@@ -1,4 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
+using PetFamily.Application.Contracts.DTO;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.Application.Providers;
@@ -6,12 +7,7 @@ namespace PetFamily.Application.Providers;
 public interface IFilesProvider
 {
     Task<Result<string, Error>> UploadAsync(
-        string bucketName,
-        string subBucketName,
-        Guid userId,
-        Guid petId,
-        string objectName,
-        string extension,
+        FilePathDto filePathDto,
         Stream stream,
         CancellationToken cancellationToken = default);
 
@@ -25,3 +21,4 @@ public interface IFilesProvider
         string objectName,
         CancellationToken cancellationToken = default);
 }
+

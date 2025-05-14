@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Minio;
 using Minio.DataModel.Args;
 using PetFamily.Application;
+using PetFamily.Application.Contracts.DTO;
 using PetFamily.Application.Providers;
 using PetFamily.Shared.Errors;
 using PetFamily.Shared.Validation;
@@ -107,56 +108,54 @@ public class MinIoProvider : IFilesProvider
     }
 
     public async Task<Result<string, Error>> UploadAsync(
-        string bucketName,
-        string subBucketName,
-        Guid userId,
-        Guid petId,
-        string objectName,
-        string extension,
+        FilePathDto filePathDto,
         Stream stream,
         CancellationToken cancellationToken = default)
     {
         try
         {
-            _logger.LogInformation($"Uploading for userId: {userId}");
+            _logger.LogInformation($"Uploading for userId: {filePathDto.UserId}");
 
-            if (string.IsNullOrWhiteSpace(bucketName))
-                return ErrorsPreform.General.Validation("BucketName required", nameof(bucketName));
-            if (Guid.Empty == userId)
-                return ErrorsPreform.General.Validation("UserId required", nameof(userId));
-            if (Guid.Empty == petId)
-                return ErrorsPreform.General.Validation("PetId required", nameof(petId));
-            if (string.IsNullOrWhiteSpace(objectName))
-                return ErrorsPreform.General.Validation("ObjectName required", nameof(objectName));
-            if (string.IsNullOrWhiteSpace(extension))
-                return ErrorsPreform.General.Validation("Extension required", nameof(extension));
+            if (string.IsNullOrWhiteSpace(filePathDto.BucketName))
+                return ErrorsPreform.General.Validation("BucketName required", nameof(filePathDto.BucketName));
+            if (Guid.Empty == filePathDto.UserId)
+                return ErrorsPreform.General.Validation("UserId required", nameof(filePathDto.UserId));
+            if (Guid.Empty == filePathDto.PetId)
+                return ErrorsPreform.General.Validation("PetId required", nameof(filePathDto.PetId));
+            if (string.IsNullOrWhiteSpace(filePathDto.ObjectName))
+                return ErrorsPreform.General.Validation("ObjectName required", nameof(filePathDto.ObjectName));
+            if (string.IsNullOrWhiteSpace(filePathDto.Extension))
+                return ErrorsPreform.General.Validation("Extension required", nameof(filePathDto.Extension));
             if (stream is null)
                 return ErrorsPreform.General.Validation(nameof(stream), "Stream can't be null");
 
-            _logger.LogInformation($"Validation successes for userId: {userId}");
+            _logger.LogInformation($"Validation successes for userId: {filePathDto.UserId}");
 
             await _minioSemaphore.SemaphoreSlim.WaitAsync(cancellationToken);
 
-            await EnsureBucketExistsAsync(bucketName, cancellationToken).ConfigureAwait(false);
+            await EnsureBucketExistsAsync(filePathDto.BucketName, cancellationToken).ConfigureAwait(false);
 
             var objectGuid = Guid.NewGuid();
 
-            var fullObjectKey = $"{userId}/{subBucketName}/{petId}/{objectName}_{objectGuid}{extension}";
+            var fullObjectKey = $"{filePathDto.UserId}" +
+                                $"/{filePathDto.SubBucketName}" +
+                                $"/{filePathDto.PetId}" +
+                                $"/{filePathDto.ObjectName}_{objectGuid}{filePathDto.Extension}";
 
             var putObjectArgs = new PutObjectArgs()
-                .WithBucket(bucketName)
+                .WithBucket(filePathDto.BucketName)
                 .WithObject(fullObjectKey)
                 .WithStreamData(stream)
                 .WithObjectSize(stream.Length);
 
             var response = await _minioClient.PutObjectAsync(putObjectArgs, cancellationToken).ConfigureAwait(false);
 
-            _logger.LogInformation($"Uploaded file for userId: {userId}");
+            _logger.LogInformation($"Uploaded file for userId: {filePathDto.UserId}");
             return response.ObjectName;
         }
         catch (Exception ex)
         {
-            return ErrorsPreform.General.Unknown($"Can't upload file{objectName} {ex.Message}");
+            return ErrorsPreform.General.Unknown($"Can't upload file{filePathDto.ObjectName} {ex.Message}");
         }
         finally
         {
