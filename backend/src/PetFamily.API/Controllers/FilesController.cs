@@ -1,13 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts;
+using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
-using PetFamily.Application.Contracts.DTO.PetDtos;
 using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.Providers;
 using PetFamily.Application.VolunteerUseCases.DeletePetFiles;
 using PetFamily.Application.VolunteerUseCases.UploadPetFiles;
-using PetFamily.Infrastructure.Providers.MinIo;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.API.Controllers;
@@ -40,13 +38,11 @@ public class FilesController : ApplicationController
     public async Task<IActionResult> DeletePetFiles(
         [FromRoute] Guid volunteerId,
         [FromRoute] Guid petId,
-        [FromBody] IEnumerable<string> filesPaths,
+        [FromBody] DeletePetFilesRequest request,
         [FromServices] ICommandHandler<ErrorList, DeletePetFilesCommand> handler,
         CancellationToken cancellationToken)
     {
-        var command = new DeletePetFilesCommand(filesPaths, volunteerId, petId);
-
-        var result = await handler.Handle(command, cancellationToken);
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
 
         if (result.IsFailure == true)
         {
