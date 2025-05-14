@@ -8,6 +8,7 @@ using PetFamily.Application.VolunteerUseCases.Create;
 using PetFamily.Application.VolunteerUseCases.CreatePet;
 using PetFamily.Application.VolunteerUseCases.Delete;
 using PetFamily.Application.VolunteerUseCases.DeletePetFiles;
+using PetFamily.Application.VolunteerUseCases.MovePet;
 using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
@@ -59,6 +60,9 @@ public static class DependencyInjection
 
         services
             .AddScoped<ICommandHandler<ErrorList, DeletePetFilesCommand>, DeletePetFilesHandler>();
+
+        services
+            .AddScoped<ICommandHandler<ErrorList, MovePetCommand>, MovePetHandler>();
     }
 
     private static void AddValidation(this IServiceCollection services)

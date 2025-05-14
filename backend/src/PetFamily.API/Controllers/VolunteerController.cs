@@ -7,6 +7,7 @@ using PetFamily.Application.VolunteerUseCases.Activate;
 using PetFamily.Application.VolunteerUseCases.Create;
 using PetFamily.Application.VolunteerUseCases.CreatePet;
 using PetFamily.Application.VolunteerUseCases.Delete;
+using PetFamily.Application.VolunteerUseCases.MovePet;
 using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
@@ -49,6 +50,24 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}")]
+    public async Task<ActionResult> UpdateSerialNumberPet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, MovePetCommand> handler,
+        [FromBody] UpdateSerialNumberPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
     [HttpPost("{volunteerId:guid}/pets")]
     public async Task<ActionResult> UpdateSocials(
         [FromRoute] Guid volunteerId,
@@ -65,7 +84,7 @@ public class VolunteerController : ApplicationController
 
         return Ok(Envelope.OkEmpty());
     }
-    
+
     [HttpPut("{volunteerId:guid}/socials")]
     public async Task<ActionResult> UpdateSocials(
         [FromRoute] Guid volunteerId,
