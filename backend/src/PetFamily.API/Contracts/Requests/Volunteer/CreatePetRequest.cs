@@ -32,7 +32,7 @@ public record CreatePetRequest(
     DateTime DateOfBirth,
     bool Vaccinated,
     HelpStatuses HelpStatus,
-    List<DetailsForHelpDto> DetailsForHelps
+    IEnumerable<DetailsForHelpDto> DetailsForHelps
 ) : IToCommand<CreatePetCommand>
 {
     public CreatePetCommand ToCommand()

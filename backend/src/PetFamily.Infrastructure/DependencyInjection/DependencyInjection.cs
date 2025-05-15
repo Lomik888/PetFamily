@@ -3,11 +3,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Minio;
 using PetFamily.Application;
-using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
+using PetFamily.Application.Contracts;
 using PetFamily.Application.Providers;
 using PetFamily.Application.Repositories;
-using PetFamily.Application.VolunteerUseCases;
+using PetFamily.Infrastructure.BackgroundWorkers;
 using PetFamily.Infrastructure.DbContext.PostgresSQL;
+using PetFamily.Infrastructure.MessageQueue;
 using PetFamily.Infrastructure.Providers.MinIo;
 using PetFamily.Infrastructure.Repositories;
 
@@ -29,8 +30,10 @@ public static class DependencyInjection
         services.AddMinIo(configuration);
         services.AddProviders();
         services.AddUnitOfWork();
-        services.AddLimits();
         services.AddOptionsPattern(configuration);
+        services.AddLimiters();
+        services.AddChannels();
+        services.AddBackgroundService();
     }
 
     private static void AddRepositories(this IServiceCollection services)
@@ -39,8 +42,9 @@ public static class DependencyInjection
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
     }
 
-    private static void AddLimits(this IServiceCollection services)
+    private static void AddLimiters(this IServiceCollection services)
     {
+        services.AddSingleton<IDeleteInvalidFilesWorkerLimiter, DeleteInvalidFilesWorkerLimiter>();
         services.AddSingleton<IMinIoLimiter, MinIoLimiter>();
     }
 
@@ -49,9 +53,14 @@ public static class DependencyInjection
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 
+    private static void AddChannels(this IServiceCollection services)
+    {
+        services.AddSingleton<IChannelMessageQueue, InvalidFilesMessageQueue>();
+    }
+
     private static void AddBackgroundService(this IServiceCollection services)
     {
-        services.AddHostedService<HardDeleteUnActiveEntitiesWorker>();
+        services.AddHostedService<DeleteInvalidFilesWorker>();
     }
 
     private static void AddOptionsPattern(this IServiceCollection services, IConfiguration configuration)
