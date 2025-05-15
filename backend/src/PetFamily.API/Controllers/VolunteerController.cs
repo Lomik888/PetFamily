@@ -5,7 +5,9 @@ using PetFamily.API.Extensions;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Activate;
 using PetFamily.Application.VolunteerUseCases.Create;
+using PetFamily.Application.VolunteerUseCases.CreatePet;
 using PetFamily.Application.VolunteerUseCases.Delete;
+using PetFamily.Application.VolunteerUseCases.MovePet;
 using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
 using PetFamily.Application.VolunteerUseCases.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
@@ -32,7 +34,7 @@ public class VolunteerController : ApplicationController
     }
 
     [HttpPatch("{volunteerId:guid}/main-info")]
-    public async Task<ActionResult<Guid>> Update(
+    public async Task<ActionResult<Guid>> UpdateMainInfo(
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<Guid, ErrorList, UpdateMainInfoVolunteerCommand> handler,
         [FromBody] UpdateMainInfoVolunteerRequest request,
@@ -48,8 +50,43 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}")]
+    public async Task<ActionResult> UpdateSerialNumberPet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, MovePetCommand> handler,
+        [FromBody] UpdateSerialNumberPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpPost("{volunteerId:guid}/pets")]
+    public async Task<ActionResult> UpdateSocials(
+        [FromRoute] Guid volunteerId,
+        [FromServices] ICommandHandler<ErrorList, CreatePetCommand> handler,
+        [FromBody] CreatePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
     [HttpPut("{volunteerId:guid}/socials")]
-    public async Task<ActionResult> Update(
+    public async Task<ActionResult> UpdateSocials(
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<ErrorList, UpdateVolunteersSocialNetworksCommand> handler,
         [FromBody] UpdateVolunteersSocialNetworksRequest request,
@@ -66,7 +103,7 @@ public class VolunteerController : ApplicationController
     }
 
     [HttpPut("{volunteerId:guid}/details-for-help")]
-    public async Task<ActionResult> Update(
+    public async Task<ActionResult> UpdateDetailsForHelp(
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<ErrorList, UpdateVolunteersDetailsForHelpCommand> handler,
         [FromBody] UpdateVolunteersDetailsForHelpRequest request,

@@ -1,18 +1,20 @@
 ﻿using CSharpFunctionalExtensions;
-using PetFamily.Domain.Contracts.Abstractions;
+using PetFamily.Domain.Contracts;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO;
+using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
 using PetFamily.Domain.VolunteerContext.SharedVO;
 using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
 using PetFamily.Domain.VolunteerContext.VolunteerVO;
 using PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
 using PetFamily.Shared.Errors;
+using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 using Name = PetFamily.Domain.VolunteerContext.VolunteerVO.Name;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
-public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
+public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
 {
     private readonly List<Pet> _pets = [];
     public Name Name { get; private set; }
@@ -79,18 +81,6 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
         DetailsForHelps = detailsForHelps;
     }
 
-    // Пока заглушка для UnitTests
-    public void AddPets(IEnumerable<Pet> pets)
-    {
-        _pets.AddRange(pets);
-    }
-
-    // Пока заглушка для UnitTests
-    public void AddPet(Pet pet)
-    {
-        _pets.Add(pet);
-    }
-
     public override void UnActivate()
     {
         if (IsActive == false)
@@ -137,7 +127,7 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
             {
                 return ErrorsPreform.General.Validation("No pets were found", nameof(Pets));
             }
-            
+
             case var _ when _pets.Any(p => p.Id == petId) == false:
             {
                 return ErrorsPreform.General.Validation(
@@ -145,12 +135,12 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
                     $"no contains {petId.Value} in volunteer's id:{this.Id.Value} pets",
                     nameof(Pets));
             }
-            
+
             case var _ when serialNumber.Value == pet.SerialNumber.Value:
             {
                 return UnitResult.Success<Error>();
             }
-            
+
             case var _ when serialNumber.Value > petsCount:
             {
                 foreach (var p in _pets.Where(x =>
@@ -197,7 +187,7 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
         pet.SetSerialNumber(serialNumber);
         return UnitResult.Success<Error>();
     }
-    
+
     public UnitResult<Error> MovePetToFirst(Pet pet)
     {
         var serialNumber = SerialNumber.CreateFirst();
@@ -210,7 +200,7 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
 
         return UnitResult.Success<Error>();
     }
-    
+
     public UnitResult<Error> MovePetToLast(Pet pet)
     {
         var petsCount = _pets.Count;
@@ -228,5 +218,108 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>
         }
 
         return UnitResult.Success<Error>();
+    }
+
+    public Result<Pet, Error> CreatePet(CreatePetDto createPetDto)
+    {
+        SerialNumber serialNumber;
+        if (_pets.Count == 0)
+        {
+            serialNumber = SerialNumber.CreateFirst();
+        }
+
+        var serialNumberResult = SerialNumber.Create((uint)_pets.Count + 1);
+        if (serialNumberResult.IsFailure == true)
+        {
+            return serialNumberResult.Error;
+        }
+
+        serialNumber = serialNumberResult.Value;
+        var petId = PetId.Create().Value;
+        var dateCreatedUtc = DateTime.UtcNow;
+
+        var createdAtResult = CreatedAt.Create(dateCreatedUtc);
+        if (createdAtResult.IsFailure == true)
+        {
+            return createdAtResult.Error;
+        }
+
+        var createdAt = createdAtResult.Value;
+
+        var pet = new Pet(
+            petId,
+            createPetDto.NickName,
+            serialNumber,
+            createPetDto.SpeciesBreedId,
+            createPetDto.Description,
+            createPetDto.Color,
+            createPetDto.HealthDescription,
+            createPetDto.Address,
+            createPetDto.Weight,
+            createPetDto.Height,
+            createPetDto.PhoneNumber,
+            createPetDto.Sterilize,
+            createPetDto.DateOfBirth,
+            createPetDto.Vaccinated,
+            createPetDto.HelpStatus,
+            createdAt,
+            createPetDto.DetailsForHelps,
+            createPetDto.FilesPet);
+
+        _pets.Add(pet);
+
+        return pet;
+    }
+
+    public UnitResult<Error> SetPetFiles(Pet pet, FilesPet filesPets)
+    {
+        if (_pets.Any(p => p.Id == pet.Id) == false)
+        {
+            return ErrorsPreform.General.NotFound(pet.Id.Value);
+        }
+
+        pet.SetFiles(filesPets);
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> RemovePetFiles(Pet pet, FilesPet filesPets)
+    {
+        if (_pets.Any(p => p.Id == pet.Id) == false)
+        {
+            return ErrorsPreform.General.NotFound(pet.Id.Value);
+        }
+
+        var newPetFiles = pet.FilesPet.Items.Except(filesPets.Items);
+        var newFiles = FilesPet.Create(newPetFiles).Value;
+
+        pet.SetFiles(newFiles);
+        return UnitResult.Success<Error>();
+    }
+
+    public object Clone()
+    {
+        var volunteer = new Volunteer(
+            VolunteerId.Create(this.Id.Value).Value,
+            Name.Create(
+                this.Name.FirstName,
+                this.Name.LastName,
+                this.Name.Surname).Value,
+            Email.Create(this.Email.Value).Value,
+            Description.Create(this.Description.Value).Value,
+            Experience.Create(this.Experience.Value).Value,
+            PhoneNumber.Create(
+                this.PhoneNumber.RegionCode,
+                this.PhoneNumber.Number).Value,
+            SocialNetworks.Create(this.SocialNetworks.Items
+                .Select(x => SocialNetwork.Create(x.Title, x.Url).Value)).Value,
+            DetailsForHelps.Create(this.DetailsForHelps.Items
+                .Select(x => DetailsForHelp.Create(x.Title, x.Description).Value)).Value,
+            Files.Create(this.Files.Items
+                .Select(x => File.Create(x.FullPath).Value)).Value
+        );
+
+        volunteer._pets.AddRange(this._pets.Select(x => (Pet)x.Clone()));
+
+        return volunteer;
     }
 }

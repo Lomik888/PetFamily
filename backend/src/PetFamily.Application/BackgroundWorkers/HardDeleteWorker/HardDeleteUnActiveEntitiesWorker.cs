@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using PetFamily.Application.Repositories;
 using PetFamily.Application.VolunteerUseCases;
 using PetFamily.Shared.Validation;
 

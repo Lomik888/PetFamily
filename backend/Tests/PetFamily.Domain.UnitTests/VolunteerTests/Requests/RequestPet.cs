@@ -3,9 +3,7 @@
 namespace PetFamily.Domain.UnitTests.VolunteerTests.Requests;
 
 public record class RequestPet(
-    Guid PetId,
     string Name,
-    uint SerialNumber,
     Guid SpeciesId,
     Guid BreedId,
     string Description,
@@ -26,5 +24,4 @@ public record class RequestPet(
     bool Sterilize,
     DateTime DateOfBirth,
     bool Vaccinated,
-    HelpStatuses HelpStatus,
-    DateTime CreatedAt);
+    HelpStatuses HelpStatus);

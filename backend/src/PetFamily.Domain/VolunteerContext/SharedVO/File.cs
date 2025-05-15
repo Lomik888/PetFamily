@@ -1,24 +1,35 @@
 ﻿using System.Text.Json.Serialization;
 using CSharpFunctionalExtensions;
-using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Shared.Errors;
+using System.IO;
 
 namespace PetFamily.Domain.VolunteerContext.SharedVO;
 
 public class File : ValueObject
 {
-    public string Path { get; }
+    public static List<string> VALIDEXTENSIONS = new List<string> { ".jpg", ".jpeg", ".png", ".gif", ".mp4", ".mp3" };
+
+    public string FullPath { get; }
 
     [JsonConstructor]
-    private File(string path)
+    private File(string fullPath)
     {
-        Path = path;
+        FullPath = fullPath;
     }
 
-    public static Result<File> Create(string path) => new File(path);
+    public static Result<File, Error> Create(string fullPath)
+    {
+        if (string.IsNullOrWhiteSpace(fullPath))
+            return ErrorsPreform.General.Validation("File path is required", nameof(fullPath));
+
+        if (VALIDEXTENSIONS.Contains(Path.GetExtension(fullPath)) == false)
+            return ErrorsPreform.General.Validation("File extension is invalid", nameof(fullPath));
+
+        return new File(fullPath);
+    }
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return Path;
+        yield return FullPath;
     }
 }

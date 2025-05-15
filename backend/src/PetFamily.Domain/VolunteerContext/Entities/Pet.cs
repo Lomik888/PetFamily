@@ -1,13 +1,14 @@
-﻿using PetFamily.Domain.Contracts.Abstractions;
+﻿using PetFamily.Domain.Contracts;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
 using PetFamily.Domain.VolunteerContext.SharedVO;
 using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
+using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 
 namespace PetFamily.Domain.VolunteerContext.Entities;
 
-public sealed class Pet : SoftDeletableEntity<PetId>
+public sealed class Pet : SoftDeletableEntity<PetId>, ICloneable
 {
     public NickName NickName { get; private set; }
     public SerialNumber SerialNumber { get; private set; }
@@ -31,7 +32,7 @@ public sealed class Pet : SoftDeletableEntity<PetId>
     {
     }
 
-    public Pet(
+    internal Pet(
         PetId id,
         NickName nickName,
         SerialNumber serialNumber,
@@ -70,8 +71,55 @@ public sealed class Pet : SoftDeletableEntity<PetId>
         FilesPet = filesPet;
     }
 
-    public void SetSerialNumber(SerialNumber serialNumber)
+    internal void SetSerialNumber(SerialNumber serialNumber)
     {
         SerialNumber = serialNumber;
+    }
+
+    internal void SetFiles(FilesPet filesPet)
+    {
+        FilesPet = filesPet;
+    }
+
+    public object Clone()
+    {
+        return new Pet(
+            PetId.Create(this.Id.Value).Value,
+            NickName.Create(this.NickName.Value).Value,
+            SerialNumber.Create(this.SerialNumber.Value).Value,
+            SpeciesBreedId.Create(
+                this.SpeciesBreedId.SpeciesId,
+                this.SpeciesBreedId.BreedId).Value,
+            Description.Create(this.Description.Value).Value,
+            Color.Create(this.Color.Value).Value,
+            HealthDescription.Create(
+                this.HealthDescription.SharedHealthStatus,
+                this.HealthDescription.SkinCondition,
+                this.HealthDescription.MouthCondition,
+                this.HealthDescription.DigestiveSystemCondition
+            ).Value,
+            Address.Create(
+                this.Address.Country,
+                this.Address.City,
+                this.Address.Street,
+                this.Address.HouseNumber,
+                this.Address.ApartmentNumber).Value,
+            Weight.Create(this.Weight.Value).Value,
+            Height.Create(this.Height.Value).Value,
+            PhoneNumber.Create(
+                this.PhoneNumber.RegionCode,
+                this.PhoneNumber.Number).Value,
+            this.Sterilize,
+            DateOfBirth.Create(this.DateOfBirth.Value).Value,
+            this.Vaccinated,
+            HelpStatus.Create(this.HelpStatus.Value).Value,
+            CreatedAt.Create(this.CreatedAt.Value).Value,
+            DetailsForHelps.Create(
+                this.DetailsForHelps.Items
+                    .Select(x => DetailsForHelp.Create(x.Title, x.Description).Value)).Value,
+            FilesPet.Create(
+                this.FilesPet.Items
+                    .Select(x => File.Create(x.FullPath).Value)).Value
+        );
     }
 }

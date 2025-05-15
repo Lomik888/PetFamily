@@ -1,4 +1,6 @@
-﻿using PetFamily.Domain.UnitTests.VolunteerTests.Requests;
+﻿using PetFamily.Domain.Contracts;
+using PetFamily.Domain.UnitTests.VolunteerTests.Builders;
+using PetFamily.Domain.UnitTests.VolunteerTests.Requests;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO;
@@ -13,21 +15,23 @@ namespace PetFamily.Domain.UnitTests.VolunteerTests.Fixtures;
 public class VolunteerFixture
 {
     public const int COUNT_PET = 10;
-    public Volunteer VolunteerForEqual { get; private set; }
+    public Volunteer VolunteerForEqual => (Volunteer)Volunteer.Clone();
     public Volunteer Volunteer { get; private set; }
-    public Pet SomePetForEqual { get; private set; }
-    public Pet SomePet { get; private set; }
+    public Volunteer SomeVolunteerWithOnePetForEqual => (Volunteer)SomeVolunteerWithOnePet.Clone();
+    public Volunteer SomeVolunteerWithOnePet { get; private set; }
+    public Pet SomePetForEqual => SomeVolunteerWithOnePetForEqual.Pets.First();
+    public Pet SomePet => SomeVolunteerWithOnePet.Pets.First();
 
     private VolunteerFixture(
         RequestVolunteer requestVolunteer,
+        RequestVolunteer requestSomeVolunteer,
         RequestPet requestSomePet,
         List<RequestPet> requestPets)
     {
         Volunteer = CreateVolunteer(requestVolunteer);
-        VolunteerForEqual = CreateVolunteer(requestVolunteer);
+        SomeVolunteerWithOnePet = CreateVolunteer(requestSomeVolunteer);
 
-        SomePet = CreatePet(requestSomePet);
-        SomePetForEqual = CreatePet(requestSomePet);
+        CreatePet(SomeVolunteerWithOnePet, requestSomePet);
 
         switch (requestPets.Count)
         {
@@ -35,18 +39,11 @@ public class VolunteerFixture
                 throw new Exception("Too many request pets");
             case > 0:
             {
-                var pets = new List<Pet>();
-                var petsForEqual = new List<Pet>();
                 for (int i = 0; i < COUNT_PET; i++)
                 {
-                    var pet = CreatePet(requestPets[i]);
-                    var petForEqual = CreatePet(requestPets[i]);
-                    pets.Add(pet);
-                    petsForEqual.Add(petForEqual);
+                    CreatePet(Volunteer, requestPets[i]);
                 }
 
-                Volunteer.AddPets(pets);
-                VolunteerForEqual.AddPets(petsForEqual);
                 break;
             }
         }
@@ -54,31 +51,33 @@ public class VolunteerFixture
 
     public static VolunteerFixture Create(
         RequestVolunteer requestVolunteer,
+        RequestVolunteer requestSomeVolunteer,
         RequestPet requestSomePet,
         List<RequestPet> requestPets)
     {
         return new VolunteerFixture(
             requestVolunteer,
+            requestSomeVolunteer,
             requestSomePet,
             requestPets);
     }
 
     public static VolunteerFixture CreateWithOutPets(
         RequestVolunteer requestVolunteer,
+        RequestVolunteer requestSomeVolunteer,
         RequestPet requestSomePet)
     {
         return new VolunteerFixture(
             requestVolunteer,
+            requestSomeVolunteer,
             requestSomePet,
             []);
     }
 
-    private static Pet CreatePet(RequestPet requestPet)
+    private static void CreatePet(Volunteer volunteer, RequestPet requestPet)
     {
-        return new Pet(
-            PetId.Create(requestPet.PetId).Value,
+        var createPetDto = new CreatePetDto(
             NickName.Create(requestPet.Name).Value,
-            SerialNumber.Create((uint)requestPet.SerialNumber).Value,
             SpeciesBreedId.Create(requestPet.SpeciesId, requestPet.BreedId).Value,
             Description.Create(requestPet.Description).Value,
             Color.Create(requestPet.Color).Value,
@@ -100,10 +99,13 @@ public class VolunteerFixture
             DateOfBirth.Create(requestPet.DateOfBirth).Value,
             requestPet.Vaccinated,
             HelpStatus.Create(requestPet.HelpStatus).Value,
-            CreatedAt.Create(requestPet.CreatedAt).Value,
             DetailsForHelps.CreateEmpty().Value,
-            FilesPet.CreateEmpty().Value
-        );
+            FilesPet.CreateEmpty().Value);
+        var petResult = volunteer.CreatePet(createPetDto);
+        if (petResult.IsSuccess == false)
+        {
+            throw new Exception($"can't create pet {petResult.Error}");
+        }
     }
 
     private static Volunteer CreateVolunteer(RequestVolunteer requestVolunteer)

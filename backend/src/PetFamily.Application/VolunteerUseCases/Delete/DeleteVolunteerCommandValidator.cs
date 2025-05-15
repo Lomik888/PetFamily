@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using PetFamily.Application.Extensions;
-using PetFamily.Application.VolunteerUseCases.SoftDelete;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 
 namespace PetFamily.Application.VolunteerUseCases.Delete;
