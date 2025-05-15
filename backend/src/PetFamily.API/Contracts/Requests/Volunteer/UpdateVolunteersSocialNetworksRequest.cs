@@ -5,7 +5,7 @@ using PetFamily.Application.VolunteerUseCases.UpdateSocialNetworks;
 namespace PetFamily.API.Contracts.Requests.Volunteer;
 
 public record UpdateVolunteersSocialNetworksRequest(
-    IReadOnlyList<SocialNetworkDto> SocialNetworksDto
+    IEnumerable<SocialNetworkDto> SocialNetworksDto
 )
     : IToCommand<UpdateVolunteersSocialNetworksCommand, Guid>
 {
@@ -13,6 +13,6 @@ public record UpdateVolunteersSocialNetworksRequest(
     {
         return new UpdateVolunteersSocialNetworksCommand(
             volunteerId,
-            new SocialNetworkCollectionDto(SocialNetworksDto));
+            new SocialNetworkCollectionDto(SocialNetworksDto.ToList()));
     }
 }
