@@ -2,6 +2,7 @@
 using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
+using PetFamily.Application.Contracts.DTO;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.Activate;
 using PetFamily.Application.VolunteerUseCases.Commands.Create;
@@ -11,6 +12,8 @@ using PetFamily.Application.VolunteerUseCases.Commands.MovePet;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateDetailsForHelps;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateSocialNetworks;
+using PetFamily.Application.VolunteerUseCases.Queries;
+using PetFamily.Application.VolunteerUseCases.Queries.Get;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.API.Controllers;
@@ -136,7 +139,23 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
-    [HttpPut("{volunteerId:guid}/")]
+    [HttpGet("volunteers")]
+    public async Task<ActionResult> Get(
+        [FromQuery] GetWithPagination request,
+        [FromServices] IQueryHandler<GetObjectsWithPaginationResponse<VolunteerDto>, ErrorList, GetQuery> handler,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToQuery(), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpPut("{volunteerId:guid}")]
     public async Task<ActionResult> ActivateAccount(
         [FromRoute] Guid volunteerId,
         [FromServices] ICommandHandler<ErrorList, ActivateVolunteerCommand> handler,

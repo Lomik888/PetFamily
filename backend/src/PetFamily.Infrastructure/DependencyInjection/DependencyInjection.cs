@@ -30,6 +30,7 @@ public static class DependencyInjection
             .AddOptionsPattern(configuration)
             .AddLimiters()
             .AddChannels()
+            .AddDapperFactory()
             .AddBackgroundService()
             .AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(psqlConnectionString));
@@ -45,7 +46,7 @@ public static class DependencyInjection
     {
         return services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
     }
-    
+
     private static IServiceCollection AddLimiters(this IServiceCollection services)
     {
         services.AddSingleton<IDeleteInvalidFilesWorkerLimiter, DeleteInvalidFilesWorkerLimiter>();
