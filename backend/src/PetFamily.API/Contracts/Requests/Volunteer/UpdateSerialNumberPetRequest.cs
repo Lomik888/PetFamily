@@ -1,5 +1,5 @@
 ﻿using PetFamily.API.Contracts.Requests.Interfaces;
-using PetFamily.Application.VolunteerUseCases.MovePet;
+using PetFamily.Application.VolunteerUseCases.Commands.MovePet;
 
 namespace PetFamily.API.Contracts.Requests.Volunteer;
 
