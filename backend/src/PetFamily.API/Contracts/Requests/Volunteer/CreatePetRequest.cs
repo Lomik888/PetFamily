@@ -1,10 +1,8 @@
 ﻿using PetFamily.API.Contracts.Requests.Interfaces;
 using PetFamily.Application.Contracts.DTO.PetDtos;
 using PetFamily.Application.Contracts.DTO.SharedDtos;
-using PetFamily.Application.Contracts.DTO.VolunteerDtos;
-using PetFamily.Application.VolunteerUseCases.CreatePet;
+using PetFamily.Application.VolunteerUseCases.Commands.CreatePet;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
-using PhoneNumberDto = PetFamily.Application.Contracts.DTO.VolunteerDtos.PhoneNumberDto;
 
 namespace PetFamily.API.Contracts.Requests.Volunteer;
 
@@ -32,7 +30,7 @@ public record CreatePetRequest(
     DateTime DateOfBirth,
     bool Vaccinated,
     HelpStatuses HelpStatus,
-    List<DetailsForHelpDto> DetailsForHelps
+    IEnumerable<DetailsForHelpDto> DetailsForHelps
 ) : IToCommand<CreatePetCommand>
 {
     public CreatePetCommand ToCommand()

@@ -1,5 +1,5 @@
 ﻿using PetFamily.API.Contracts.Requests.Interfaces;
-using PetFamily.Application.VolunteerUseCases.DeletePetFiles;
+using PetFamily.Application.VolunteerUseCases.Commands.DeletePetFiles;
 
 namespace PetFamily.API.Contracts.Requests.Volunteer;
 

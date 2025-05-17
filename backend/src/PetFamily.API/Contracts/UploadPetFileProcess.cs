@@ -6,7 +6,7 @@ public class UploadPetFileProcess : IAsyncDisposable
 {
     private static readonly List<UploadPetFileDto> _filesDtos = [];
 
-    public List<UploadPetFileDto> Process(IFormFileCollection files)
+    public IEnumerable<UploadPetFileDto> Process(IFormFileCollection files)
     {
         foreach (var file in files)
         {

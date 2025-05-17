@@ -1,11 +1,11 @@
 ﻿using PetFamily.API.Contracts.Requests.Interfaces;
 using PetFamily.Application.Contracts.DTO.SharedDtos;
-using PetFamily.Application.VolunteerUseCases.UpdateDetailsForHelps;
+using PetFamily.Application.VolunteerUseCases.Commands.UpdateDetailsForHelps;
 
 namespace PetFamily.API.Contracts.Requests.Volunteer;
 
 public record UpdateVolunteersDetailsForHelpRequest(
-    IReadOnlyList<DetailsForHelpDto> DetailsForHelps
+    IEnumerable<DetailsForHelpDto> DetailsForHelps
 )
     : IToCommand<UpdateVolunteersDetailsForHelpCommand, Guid>
 {
@@ -13,6 +13,6 @@ public record UpdateVolunteersDetailsForHelpRequest(
     {
         return new UpdateVolunteersDetailsForHelpCommand(
             volunteerId,
-            new DetailsForHelpCollectionDto(DetailsForHelps));
+            new DetailsForHelpCollectionDto(DetailsForHelps.ToList()));
     }
 }

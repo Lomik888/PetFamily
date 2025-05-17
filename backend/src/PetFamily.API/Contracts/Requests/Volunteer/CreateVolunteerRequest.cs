@@ -1,6 +1,6 @@
 ﻿using PetFamily.API.Contracts.Requests.Interfaces;
 using PetFamily.Application.Contracts.DTO.VolunteerDtos;
-using PetFamily.Application.VolunteerUseCases.Create;
+using PetFamily.Application.VolunteerUseCases.Commands.Create;
 
 namespace PetFamily.API.Contracts.Requests.Volunteer;
 

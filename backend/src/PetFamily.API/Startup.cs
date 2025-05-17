@@ -3,6 +3,7 @@ using PetFamily.Application.DependencyInjection;
 using PetFamily.Infrastructure.DependencyInjection;
 using Serilog;
 using Serilog.Events;
+
 namespace PetFamily.API;
 
 public static class Startup
@@ -31,7 +32,7 @@ public static class Startup
     {
         var seqConnectionString =
             configuration.GetRequiredSection(SeqOptions.SECTION_FOR_SEQ)
-                .GetValue<string>(SeqOptions.CONNECTIONSTRING_FOR_SEQ) ;
+                .GetValue<string>(SeqOptions.CONNECTIONSTRING_FOR_SEQ);
 
         var seqApiKey =
             configuration.GetRequiredSection(SeqOptions.SECTION_FOR_SEQ)
