@@ -17,10 +17,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Contracts\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="VolunteerUseCases\IFilesProvider.cs" />
     </ItemGroup>
 

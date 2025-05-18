@@ -20,5 +20,5 @@ public record CreatePetCommand(
     DateTime DateOfBirth,
     bool Vaccinated,
     HelpStatuses HelpStatus,
-    List<DetailsForHelpDto> DetailsForHelps
+    IEnumerable<DetailsForHelpDto> DetailsForHelps
 ) : ICommand;

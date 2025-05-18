@@ -1,6 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.Extensions.Logging;
+using PetFamily.Application.Contracts;
 using PetFamily.Application.Contracts.DTO;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.Extensions;
@@ -21,19 +22,22 @@ public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadPetFilesCo
     private readonly ILogger<UploadPetFilesHandler> _logger;
     private readonly IFilesProvider _filesProvider;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IChannelMessageQueue _invalidFilesMessageQueue;
 
     public UploadPetFilesHandler(
         IVolunteerRepository volunteerRepository,
         ILogger<UploadPetFilesHandler> logger,
         IValidator<UploadPetFilesCommand> validator,
         IFilesProvider filesProvider,
-        IUnitOfWork unitOfWork)
+        IUnitOfWork unitOfWork,
+        IChannelMessageQueue invalidFilesMessageQueue)
     {
         _volunteerRepository = volunteerRepository;
         _logger = logger;
         _validator = validator;
         _filesProvider = filesProvider;
         _unitOfWork = unitOfWork;
+        _invalidFilesMessageQueue = invalidFilesMessageQueue;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
@@ -82,9 +86,10 @@ public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadPetFilesCo
                 volunteerId,
                 petId);
 
-            await _unitOfWork.RollbackAsync(cancellationToken);
+            var filesToDeleteResults = uploadedFiles.Select(x => FileToDelete.Create(x).Value);
 
-            // отправить пути файлов, которые надо удалить для backgroudworker
+            await _unitOfWork.RollbackAsync(cancellationToken);
+            await _invalidFilesMessageQueue.AddPathsAsync(filesToDeleteResults, cancellationToken);
         }
 
         if (failUploadedFiles.Count > 0)
