@@ -4,8 +4,8 @@ using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
 using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.VolunteerUseCases.DeletePetFiles;
-using PetFamily.Application.VolunteerUseCases.UploadPetFiles;
+using PetFamily.Application.VolunteerUseCases.Commands.DeletePetFiles;
+using PetFamily.Application.VolunteerUseCases.Commands.UploadPetFiles;
 using PetFamily.Shared.Errors;
 
 namespace PetFamily.API.Controllers;
