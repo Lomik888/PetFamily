@@ -20,4 +20,15 @@ public sealed class Species : Entity<SpeciesId>
     {
         Name = name;
     }
+
+    public void SetBreeds(List<Breed> breeds)
+    {
+        if (breeds.Count == 0)
+            _breeds.Clear();
+
+        var newBreeds = _breeds.Union(breeds);
+        _breeds.Clear();
+
+        _breeds.AddRange(newBreeds);
+    }
 }

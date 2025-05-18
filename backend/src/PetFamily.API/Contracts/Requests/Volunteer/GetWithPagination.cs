@@ -5,8 +5,8 @@ namespace PetFamily.API.Contracts.Requests.Volunteer;
 
 public class GetWithPagination : IToQuery<GetQuery>
 {
-    public int Page { get; set; }
-    public int PageSize { get; set; }
+    public int Page { get; init; }
+    public int PageSize { get; init; }
 
     public GetQuery ToQuery()
     {

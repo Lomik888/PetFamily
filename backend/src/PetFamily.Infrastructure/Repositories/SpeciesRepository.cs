@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using PetFamily.Application;
 using PetFamily.Application.Repositories;
+using PetFamily.Domain.SpeciesContext.Entities;
 using PetFamily.Domain.SpeciesContext.Ids;
 using PetFamily.Infrastructure.DbContext.PostgresSQL;
 using PetFamily.Shared.Validation;
@@ -19,6 +20,41 @@ public class SpeciesRepository : ISpeciesRepository
                      throw new ArgumentNullException(nameof(dbContext), "DbContext is missing");
         _logger = logger ??
                   throw new ArgumentNullException(nameof(logger), "Logger is missing");
+    }
+
+    public async Task UpdateAlreadyTrackingAsync(CancellationToken cancellationToken = default)
+    {
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<Species> GetSpeciesByIdAsync(
+        SpeciesId speciesId,
+        CancellationToken cancellationToken = default)
+    {
+        Validator.Guard.NotNull(speciesId);
+        return await _dbContext.Species
+            .Where(x => x.Id == speciesId)
+            .SingleAsync(cancellationToken);
+    }
+
+    public async Task<Species> GetSpeciesByIdWithBreedsAsync(
+        SpeciesId speciesId,
+        CancellationToken cancellationToken = default)
+    {
+        Validator.Guard.NotNull(speciesId);
+        return await _dbContext.Species
+            .Where(x => x.Id == speciesId)
+            .Include(x => x.Breeds)
+            .SingleAsync(cancellationToken);
+    }
+
+    public async Task RemoveAsync(
+        Species species,
+        CancellationToken cancellationToken = default)
+    {
+        Validator.Guard.NotNull(species);
+        _dbContext.Species.Remove(species);
+        await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<bool> SpeciesAndBreedExistsAsync(
