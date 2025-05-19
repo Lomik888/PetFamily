@@ -52,6 +52,28 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
         Files = files;
     }
 
+    public UnitResult<Error> SetPetStatus(Pet pet, HelpStatus helpStatus)
+    {
+        if (_pets.Any(p => p.Id == pet.Id) == false)
+        {
+            return ErrorsPreform.General.Validation("No pets were found", nameof(Pets));
+        }
+
+        pet.SetStatus(helpStatus);
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> SetMainFilePet(Pet pet, File file)
+    {
+        if (_pets.Any(p => p.Id == pet.Id) == false)
+        {
+            return ErrorsPreform.General.Validation("No pets were found", nameof(Pets));
+        }
+
+        pet.SetMainFile(file);
+        return UnitResult.Success<Error>();
+    }
+
     public Result<int> FoundHomePetsCount() =>
         _pets.Count(p => p.HelpStatus.Value == HelpStatuses.FOUNDHOME);
 
@@ -197,6 +219,18 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
         {
             return result.Error;
         }
+
+        return UnitResult.Success<Error>();
+    }
+
+    public UnitResult<Error> UpdateFullInfoAboutPet(Pet pet, UpdatePetFullInfoDto dto)
+    {
+        if (_pets.Any(p => p.Id == pet.Id) == false)
+        {
+            return ErrorsPreform.General.NotFound(pet.Id.Value);
+        }
+
+        pet.UpdateFullInfo(dto);
 
         return UnitResult.Success<Error>();
     }

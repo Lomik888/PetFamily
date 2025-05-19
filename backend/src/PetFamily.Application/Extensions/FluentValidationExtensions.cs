@@ -6,6 +6,23 @@ namespace PetFamily.Application.Extensions;
 
 public static class FluentValidationExtensions
 {
+    public static IRuleBuilderOptionsConditions<T, TProperty> Must<T, TProperty>(
+        this IRuleBuilder<T, TProperty> ruleBuilder,
+        Func<TProperty, UnitResult<Error>> predicate)
+    {
+        return ruleBuilder.Custom((value, context) =>
+        {
+            var result = predicate(value);
+            
+            if (result.IsSuccess)
+            {
+                return;
+            }
+
+            context.AddFailure(result.Error.Serialize());
+        });
+    }
+
     public static IRuleBuilderOptions<T, TProperty> WithMessageCustom<T, TProperty>(
         this IRuleBuilderOptions<T, TProperty> ruleBuilder,
         string errorMessage)
