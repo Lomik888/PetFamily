@@ -43,9 +43,7 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorList, U
         var volunteer = await _volunteerRepository.GetByIdAsync(
             VolunteerId.Create(request.VolunteerId).Value,
             cancellationToken);
-
-        // Потом можно попробовать вынести Switch
-
+        
         string? firstName = null;
         string? lastName = null;
         string? sureName = null;

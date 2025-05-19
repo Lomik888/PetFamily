@@ -23,8 +23,14 @@ public class GetHandler : IQueryHandler<GetObjectsWithPaginationResponse<Volunte
         IValidator<GetQuery> validator)
     {
         _connectionFactory = connectionFactory;
-        _logger = logger;
-        _validator = validator;
+        _logger = logger ??
+                  throw new ArgumentNullException(
+                      nameof(logger),
+                      "logger  is missing");
+        _validator = validator ??
+                     throw new ArgumentNullException(
+                         nameof(validator),
+                         "validator  is missing");
     }
 
     public async Task<Result<GetObjectsWithPaginationResponse<VolunteerDto>, ErrorList>> Handle(

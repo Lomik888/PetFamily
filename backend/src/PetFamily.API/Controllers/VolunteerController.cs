@@ -2,6 +2,7 @@
 using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
+using PetFamily.Application;
 using PetFamily.Application.Contracts.DTO;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.Activate;

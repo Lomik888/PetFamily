@@ -33,7 +33,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
         builder.HasMany(x => x.Breeds)
             .WithOne()
             .HasForeignKey("species_id")
-            .OnDelete(DeleteBehavior.Restrict)
+            .OnDelete(DeleteBehavior.Cascade)
             .IsRequired();
     }
 }

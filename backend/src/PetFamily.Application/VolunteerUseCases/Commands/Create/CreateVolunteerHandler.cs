@@ -41,9 +41,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, ErrorList, CreateVol
             _logger.LogInformation("Invalid Validation request");
             return ErrorList.Create(validationResult.Errors.ToErrors());
         }
-
-        // добавить инвариант проверки уникальности номера телефона
-
+        
         var id = VolunteerId.Create().Value;
         var nameResult = Name.Create(request.Name.FirstName, request.Name.LastName, request.Name.Surname).Value;
         var emailResult = Email.Create(request.Email).Value;
