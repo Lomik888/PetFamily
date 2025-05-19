@@ -25,18 +25,9 @@ public class DeleteSpecieAndBreedHandle : ICommandHandler<ErrorList, DeleteSpeci
         ISpeciesRepository speciesRepository)
     {
         _connectionFactory = connectionFactory;
-        _validator = validator ??
-                     throw new ArgumentNullException(
-                         nameof(validator),
-                         "validator is missing");
-        _logger = logger ??
-                  throw new ArgumentNullException(
-                      nameof(logger),
-                      "logger is missing");
-        _speciesRepository = speciesRepository ??
-                             throw new ArgumentNullException(
-                                 nameof(speciesRepository),
-                                 "speciesRepository is missing");
+        _validator = validator;
+        _logger = logger;
+        _speciesRepository = speciesRepository;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
@@ -56,12 +47,14 @@ public class DeleteSpecieAndBreedHandle : ICommandHandler<ErrorList, DeleteSpeci
 
         var result = await GetExistInfoAsync(parameters, cancellationToken);
 
-        switch (true)
+        if (result.SpeciesAndBreedsExist == false && result.SpeciesExist == true)
         {
-            case true when result.SpeciesExist == false:
-                return await SpeciesNotExist(request, cancellationToken);
-            case true when result.SpeciesExist == true && result.SpeciesAndBreedsExist == false:
-                return await BreedNotExist(request, cancellationToken);
+            return await BreedNotExist(request, cancellationToken);
+        }
+
+        if (result.SpeciesExist == false)
+        {
+            return await SpeciesNotExist(request, cancellationToken);
         }
 
         return UnitResult.Success<ErrorList>();

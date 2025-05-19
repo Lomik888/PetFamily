@@ -31,7 +31,7 @@ public class SpeciesController : ApplicationController
     }
 
     [HttpGet("{speciesId:guid}/breeds")]
-    public async Task<ActionResult> Get(
+    public async Task<ActionResult> GetBreeds(
         [FromRoute] Guid speciesId,
         [FromQuery] GetBreedsWithPaginationRequest request,
         [FromServices] IQueryHandler<GetObjectsWithPaginationResponse<BreedsDto>, ErrorList, GetBreedsQuery> handler,
