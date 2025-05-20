@@ -103,6 +103,11 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
         DetailsForHelps = detailsForHelps;
     }
 
+    public void DeletePet(Pet pet)
+    {
+        _pets.Remove(pet);
+    }
+    
     public override void UnActivate()
     {
         if (IsActive == false)
@@ -119,6 +124,16 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
         {
             pet.UnActivate();
         }
+    }
+
+    public void UnActivatePet(Pet pet)
+    {
+        pet.UnActivate();
+    }
+
+    public void ActivatePet(Pet pet)
+    {
+        pet.Activate();
     }
 
     public override void Activate()

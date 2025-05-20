@@ -1,4 +1,5 @@
-﻿using PetFamily.Application.Contracts.DTO.PetDtos;
+﻿using PetFamily.Application.Contracts;
+using PetFamily.Application.Contracts.DTO.PetDtos;
 using PetFamily.Application.Contracts.DTO.SharedDtos;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;

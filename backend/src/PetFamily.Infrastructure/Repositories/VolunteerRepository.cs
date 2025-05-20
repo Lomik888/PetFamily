@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PetFamily.Application.Repositories;
-using PetFamily.Application.VolunteerUseCases;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.IdsVO;
 using PetFamily.Infrastructure.DbContext.PostgresSQL;

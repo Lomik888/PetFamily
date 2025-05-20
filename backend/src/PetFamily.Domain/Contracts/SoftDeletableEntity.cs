@@ -19,7 +19,7 @@ public abstract class SoftDeletableEntity<TId> : Entity<TId> where TId : ICompar
         {
             return;
         }
-
+    
         var dateTimeUtcNow = DateTime.UtcNow;
 
         DeletedAt = dateTimeUtcNow;

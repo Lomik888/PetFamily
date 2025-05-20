@@ -9,11 +9,14 @@ using PetFamily.Application.VolunteerUseCases.Commands.Activate;
 using PetFamily.Application.VolunteerUseCases.Commands.Create;
 using PetFamily.Application.VolunteerUseCases.Commands.CreatePet;
 using PetFamily.Application.VolunteerUseCases.Commands.Delete;
+using PetFamily.Application.VolunteerUseCases.Commands.DeletePet;
 using PetFamily.Application.VolunteerUseCases.Commands.MovePet;
+using PetFamily.Application.VolunteerUseCases.Commands.SetMainFilePet;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateDetailsForHelps;
+using PetFamily.Application.VolunteerUseCases.Commands.UpdateFullPet;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateMainInfo;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateSocialNetworks;
-using PetFamily.Application.VolunteerUseCases.Queries;
+using PetFamily.Application.VolunteerUseCases.Commands.UpdateStatusPet;
 using PetFamily.Application.VolunteerUseCases.Queries.Get;
 using PetFamily.Shared.Errors;
 
@@ -35,6 +38,78 @@ public class VolunteerController : ApplicationController
         }
 
         return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpPut("{volunteerId:guid}/{petId:guid}/main-file")]
+    public async Task<ActionResult<Guid>> SetMainFilePet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, SetMainFilePetCommand> handler,
+        [FromBody] SetMainFilePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpDelete("{volunteerId:guid}/{petId:guid}")]
+    public async Task<ActionResult<Guid>> DeletePet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, DeletePetCommand> handler,
+        [FromBody] DeletePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpPut("{volunteerId:guid}/{petId:guid}/status")]
+    public async Task<ActionResult<Guid>> UpdateStatus(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, UpdateStatusPetCommand> handler,
+        [FromBody] UpdateStatusPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpPatch("{volunteerId:guid}/{petId:guid}/full-info")]
+    public async Task<ActionResult<Guid>> UpdateMainInfo(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, UpdateFullPetCommand> handler,
+        [FromBody] UpdateFullPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
     }
 
     [HttpPatch("{volunteerId:guid}/main-info")]
