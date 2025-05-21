@@ -22,8 +22,4 @@
       <Compile Remove="VolunteerUseCases\IFilesProvider.cs" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="VolunteerUseCases\Commands\" />
-    </ItemGroup>
-
 </Project>

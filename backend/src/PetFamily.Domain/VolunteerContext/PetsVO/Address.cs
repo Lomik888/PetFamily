@@ -6,7 +6,7 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO;
 
 public class Address : ValueObject
 {
-    private const int MIN_LENGHT = 1;
+    public const int MIN_LENGHT = 1;
     public const int COUNTRY_MAX_LENGHT = 75;
     public const int CITY_MAX_LENGHT = 50;
     public const int STREET_MAX_LENGHT = 50;

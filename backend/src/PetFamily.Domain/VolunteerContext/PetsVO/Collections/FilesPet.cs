@@ -7,7 +7,7 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO.Collections;
 
 public class FilesPet : ValueObjectList<File>
 {
-    private const int MAX_FILE_COUNT = 10;
+    public const int MAX_FILE_COUNT = 10;
 
     private FilesPet(IEnumerable<File> items) : base(items)
     {
@@ -16,7 +16,7 @@ public class FilesPet : ValueObjectList<File>
     private FilesPet()
     {
     }
-    
+
     public static Result<FilesPet, Error> Create(IEnumerable<File> items)
     {
         var enumerable = items.ToList();

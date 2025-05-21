@@ -71,9 +71,51 @@ public sealed class Pet : SoftDeletableEntity<PetId>, ICloneable
         FilesPet = filesPet;
     }
 
+    internal void SetStatus(HelpStatus helpStatus)
+    {
+        HelpStatus = helpStatus;
+    }
+
+    internal void SetMainFile(File file)
+    {
+        var files = FilesPet.Items.ToList();
+        MoveFile(files, file, 0);
+
+        var newFiles = FilesPet.Create(files).Value;
+
+        FilesPet = newFiles;
+    }
+
+    private void MoveFile(List<File> files, File file, int position)
+    {
+        var index = files.IndexOf(file);
+        if (index == 0) return;
+        files.RemoveAt(index);
+        files.Insert(0, file);
+    }
+
     internal void SetSerialNumber(SerialNumber serialNumber)
     {
         SerialNumber = serialNumber;
+    }
+
+    internal void UpdateFullInfo(UpdatePetFullInfoDto dto)
+    {
+        NickName = dto.NickName;
+        SpeciesBreedId = dto.SpeciesBreedId;
+        Description = dto.Description;
+        Color = dto.Color;
+        HealthDescription = dto.HealthDescription;
+        Address = dto.Address;
+        Weight = dto.Weight;
+        Height = dto.Height;
+        PhoneNumber = dto.PhoneNumber;
+        Sterilize = dto.Sterilize;
+        DateOfBirth = dto.DateOfBirth;
+        Vaccinated = dto.Vaccinated;
+        HelpStatus = dto.HelpStatus;
+        DetailsForHelps = dto.DetailsForHelps;
+        FilesPet = dto.FilesPet;
     }
 
     internal void SetFiles(FilesPet filesPet)

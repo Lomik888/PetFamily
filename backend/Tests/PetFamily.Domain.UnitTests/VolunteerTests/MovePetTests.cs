@@ -22,7 +22,7 @@ public class MovePetTests
             requestSomeVolunteer,
             requestSomePet);
 
-        var volunteer = volunteerFixture.Volunteer;
+        var sut = volunteerFixture.Volunteer;
         var volunteerForEqual = volunteerFixture.VolunteerForEqual;
 
         var someVolunteerWithOnePet = volunteerFixture.SomeVolunteerWithOnePet;
@@ -34,10 +34,10 @@ public class MovePetTests
         var serialNumber = SerialNumber.Create((uint)numberForSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)numberForSerialNumber).Value;
 
-        var result = volunteer.MovePet(somePet, serialNumber);
+        var result = sut.MovePet(somePet, serialNumber);
 
         result.IsFailure.Should().BeTrue();
-        volunteer.Should().BeEquivalentTo(volunteerForEqual);
+        sut.Should().BeEquivalentTo(volunteerForEqual);
         somePet.Should().BeEquivalentTo(somePetForEqual);
         serialNumber.Should().BeEquivalentTo(serialNumberForEqual);
         result.Error.ErrorType.Should().Be(ErrorType.VALIDATION);
@@ -59,7 +59,7 @@ public class MovePetTests
             requestSomePet,
             requestPets);
 
-        var volunteer = volunteerFixture.Volunteer;
+        var sut = volunteerFixture.Volunteer;
         var volunteerForEqual = volunteerFixture.VolunteerForEqual;
 
         var somePet = volunteerFixture.SomePet;
@@ -68,10 +68,10 @@ public class MovePetTests
         var serialNumber = SerialNumber.Create((uint)numberForSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)numberForSerialNumber).Value;
 
-        var result = volunteer.MovePet(somePet, serialNumber);
+        var result = sut.MovePet(somePet, serialNumber);
 
         result.IsFailure.Should().BeTrue();
-        volunteer.Should().BeEquivalentTo(volunteerForEqual);
+        sut.Should().BeEquivalentTo(volunteerForEqual);
         somePet.Should().BeEquivalentTo(somePetForEqual);
         serialNumber.Should().BeEquivalentTo(serialNumberForEqual);
         result.Error.ErrorType.Should().Be(ErrorType.VALIDATION);
@@ -96,18 +96,18 @@ public class MovePetTests
             requestSomePet,
             requestPets);
 
-        var volunteer = volunteerFixture.Volunteer;
+        var sut = volunteerFixture.Volunteer;
         var volunteerForEqual = volunteerFixture.VolunteerForEqual;
 
-        var pet = volunteer.Pets.Single(x => x.SerialNumber.Value == newSerialNumber);
+        var pet = sut.Pets.Single(x => x.SerialNumber.Value == newSerialNumber);
 
         var serialNumber = SerialNumber.Create((uint)newSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)newSerialNumber).Value;
 
-        var result = volunteer.MovePet(pet, serialNumber);
+        var result = sut.MovePet(pet, serialNumber);
 
         result.IsFailure.Should().BeFalse();
-        volunteer.Should().BeEquivalentTo(volunteerForEqual);
+        sut.Should().BeEquivalentTo(volunteerForEqual);
         serialNumber.Should().BeEquivalentTo(serialNumberForEqual);
         result.Error.ErrorType.Should().Be(ErrorType.VALIDATION);
     }
@@ -131,33 +131,33 @@ public class MovePetTests
             requestSomePet,
             requestPets);
 
-        var volunteer = volunteerFixture.Volunteer;
+        var sut = volunteerFixture.Volunteer;
         var volunteerForEqual = volunteerFixture.VolunteerForEqual;
 
-        var pet = volunteer.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
+        var pet = sut.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
 
         var serialNumber = SerialNumber.Create((uint)newSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)newSerialNumber).Value;
 
-        var result = volunteer.MovePet(pet, serialNumber);
+        var result = sut.MovePet(pet, serialNumber);
 
         var oldPets = volunteerForEqual.Pets
             .Where(x => x.SerialNumber.Value > oldSerialNumber)
             .ToList();
-        var petsAfterMethod = volunteer.Pets
+        var petsAfterMethod = sut.Pets
             .Where(x =>
                 x.SerialNumber.Value >= oldSerialNumber &&
-                x.SerialNumber.Value != volunteer.Pets.Count)
+                x.SerialNumber.Value != sut.Pets.Count)
             .ToList();
 
         result.IsFailure.Should().BeFalse();
         serialNumber.Should().BeEquivalentTo(serialNumberForEqual);
-        pet.SerialNumber.Value.Should().Be((uint)volunteer.Pets.Count);
+        pet.SerialNumber.Value.Should().Be((uint)sut.Pets.Count);
         pet.SerialNumber.Value.Should().NotBe(newSerialNumber);
-        volunteer.Should().BeEquivalentTo(volunteerForEqual, options =>
+        sut.Should().BeEquivalentTo(volunteerForEqual, options =>
             options.Excluding(x => x.Path.Contains("Pets")));
         petsAfterMethod.Count.Should().Be(oldPets.Count);
-        volunteer.Pets.Should().BeEquivalentTo(volunteerForEqual.Pets, options =>
+        sut.Pets.Should().BeEquivalentTo(volunteerForEqual.Pets, options =>
             options.Excluding(x => x.SerialNumber));
         petsAfterMethod
             .Zip(oldPets, (after, before) => (after, before))
@@ -186,22 +186,22 @@ public class MovePetTests
             requestSomePet,
             requestPets);
 
-        var volunteer = volunteerFixture.Volunteer;
+        var sut = volunteerFixture.Volunteer;
         var volunteerForEqual = volunteerFixture.VolunteerForEqual;
 
-        var pet = volunteer.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
+        var pet = sut.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
 
         var serialNumber = SerialNumber.Create((uint)newSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)newSerialNumber).Value;
 
-        var result = volunteer.MovePet(pet, serialNumber);
+        var result = sut.MovePet(pet, serialNumber);
 
         var oldPets = volunteerForEqual.Pets
             .Where(x =>
                 x.SerialNumber.Value < oldSerialNumber &&
                 x.SerialNumber.Value >= newSerialNumber)
             .ToList();
-        var petsAfterMethod = volunteer.Pets
+        var petsAfterMethod = sut.Pets
             .Where(x =>
                 x.SerialNumber.Value > oldSerialNumber &&
                 x.SerialNumber.Value <= newSerialNumber)
@@ -209,9 +209,9 @@ public class MovePetTests
 
         result.IsFailure.Should().BeFalse();
         pet.SerialNumber.Value.Should().Be(newSerialNumber);
-        volunteer.Should().BeEquivalentTo(volunteerForEqual, options =>
+        sut.Should().BeEquivalentTo(volunteerForEqual, options =>
             options.Excluding(x => x.Path.Contains("Pets")));
-        volunteer.Pets.Should().BeEquivalentTo(volunteerForEqual.Pets, options =>
+        sut.Pets.Should().BeEquivalentTo(volunteerForEqual.Pets, options =>
             options.Excluding(x => x.SerialNumber));
         petsAfterMethod
             .Zip(oldPets, (after, before) => (after, before))
@@ -240,22 +240,22 @@ public class MovePetTests
             requestSomePet,
             requestPets);
 
-        var volunteer = volunteerFixture.Volunteer;
+        var sut = volunteerFixture.Volunteer;
         var volunteerForEqual = volunteerFixture.VolunteerForEqual;
 
-        var pet = volunteer.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
+        var pet = sut.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
 
         var serialNumber = SerialNumber.Create((uint)newSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)newSerialNumber).Value;
 
-        var result = volunteer.MovePet(pet, serialNumber);
+        var result = sut.MovePet(pet, serialNumber);
 
         var oldPets = volunteerForEqual.Pets
             .Where(x =>
                 x.SerialNumber.Value > oldSerialNumber &&
                 x.SerialNumber.Value <= newSerialNumber)
             .ToList();
-        var petsAfterMethod = volunteer.Pets
+        var petsAfterMethod = sut.Pets
             .Where(x =>
                 x.SerialNumber.Value >= oldSerialNumber &&
                 x.SerialNumber.Value < newSerialNumber)
@@ -263,9 +263,9 @@ public class MovePetTests
 
         result.IsFailure.Should().BeFalse();
         pet.SerialNumber.Value.Should().Be(newSerialNumber);
-        volunteer.Should().BeEquivalentTo(volunteerForEqual, options =>
+        sut.Should().BeEquivalentTo(volunteerForEqual, options =>
             options.Excluding(x => x.Path.Contains("Pets")));
-        volunteer.Pets.Should().BeEquivalentTo(volunteerForEqual.Pets, options =>
+        sut.Pets.Should().BeEquivalentTo(volunteerForEqual.Pets, options =>
             options.Excluding(x => x.SerialNumber));
         petsAfterMethod
             .Zip(oldPets, (after, before) => (after, before))
