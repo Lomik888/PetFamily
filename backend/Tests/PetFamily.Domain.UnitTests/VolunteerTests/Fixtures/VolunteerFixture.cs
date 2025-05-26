@@ -79,6 +79,7 @@ public class VolunteerFixture
         var createPetDto = new CreatePetDto(
             NickName.Create(requestPet.Name).Value,
             SpeciesBreedId.Create(requestPet.SpeciesId, requestPet.BreedId).Value,
+            Age.Create(requestPet.Age).Value,
             Description.Create(requestPet.Description).Value,
             Color.Create(requestPet.Color).Value,
             HealthDescription.Create(

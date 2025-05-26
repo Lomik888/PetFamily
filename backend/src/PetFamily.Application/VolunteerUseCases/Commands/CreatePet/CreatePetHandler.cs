@@ -107,6 +107,7 @@ public class CreatePetHandler : ICommandHandler<ErrorList, CreatePetCommand>
                 request.SpeciesBreedIdDto.SpeciesId,
                 request.SpeciesBreedIdDto.BreedId)
             .Value;
+        var age = Age.Create(request.Age).Value;
         var description = Description.Create(request.Description).Value;
         var color = Color.Create(request.Color).Value;
         var healthDescription = HealthDescription
@@ -141,6 +142,7 @@ public class CreatePetHandler : ICommandHandler<ErrorList, CreatePetCommand>
         var createPetDto = new CreatePetDto(
             nickName,
             speciesBreedId,
+            age,
             description,
             color,
             healthDescription,

@@ -43,7 +43,7 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, ErrorList, CreateVol
         }
         
         var id = VolunteerId.Create().Value;
-        var nameResult = Name.Create(request.Name.FirstName, request.Name.LastName, request.Name.Surname).Value;
+        var nameResult = Name.Create(request.VolunteerName.FirstName, request.VolunteerName.LastName, request.VolunteerName.Surname).Value;
         var emailResult = Email.Create(request.Email).Value;
         var descriptionResult = Description.Create(request.Description).Value;
         var experienceResult = Experience.Create(request.Experience).Value;

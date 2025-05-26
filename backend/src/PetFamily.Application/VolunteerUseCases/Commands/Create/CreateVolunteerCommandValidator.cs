@@ -13,7 +13,7 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
         RuleFor(x => x.Description).MustBeValueObject(x => Description.Create(x));
         RuleFor(x => x.Experience).MustBeValueObject(x => Experience.Create(x));
 
-        RuleFor(x => x.Name)
+        RuleFor(x => x.VolunteerName)
             .MustBeValueObject(x => Name.Create(x.FirstName, x.LastName, x.Surname));
 
         RuleFor(x => x.Phone)

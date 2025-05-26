@@ -52,7 +52,7 @@ public class GetHandler : IQueryHandler<GetObjectsWithPaginationResponse<Volunte
         var sql = $"""
                    select count(*) from volunteers;
 
-                   select v.id              as Id,
+                   select v.id            as Id,
                           v.first_name      as FirstName,
                           v.last_name       as LastName,
                           v.surname         as Surname,

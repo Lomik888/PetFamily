@@ -107,7 +107,7 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
     {
         _pets.Remove(pet);
     }
-    
+
     public override void UnActivate()
     {
         if (IsActive == false)
@@ -300,6 +300,7 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
             createPetDto.NickName,
             serialNumber,
             createPetDto.SpeciesBreedId,
+            createPetDto.Age,
             createPetDto.Description,
             createPetDto.Color,
             createPetDto.HealthDescription,

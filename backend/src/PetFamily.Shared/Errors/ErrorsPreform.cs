@@ -22,6 +22,15 @@ public static class ErrorsPreform
                 ErrorType.NOTFOUND);
         }
 
+        public static Error NotFound(string? message)
+        {
+            return Error.Create(
+                message,
+                ErrorCodes.General.NotFound,
+                ErrorType.NOTFOUND);
+        }
+
+
         public static Error None()
         {
             return Error.Create(

@@ -9,6 +9,7 @@ public record CreatePetCommand(
     Guid VolunteerId,
     string NickName,
     SpeciesBreedIdDto SpeciesBreedIdDto,
+    uint Age,
     string Description,
     string Color,
     HealthDescriptionDto HealthDescriptionDto,
