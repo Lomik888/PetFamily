@@ -149,7 +149,7 @@ public class GetPetsHandler : IQueryHandler<GetObjectsWithPaginationResponse<Pet
             }
             else
             {
-                sqlFilters.Add(" p.age ");
+                sqlFilters.Add(" p.age desc");
             }
         }
 
