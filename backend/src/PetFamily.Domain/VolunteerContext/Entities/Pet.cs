@@ -13,6 +13,7 @@ public sealed class Pet : SoftDeletableEntity<PetId>, ICloneable
     public NickName NickName { get; private set; }
     public SerialNumber SerialNumber { get; private set; }
     public SpeciesBreedId SpeciesBreedId { get; private set; }
+    public Age Age { get; private set; }
     public Description Description { get; private set; }
     public Color Color { get; private set; }
     public HealthDescription HealthDescription { get; private set; }
@@ -37,6 +38,7 @@ public sealed class Pet : SoftDeletableEntity<PetId>, ICloneable
         NickName nickName,
         SerialNumber serialNumber,
         SpeciesBreedId speciesBreedId,
+        Age age,
         Description description,
         Color color,
         HealthDescription healthDescription,
@@ -55,6 +57,7 @@ public sealed class Pet : SoftDeletableEntity<PetId>, ICloneable
         NickName = nickName;
         SerialNumber = serialNumber;
         SpeciesBreedId = speciesBreedId;
+        Age = age;
         Description = description;
         Color = color;
         HealthDescription = healthDescription;
@@ -132,6 +135,7 @@ public sealed class Pet : SoftDeletableEntity<PetId>, ICloneable
             SpeciesBreedId.Create(
                 this.SpeciesBreedId.SpeciesId,
                 this.SpeciesBreedId.BreedId).Value,
+            Age.Create(this.Age.Value).Value,
             Description.Create(this.Description.Value).Value,
             Color.Create(this.Color.Value).Value,
             HealthDescription.Create(

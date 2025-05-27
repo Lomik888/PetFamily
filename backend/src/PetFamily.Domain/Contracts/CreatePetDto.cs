@@ -9,6 +9,7 @@ namespace PetFamily.Domain.Contracts;
 public record CreatePetDto(
     NickName NickName,
     SpeciesBreedId SpeciesBreedId,
+    Age Age,
     Description Description,
     Color Color,
     HealthDescription HealthDescription,

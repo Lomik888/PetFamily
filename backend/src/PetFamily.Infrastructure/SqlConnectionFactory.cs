@@ -8,17 +8,15 @@ namespace PetFamily.Infrastructure;
 
 public class SqlConnectionFactory : ISqlConnectionFactory
 {
-    private readonly IConfiguration _configuration;
+    private readonly string _connectionString;
 
-    public SqlConnectionFactory(IConfiguration configuration)
+    public SqlConnectionFactory(string connectionString)
     {
-        _configuration = configuration;
+        _connectionString = connectionString;
     }
 
     public IDbConnection Create()
     {
-        return new NpgsqlConnection(_configuration
-            .GetRequiredSection(ApplicationDbContextOptions.CONNECTIONSTRING_SECTION_FOR_POSTGRESSQL)
-            .GetValue<string>(ApplicationDbContextOptions.CONNECTIONSTRING_FOR_POSTGRESSQL));
+        return new NpgsqlConnection(_connectionString);
     }
 }

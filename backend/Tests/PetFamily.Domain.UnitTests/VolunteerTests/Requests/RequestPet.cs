@@ -6,6 +6,7 @@ public record class RequestPet(
     string Name,
     Guid SpeciesId,
     Guid BreedId,
+    uint Age,
     string Description,
     string Color,
     string SharedHealthStatus,

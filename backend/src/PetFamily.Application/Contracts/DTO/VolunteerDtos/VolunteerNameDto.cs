@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.Application.Contracts.DTO.VolunteerDtos;
 
-public record NameCreateDto(
+public record VolunteerNameDto(
     string FirstName,
     string LastName,
     string Surname

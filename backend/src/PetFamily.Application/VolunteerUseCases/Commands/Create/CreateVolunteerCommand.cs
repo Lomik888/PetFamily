@@ -4,7 +4,7 @@ using PetFamily.Application.Contracts.SharedInterfaces;
 namespace PetFamily.Application.VolunteerUseCases.Commands.Create;
 
 public record CreateVolunteerCommand(
-    NameCreateDto Name,
+    VolunteerNameDto VolunteerName,
     string Email,
     string Description,
     int Experience,

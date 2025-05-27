@@ -30,7 +30,7 @@ public static class DependencyInjection
             .AddOptionsPattern(configuration)
             .AddLimiters()
             .AddChannels()
-            .AddDapperFactory()
+            .AddDapperFactory(configuration)
             .AddBackgroundService()
             .AddDbContext<ApplicationDbContext>(options =>
                 options.UseNpgsql(psqlConnectionString));
@@ -42,9 +42,17 @@ public static class DependencyInjection
         return services.AddScoped<ISpeciesRepository, SpeciesRepository>();
     }
 
-    private static IServiceCollection AddDapperFactory(this IServiceCollection services)
+    private static IServiceCollection AddDapperFactory(this IServiceCollection services, IConfiguration configuration)
     {
-        return services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>();
+        var connectionString = configuration
+                                   .GetRequiredSection(ApplicationDbContextOptions
+                                       .CONNECTIONSTRING_SECTION_FOR_POSTGRESSQL)
+                                   .GetValue<string>(ApplicationDbContextOptions.CONNECTIONSTRING_FOR_POSTGRESSQL) ??
+                               throw new NullReferenceException(
+                                   "Connection string for SqlConnectionFactory is missing");
+
+        return services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>(_ =>
+            new SqlConnectionFactory(connectionString));
     }
 
     private static IServiceCollection AddLimiters(this IServiceCollection services)

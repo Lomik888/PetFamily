@@ -5,7 +5,7 @@ using PetFamily.Application.VolunteerUseCases.Commands.Create;
 namespace PetFamily.API.Contracts.Requests.Volunteer;
 
 public record CreateVolunteerRequest(
-    NameCreateDto Name,
+    VolunteerNameDto VolunteerName,
     string Email,
     string Description,
     int Experience,
@@ -15,7 +15,7 @@ public record CreateVolunteerRequest(
     public CreateVolunteerCommand ToCommand()
     {
         return new CreateVolunteerCommand(
-            Name,
+            VolunteerName,
             Email,
             Description,
             Experience,

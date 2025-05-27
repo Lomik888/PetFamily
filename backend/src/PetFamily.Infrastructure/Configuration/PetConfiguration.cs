@@ -27,6 +27,13 @@ public class PetConfiguration : IEntityTypeConfiguration<Pet>
                 helpStatus => helpStatus.Value.ToString(),
                 value => HelpStatus.Create((HelpStatuses)Enum.Parse(typeof(HelpStatuses), value)).Value);
 
+        builder.Property(x => x.Age)
+            .IsRequired()
+            .HasColumnName("age")
+            .HasConversion(
+                age => age.Value,
+                value => Age.Create(value).Value);
+
         builder.Property(x => x.CreatedAt)
             .IsRequired()
             .HasColumnName("created_at")
