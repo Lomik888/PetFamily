@@ -29,6 +29,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\src\PetFamily.API\PetFamily.API.csproj" />
+      <ProjectReference Include="..\PetFamily.Domain.UnitTests\PetFamily.Domain.UnitTests.csproj" />
     </ItemGroup>
 
 </Project>

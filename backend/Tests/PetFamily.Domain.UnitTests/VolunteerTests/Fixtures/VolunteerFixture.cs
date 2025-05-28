@@ -49,6 +49,19 @@ public class VolunteerFixture
         }
     }
 
+    public static Volunteer CreateVolunteerWithOutPets(RequestVolunteer requestVolunteer)
+    {
+        return CreateVolunteer(requestVolunteer);
+    }
+
+    public static void CreatePets(Volunteer volunteer, IEnumerable<RequestPet> requestsPets)
+    {
+        foreach (var req in requestsPets)
+        {
+            CreatePet(volunteer, req);
+        }
+    }
+
     public static VolunteerFixture Create(
         RequestVolunteer requestVolunteer,
         RequestVolunteer requestSomeVolunteer,

@@ -84,7 +84,6 @@ public class GetHandler : IQueryHandler<GetObjectsWithPaginationResponse<Volunte
             splitOn: "SocialNetworks"
         );
 
-
         var getObjectsWithPaginationResponse = new GetObjectsWithPaginationResponse<VolunteerDto>()
         {
             Data = volunteersDtos.ToArray(),

@@ -27,6 +27,18 @@ public class SpeciesRepository : ISpeciesRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task AddRangeAsync(IEnumerable<Species> species, CancellationToken cancellationToken = default)
+    {
+        await _dbContext.AddRangeAsync(species, cancellationToken);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task UpdateRangeAsync(IEnumerable<Species> species, CancellationToken cancellationToken = default)
+    {
+        _dbContext.UpdateRange(species);
+        await _dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     public async Task<Species> GetSpeciesByIdAsync(
         SpeciesId speciesId,
         CancellationToken cancellationToken = default)

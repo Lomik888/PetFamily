@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
+using PetFamily.Application.Contracts.DTO.VolunteerDtos;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Queries.GetPet;
 using PetFamily.Domain.VolunteerContext.SharedVO;
@@ -18,7 +19,7 @@ public static class DependencyInjection
             .AddValidation()
             .AddBackgroundServices()
             .AddOptions(configuration);
-
+        
         SqlMapper.AddTypeHandler(new JsonTypeHandler<IEnumerable<DetailsForHelp>>());
         SqlMapper.AddTypeHandler(new JsonTypeHandler<IEnumerable<File>>());
     }
