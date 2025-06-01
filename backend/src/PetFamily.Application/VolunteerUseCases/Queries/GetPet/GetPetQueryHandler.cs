@@ -9,15 +9,15 @@ using PetFamily.Shared.Errors;
 
 namespace PetFamily.Application.VolunteerUseCases.Queries.GetPet;
 
-public class GetPetHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
+public class GetPetQueryHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
-    private readonly ILogger<GetPetHandler> _logger;
+    private readonly ILogger<GetPetQueryHandler> _logger;
     private readonly IValidator<GetPetQuery> _validator;
 
-    public GetPetHandler(
+    public GetPetQueryHandler(
         IValidator<GetPetQuery> validator,
-        ILogger<GetPetHandler> logger,
+        ILogger<GetPetQueryHandler> logger,
         ISqlConnectionFactory sqlConnectionFactory)
     {
         _validator = validator;
@@ -68,6 +68,7 @@ public class GetPetHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
                           p.digestive_system_condition                         as DigestiveSystemCondition,
                           p.country                                            as Country,
                           p.city                                               as City,
+                          p.street                                             as Street,
                           p.house_number                                       as HouseNumber,
                           p.apartment_number                                   as ApartmentNumber,
                           p.height                                             as Height,
@@ -76,6 +77,7 @@ public class GetPetHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
                           p.sterilize                                          as Sterilize,
                           p.date_of_birth                                      as DateOfBirth,
                           p.vaccinated                                         as Vaccinated,
+                          p.status                                             as HelpStatus,
                           p.details_for_help                                   as DetailsForHelps,
                           p.files                                              as FilesPet
                    from pets as p

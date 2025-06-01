@@ -5,7 +5,7 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO;
 
 public class Age : ValueObject
 {
-    private const uint VELUE_MAX = 30;
+    public const uint VELUE_MAX = 30;
 
     public uint Value { get; }
 

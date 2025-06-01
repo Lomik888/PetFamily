@@ -7,7 +7,7 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO;
 
 public class Height : ValueObject
 {
-    private const double VELUE_MAX_LENGHT = 150D;
+    public const double VELUE_MAX_LENGHT = 150D;
     private const int VALUE_DECIMAL_PRECISION = 2;
     private const bool VELUE_CAN_BE_NEGATIVE = false;
     public double Value { get; }

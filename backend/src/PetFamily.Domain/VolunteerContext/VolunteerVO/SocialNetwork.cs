@@ -18,6 +18,17 @@ public class SocialNetwork : ValueObject
         RegexOptions.IgnoreCase |
         RegexOptions.IgnorePatternWhitespace);
 
+    public static readonly List<string> Domains = new List<string>()
+    {
+        "facebook.com",
+        "twitter.com",
+        "instagram.com",
+        "linkedin.com",
+        "vk.com",
+        "youtube.com",
+        "tiktok.com"
+    };
+
     private const string REGULAR_URL =
         """
         ^(https?:\/\/)?(www\.)?

@@ -7,6 +7,10 @@ public interface ISpeciesRepository
 {
     Task UpdateAlreadyTrackingAsync(CancellationToken cancellationToken = default);
 
+    Task AddRangeAsync(IEnumerable<Species> species, CancellationToken cancellationToken = default);
+
+    Task UpdateRangeAsync(IEnumerable<Species> species, CancellationToken cancellationToken = default);
+
     Task RemoveAsync(
         Species species,
         CancellationToken cancellationToken = default);
