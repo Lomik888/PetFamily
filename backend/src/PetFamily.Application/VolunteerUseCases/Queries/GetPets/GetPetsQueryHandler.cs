@@ -10,15 +10,15 @@ using PetFamily.Shared.Errors;
 
 namespace PetFamily.Application.VolunteerUseCases.Queries.GetPets;
 
-public class GetPetsHandler : IQueryHandler<GetObjectsWithPaginationResponse<PetDto>, ErrorList, GetPetsQuery>
+public class GetPetsQueryHandler : IQueryHandler<GetObjectsWithPaginationResponse<PetDto>, ErrorList, GetPetsQuery>
 {
     private readonly ISqlConnectionFactory _sqlConnectionFactory;
-    private readonly ILogger<GetPetsHandler> _logger;
+    private readonly ILogger<GetPetsQueryHandler> _logger;
     private readonly IValidator<GetPetsQuery> _validator;
 
-    public GetPetsHandler(
+    public GetPetsQueryHandler(
         IValidator<GetPetsQuery> validator,
-        ILogger<GetPetsHandler> logger,
+        ILogger<GetPetsQueryHandler> logger,
         ISqlConnectionFactory sqlConnectionFactory)
     {
         _validator = validator;
@@ -61,8 +61,7 @@ public class GetPetsHandler : IQueryHandler<GetObjectsWithPaginationResponse<Pet
         using var connection = _sqlConnectionFactory.Create();
 
         var sql = $"""
-                   select count(*)
-                   from pet ;
+                   select count(*) from pets;
 
                    select p.volunteer_id                                       as VolunteerId,
                           concat_ws(' ', v.first_name, v.last_name, v.surname) as FullName,
@@ -77,6 +76,7 @@ public class GetPetsHandler : IQueryHandler<GetObjectsWithPaginationResponse<Pet
                           p.digestive_system_condition                         as DigestiveSystemCondition,
                           p.country                                            as Country,
                           p.city                                               as City,
+                          p.street                                             as Street,
                           p.house_number                                       as HouseNumber,
                           p.apartment_number                                   as ApartmentNumber,
                           p.height                                             as Height,
@@ -85,12 +85,14 @@ public class GetPetsHandler : IQueryHandler<GetObjectsWithPaginationResponse<Pet
                           p.sterilize                                          as Sterilize,
                           p.date_of_birth                                      as DateOfBirth,
                           p.vaccinated                                         as Vaccinated,
+                          p.status                                             as HelpStatus,
                           p.details_for_help                                   as DetailsForHelps,
                           p.files                                              as FilesPet
                    from pets as p
                             left join volunteers as v on v.id = p.volunteer_id
                             left join species as s on s.id = p.species_id
                             left join breeds as b on b.id = p.breed_id
+                            
                    """;
 
 
@@ -181,9 +183,8 @@ public class GetPetsHandler : IQueryHandler<GetObjectsWithPaginationResponse<Pet
             sb.Append(string.Join(" , ", sqlSort));
         }
 
-
-        sb.Append(" @offset");
-        sb.Append(" @limit");
+        sb.Append(" offset @offset");
+        sb.Append(" limit @limit;");
 
         parameters.AddPagination(request.Page, request.PageSize);
 

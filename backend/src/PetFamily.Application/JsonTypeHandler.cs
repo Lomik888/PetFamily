@@ -2,7 +2,7 @@
 using System.Text.Json;
 using Dapper;
 
-namespace PetFamily.Application.VolunteerUseCases.Queries.GetPet;
+namespace PetFamily.Application;
 
 public class JsonTypeHandler<T> : SqlMapper.TypeHandler<T>
 {

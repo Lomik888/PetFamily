@@ -71,7 +71,10 @@ public static class Validator
                     fieldName));
             }
 
-            if (decimalPrecision != null && fieldValue.ToString()!.Split(',', '.').Last().Length > decimalPrecision)
+            var fieldValueString = fieldValue.ToString()!.Split(',', '.');
+            var fractionalPart = fieldValueString.Length == 2 ? fieldValueString[2] : "";
+
+            if (decimalPrecision != null && fractionalPart.Length > decimalPrecision)
             {
                 return UnitResult.Failure(ErrorsPreform.General.Validation(
                     $"{fieldName} decimal precision is more than {decimalPrecision}",

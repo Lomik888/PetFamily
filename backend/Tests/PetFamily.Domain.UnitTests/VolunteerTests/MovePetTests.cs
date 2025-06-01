@@ -1,6 +1,8 @@
 ﻿using FluentAssertions;
-using PetFamily.Domain.UnitTests.VolunteerTests.Builders;
-using PetFamily.Domain.UnitTests.VolunteerTests.Fixtures;
+using PetFamily.Data.Tests.Builders;
+using PetFamily.Data.Tests.Datas;
+using PetFamily.Data.Tests.Factories;
+using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Shared.Errors.Enums;
 
@@ -8,28 +10,28 @@ namespace PetFamily.Domain.UnitTests.VolunteerTests;
 
 public class MovePetTests
 {
+    private readonly Random _random = new Random();
+    public const int COUNT_PETS = 10;
+
     [Fact]
-    public void MovePet_WhenPetsCountIsZero_ReturnUnitResultIsFailureWithValidationTypeError()
+    public void Move_pet_when_pets_count_is_zero_return_unit_result_isFailure_with_validation_type_error()
     {
-        var random = new Random();
-        var numberForSerialNumber = random.Next(SerialNumber.INITIAL_VALUE, VolunteerFixture.COUNT_PET + 1);
+        var numberForSerialNumber = _random.Next(SerialNumber.INITIAL_VALUE, COUNT_PETS + 1);
+
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
 
-        var volunteerFixture = VolunteerFixture.CreateWithOutPets(
-            requestVolunteer,
-            requestSomeVolunteer,
-            requestSomePet);
+        var volunteer = VolunteerFactory.CreateVolunteer(requestVolunteer);
 
-        var sut = volunteerFixture.Volunteer;
-        var volunteerForEqual = volunteerFixture.VolunteerForEqual;
+        var sut = volunteer;
+        var volunteerForEqual = (Volunteer)volunteer.Clone();
 
-        var someVolunteerWithOnePet = volunteerFixture.SomeVolunteerWithOnePet;
-        var someVolunteerWithOnePetForEqual = volunteerFixture.SomeVolunteerWithOnePetForEqual;
+        var someVolunteerWithOnePet = VolunteerFactory.CreateVolunteer(requestSomeVolunteer);
+        PetsFactory.CreatePet(someVolunteerWithOnePet, requestSomePet);
 
-        var somePet = volunteerFixture.SomePet;
-        var somePetForEqual = volunteerFixture.SomePetForEqual;
+        var somePet = someVolunteerWithOnePet.Pets.First();
+        var somePetForEqual = (Pet)somePet.Clone();
 
         var serialNumber = SerialNumber.Create((uint)numberForSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)numberForSerialNumber).Value;
@@ -37,33 +39,33 @@ public class MovePetTests
         var result = sut.MovePet(somePet, serialNumber);
 
         result.IsFailure.Should().BeTrue();
-        sut.Should().BeEquivalentTo(volunteerForEqual);
+        volunteer.Should().BeEquivalentTo(volunteerForEqual);
         somePet.Should().BeEquivalentTo(somePetForEqual);
         serialNumber.Should().BeEquivalentTo(serialNumberForEqual);
         result.Error.ErrorType.Should().Be(ErrorType.VALIDATION);
     }
 
     [Fact]
-    public void MovePet_WhenPetIdNotContentsInPets_ReturnUnitResultIsFailureWithValidationTypeError()
+    public void Move_pet_when_pet_id_not_contents_in_pets_return_unit_result_is_failure_with_validation_type_error()
     {
-        var random = new Random();
-        var numberForSerialNumber = random.Next(SerialNumber.INITIAL_VALUE, VolunteerFixture.COUNT_PET + 1);
+        var numberForSerialNumber = _random.Next(SerialNumber.INITIAL_VALUE, COUNT_PETS + 1);
+
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
         var requestSomePet = RequestPetBuilder.PetBuild();
-        var requestPets = RequestPetBuilder.PetsBuild().ToList();
+        var requestPets = RequestPetBuilder.PetsBuild(COUNT_PETS).ToList();
 
-        var volunteerFixture = VolunteerFixture.Create(
-            requestVolunteer,
-            requestSomeVolunteer,
-            requestSomePet,
-            requestPets);
+        var volunteer = VolunteerFactory.CreateVolunteer(requestVolunteer);
+        PetsFactory.CreatePets(volunteer, requestPets);
 
-        var sut = volunteerFixture.Volunteer;
-        var volunteerForEqual = volunteerFixture.VolunteerForEqual;
+        var sut = volunteer;
+        var volunteerForEqual = (Volunteer)volunteer.Clone();
 
-        var somePet = volunteerFixture.SomePet;
-        var somePetForEqual = volunteerFixture.SomePetForEqual;
+        var someVolunteerWithOnePet = VolunteerFactory.CreateVolunteer(requestSomeVolunteer);
+        PetsFactory.CreatePet(someVolunteerWithOnePet, requestSomePet);
+
+        var somePet = someVolunteerWithOnePet.Pets.First();
+        var somePetForEqual = (Pet)somePet.Clone();
 
         var serialNumber = SerialNumber.Create((uint)numberForSerialNumber).Value;
         var serialNumberForEqual = SerialNumber.Create((uint)numberForSerialNumber).Value;
@@ -71,7 +73,7 @@ public class MovePetTests
         var result = sut.MovePet(somePet, serialNumber);
 
         result.IsFailure.Should().BeTrue();
-        sut.Should().BeEquivalentTo(volunteerForEqual);
+        volunteer.Should().BeEquivalentTo(volunteerForEqual);
         somePet.Should().BeEquivalentTo(somePetForEqual);
         serialNumber.Should().BeEquivalentTo(serialNumberForEqual);
         result.Error.ErrorType.Should().Be(ErrorType.VALIDATION);
@@ -80,24 +82,19 @@ public class MovePetTests
     [Theory]
     [MemberData(
         nameof(MemberDatas
-            .SerialNumbers_MovePet_WhenSerialNumberEqualPetsCountOrPetSerialNumber_ReturnUnitResultIsSuccess),
+            .Serial_numbers_move_pet_when_serial_number_equal_pets_count_or_pet_serial_number_return_unit_result_issuccess),
         MemberType = typeof(MemberDatas))]
-    public void MovePet_WhenSerialNumberEqualPetSerialNumber_ReturnUnitResultIsSuccess(
+    public void Move_pet_when_serial_number_equal_pet_serial_number_return_unit_result_is_success(
         uint newSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomePet = RequestPetBuilder.PetBuild();
-        var requestPets = RequestPetBuilder.PetsBuild().ToList();
+        var requestPets = RequestPetBuilder.PetsBuild(COUNT_PETS).ToList();
 
-        var volunteerFixture = VolunteerFixture.Create(
-            requestVolunteer,
-            requestSomeVolunteer,
-            requestSomePet,
-            requestPets);
+        var volunteer = VolunteerFactory.CreateVolunteer(requestVolunteer);
+        PetsFactory.CreatePets(volunteer, requestPets);
 
-        var sut = volunteerFixture.Volunteer;
-        var volunteerForEqual = volunteerFixture.VolunteerForEqual;
+        var sut = volunteer;
+        var volunteerForEqual = (Volunteer)volunteer.Clone();
 
         var pet = sut.Pets.Single(x => x.SerialNumber.Value == newSerialNumber);
 
@@ -107,32 +104,26 @@ public class MovePetTests
         var result = sut.MovePet(pet, serialNumber);
 
         result.IsFailure.Should().BeFalse();
-        sut.Should().BeEquivalentTo(volunteerForEqual);
+        volunteer.Should().BeEquivalentTo(volunteerForEqual);
         serialNumber.Should().BeEquivalentTo(serialNumberForEqual);
-        result.Error.ErrorType.Should().Be(ErrorType.VALIDATION);
     }
 
     [Theory]
     [MemberData(
         nameof(MemberDatas
-            .SerialNumbers_MovePet_WhenSerialNumberIsBiggerThenPetsCount_ReturnUnitResultIsSuccess),
+            .Serial_numbers_move_pet_when_serial_number_is_bigger_then_pets_count_return_unit_result_issuccess),
         MemberType = typeof(MemberDatas))]
-    public void SerialNumbers_MovePet_WhenSerialNumberIsBiggerThenPetsCount_ReturnUnitResultIsSuccess(
+    public void Serial_numbers_move_pet_when_serial_number_is_bigger_then_pets_count_return_unit_result_is_success(
         uint oldSerialNumber, uint newSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomePet = RequestPetBuilder.PetBuild();
-        var requestPets = RequestPetBuilder.PetsBuild().ToList();
+        var requestPets = RequestPetBuilder.PetsBuild(COUNT_PETS).ToList();
 
-        var volunteerFixture = VolunteerFixture.Create(
-            requestVolunteer,
-            requestSomeVolunteer,
-            requestSomePet,
-            requestPets);
+        var volunteer = VolunteerFactory.CreateVolunteer(requestVolunteer);
+        PetsFactory.CreatePets(volunteer, requestPets);
 
-        var sut = volunteerFixture.Volunteer;
-        var volunteerForEqual = volunteerFixture.VolunteerForEqual;
+        var sut = volunteer;
+        var volunteerForEqual = (Volunteer)volunteer.Clone();
 
         var pet = sut.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
 
@@ -169,30 +160,24 @@ public class MovePetTests
     [Theory]
     [MemberData(
         nameof(MemberDatas
-            .SerialNumbers_MovePet_WhenSerialNumberIsLowerThanCurrent_ReturnUnitResultIsSuccess),
+            .Serial_numbers_move_pet_when_serial_number_is_lower_than_current_return_unit_result_issuccess),
         MemberType = typeof(MemberDatas))]
-    public void MovePet_WhenSerialNumberIsLowerThanCurrent_ReturnUnitResultIsSuccess(
+    public void Move_pet_when_serial_number_is_lower_than_current_return_unit_result_is_success(
         uint newSerialNumber,
         uint oldSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomePet = RequestPetBuilder.PetBuild();
-        var requestPets = RequestPetBuilder.PetsBuild().ToList();
+        var requestPets = RequestPetBuilder.PetsBuild(COUNT_PETS).ToList();
 
-        var volunteerFixture = VolunteerFixture.Create(
-            requestVolunteer,
-            requestSomeVolunteer,
-            requestSomePet,
-            requestPets);
+        var volunteer = VolunteerFactory.CreateVolunteer(requestVolunteer);
+        PetsFactory.CreatePets(volunteer, requestPets);
 
-        var sut = volunteerFixture.Volunteer;
-        var volunteerForEqual = volunteerFixture.VolunteerForEqual;
+        var sut = volunteer;
+        var volunteerForEqual = (Volunteer)volunteer.Clone();
 
         var pet = sut.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
 
         var serialNumber = SerialNumber.Create((uint)newSerialNumber).Value;
-        var serialNumberForEqual = SerialNumber.Create((uint)newSerialNumber).Value;
 
         var result = sut.MovePet(pet, serialNumber);
 
@@ -223,30 +208,24 @@ public class MovePetTests
     [Theory]
     [MemberData(
         nameof(MemberDatas
-            .SerialNumbers_MovePet_WhenSerialNumberIsBiggerThanCurrent_ReturnUnitResultIsSuccess),
+            .Serial_numbers_move_pet_when_serial_number_is_bigger_than_current_retur_nunit_result_issuccess),
         MemberType = typeof(MemberDatas))]
-    public void MovePet_WhenSerialNumberIsBiggerThanCurrent_ReturnUnitResultIsSuccess(
+    public void Move_pet_when_serial_number_is_bigger_than_current_return_unit_result_is_success(
         uint newSerialNumber,
         uint oldSerialNumber)
     {
         var requestVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomeVolunteer = RequestVolunteerBuilder.VolunteerBuild();
-        var requestSomePet = RequestPetBuilder.PetBuild();
-        var requestPets = RequestPetBuilder.PetsBuild().ToList();
+        var requestPets = RequestPetBuilder.PetsBuild(COUNT_PETS).ToList();
 
-        var volunteerFixture = VolunteerFixture.Create(
-            requestVolunteer,
-            requestSomeVolunteer,
-            requestSomePet,
-            requestPets);
+        var volunteer = VolunteerFactory.CreateVolunteer(requestVolunteer);
+        PetsFactory.CreatePets(volunteer, requestPets);
 
-        var sut = volunteerFixture.Volunteer;
-        var volunteerForEqual = volunteerFixture.VolunteerForEqual;
+        var sut = volunteer;
+        var volunteerForEqual = (Volunteer)volunteer.Clone();
 
         var pet = sut.Pets.Single(x => x.SerialNumber.Value == oldSerialNumber);
 
         var serialNumber = SerialNumber.Create((uint)newSerialNumber).Value;
-        var serialNumberForEqual = SerialNumber.Create((uint)newSerialNumber).Value;
 
         var result = sut.MovePet(pet, serialNumber);
 

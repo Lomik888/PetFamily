@@ -69,6 +69,8 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorList, U
                 case "Surname":
                     sureName = req.Value!.ToString()!;
                     break;
+                case "VolunteerId":
+                    break;
                 default:
                     return ErrorList.Create(new[]
                     {

@@ -20,7 +20,6 @@ namespace PetFamily.Application.VolunteerUseCases.Commands.CreatePet;
 public class CreatePetHandler : ICommandHandler<ErrorList, CreatePetCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly ISpeciesRepository _speciesRepository;
     private readonly IValidator<CreatePetCommand> _validator;
     private readonly ILogger<CreatePetHandler> _logger;
     private readonly ISqlConnectionFactory _connectionFactory;
@@ -46,11 +45,6 @@ public class CreatePetHandler : ICommandHandler<ErrorList, CreatePetCommand>
                   throw new ArgumentNullException(
                       nameof(logger),
                       "Logger is missing");
-
-        _speciesRepository = speciesRepository ??
-                             throw new ArgumentNullException(
-                                 nameof(speciesRepository),
-                                 "Species Repository is missing");
         _connectionFactory = connectionFactory;
     }
 

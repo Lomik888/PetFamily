@@ -58,7 +58,7 @@ public class
                    limit @limit
                    """;
 
-        var multi = await connection.QueryMultipleAsync(sql, parameters);
+        await using var multi = await connection.QueryMultipleAsync(sql, parameters);
 
         var speciesCount = await multi.ReadFirstAsync<long>();
         var speciesDtos = await multi.ReadAsync<SpeciesDto>();

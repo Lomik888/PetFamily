@@ -1,4 +1,4 @@
-﻿namespace PetFamily.Domain.UnitTests.VolunteerTests.Requests;
+﻿namespace PetFamily.Data.Tests.Requests;
 
 public record RequestSpecies(
     Guid SpeciesId,
