@@ -1,58 +1,62 @@
-﻿using CSharpFunctionalExtensions;
-using Dapper;
-using FluentValidation;
-using Microsoft.Extensions.Logging;
+﻿using Dapper;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Contracts;
 using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.Extensions;
+using PetFamily.Application.VolunteerUseCases.Queries.GetPet;
+using PetFamily.Data.Tests.Factories;
 using PetFamily.Shared.Errors;
 
-namespace PetFamily.Application.VolunteerUseCases.Queries.GetPet;
+namespace PetFamily.Application.IntegrationTests.VolunteersTests.Queries;
 
-public class GetPetHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
+public class GetPetQueryHandlerTest : TestsBase
 {
-    private readonly ISqlConnectionFactory _sqlConnectionFactory;
-    private readonly ILogger<GetPetHandler> _logger;
-    private readonly IValidator<GetPetQuery> _validator;
+    private const int COUNT_VOLUNTEERS_MAX = 5;
+    private const int COUNT_VOLUNTEERS_MIN = 2;
+    private const int COUNT_PETS_MAX = 10;
+    private const int COUNT_PETS_MIN = 2;
+    private const int COUNT_SPECIES_MAX = 5;
+    private const int COUNT_SPECIES_MIN = 2;
+    private const int COUNT_BREEDS_MAX = 5;
+    private const int COUNT_BREEDS_MIN = 2;
+    private readonly IQueryHandler<PetDto, ErrorList, GetPetQuery> _sut;
 
-    public GetPetHandler(
-        IValidator<GetPetQuery> validator,
-        ILogger<GetPetHandler> logger,
-        ISqlConnectionFactory sqlConnectionFactory)
+    public GetPetQueryHandlerTest(
+        IntegrationsTestsWebAppFactory factory) : base(factory)
     {
-        _validator = validator;
-        _logger = logger;
-        _sqlConnectionFactory = sqlConnectionFactory;
+        _sut = Scope.ServiceProvider
+            .GetRequiredService<IQueryHandler<PetDto, ErrorList, GetPetQuery>>();
     }
 
-    public async Task<Result<PetDto, ErrorList>> Handle(
-        GetPetQuery request,
-        CancellationToken cancellationToken = default)
+    [Fact]
+    public async Task Get_pet_query_handle_Result_should_be_true_and_valid_response()
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        if (validationResult.IsValid == false)
-        {
-            var errors = validationResult.Errors.ToErrors();
-            return ErrorList.Create(errors);
-        }
+        var cancellationToken = new CancellationToken();
 
-        var result = await GetPetDto(request, cancellationToken);
-        if (result.IsSuccess == false)
-        {
-            var errors = validationResult.Errors.ToErrors();
-            return ErrorList.Create(errors);
-        }
+        var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
+            DbContext,
+            COUNT_VOLUNTEERS_MIN,
+            COUNT_VOLUNTEERS_MAX,
+            COUNT_PETS_MIN,
+            COUNT_PETS_MAX,
+            COUNT_SPECIES_MIN,
+            COUNT_SPECIES_MAX,
+            COUNT_BREEDS_MIN,
+            COUNT_BREEDS_MAX);
 
-        return result.Value;
-    }
+        var indexVolunteer = Random.Next(volunteers.Count);
+        var volunteer = volunteers[indexVolunteer];
 
-    private async Task<Result<PetDto, Error>> GetPetDto(GetPetQuery request, CancellationToken token)
-    {
-        using var connection = _sqlConnectionFactory.Create();
+        var indexPet = Random.Next(volunteer.Pets.Count);
+        var pet = volunteer.Pets[indexPet];
+
+        var query = new GetPetQuery(pet.Id.Value);
+
+        using var connection = SqlConnectionFactory.Create();
 
         var parameters = new DynamicParameters();
 
-        parameters.Add("@id", request.PetId);
+        parameters.Add("@id", query.PetId);
 
         var sql = $"""
                    select p.volunteer_id                                       as VolunteerId,
@@ -68,6 +72,7 @@ public class GetPetHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
                           p.digestive_system_condition                         as DigestiveSystemCondition,
                           p.country                                            as Country,
                           p.city                                               as City,
+                          p.street                                             as Street,
                           p.house_number                                       as HouseNumber,
                           p.apartment_number                                   as ApartmentNumber,
                           p.height                                             as Height,
@@ -76,6 +81,7 @@ public class GetPetHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
                           p.sterilize                                          as Sterilize,
                           p.date_of_birth                                      as DateOfBirth,
                           p.vaccinated                                         as Vaccinated,
+                          p.status                                             as HelpStatus,
                           p.details_for_help                                   as DetailsForHelps,
                           p.files                                              as FilesPet
                    from pets as p
@@ -85,14 +91,13 @@ public class GetPetHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
                    where p.id = @id;
                    """;
 
-        var command = new CommandDefinition(sql, parameters, cancellationToken: token);
+        var command = new CommandDefinition(sql, parameters);
 
-        var result = await connection.QuerySingleOrDefaultAsync<PetDto>(command);
-        if (result == null)
-        {
-            return ErrorsPreform.General.NotFound(request.PetId);
-        }
+        var resultTest = await connection.QuerySingleOrDefaultAsync<PetDto>(command);
 
-        return result;
+        var result = await _sut.Handle(query, cancellationToken);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEquivalentTo(resultTest);
     }
 }

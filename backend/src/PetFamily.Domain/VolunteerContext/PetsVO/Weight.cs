@@ -6,7 +6,7 @@ namespace PetFamily.Domain.VolunteerContext.PetsVO;
 
 public class Weight : ValueObject
 {
-    private const double VELUE_MAX_LENGHT = 200D;
+    public const double VELUE_MAX_LENGHT = 200D;
     private const int VALUE_DECIMAL_PRECISION = 2;
     private const bool VALUE_CAN_BE_NEGATIVE = false;
 

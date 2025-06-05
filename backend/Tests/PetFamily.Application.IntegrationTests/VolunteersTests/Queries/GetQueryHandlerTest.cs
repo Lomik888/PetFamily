@@ -1,53 +1,44 @@
 ﻿using System.Text.Json;
-using CSharpFunctionalExtensions;
 using Dapper;
-using FluentValidation;
-using Microsoft.Extensions.Logging;
+using FluentAssertions;
+using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Contracts.DTO;
 using PetFamily.Application.Contracts.DTO.VolunteerDtos;
 using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.Extensions;
+using PetFamily.Application.VolunteerUseCases.Queries.Get;
+using PetFamily.Data.Tests.Factories;
 using PetFamily.Shared.Errors;
 
-namespace PetFamily.Application.VolunteerUseCases.Queries.Get;
+namespace PetFamily.Application.IntegrationTests.VolunteersTests.Queries;
 
-public class GetHandler : IQueryHandler<GetObjectsWithPaginationResponse<VolunteerDto>, ErrorList, GetQuery>
+public class GetQueryHandlerTest : TestsBase
 {
-    private readonly ISqlConnectionFactory _connectionFactory;
-    private readonly ILogger<GetHandler> _logger;
-    private readonly IValidator<GetQuery> _validator;
+    private const int PAGE = 2;
+    private const int PAGESIZE = 3;
+    private const int COUNT_VOLUNTEERS = 5;
+    private IQueryHandler<GetObjectsWithPaginationResponse<VolunteerDto>, ErrorList, GetQuery> _sut;
 
-    public GetHandler(
-        ISqlConnectionFactory connectionFactory,
-        ILogger<GetHandler> logger,
-        IValidator<GetQuery> validator)
+    public GetQueryHandlerTest(
+        IntegrationsTestsWebAppFactory factory) : base(factory)
     {
-        _connectionFactory = connectionFactory;
-        _logger = logger ??
-                  throw new ArgumentNullException(
-                      nameof(logger),
-                      "logger  is missing");
-        _validator = validator ??
-                     throw new ArgumentNullException(
-                         nameof(validator),
-                         "validator  is missing");
+        _sut = Scope.ServiceProvider
+            .GetRequiredService<IQueryHandler<GetObjectsWithPaginationResponse<VolunteerDto>, ErrorList, GetQuery>>();
     }
 
-    public async Task<Result<GetObjectsWithPaginationResponse<VolunteerDto>, ErrorList>> Handle(
-        GetQuery request,
-        CancellationToken cancellationToken = default)
+    [Fact]
+    public async Task Get_query_handle_Result_should_be_true_and_valid_response()
     {
-        var validationResult = await _validator.ValidateAsync(request, cancellationToken);
-        if (validationResult.IsValid == false)
-        {
-            var errors = validationResult.Errors.ToErrors();
-            return ErrorList.Create(errors);
-        }
+        var cancellationToken = new CancellationToken();
 
-        using var connection = _connectionFactory.Create();
+        await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(DbContext, COUNT_VOLUNTEERS);
+
+        var query = new GetQuery(PAGE, PAGESIZE);
+
+        using var connection = SqlConnectionFactory.Create();
 
         var parameters = new DynamicParameters()
-            .AddPagination(request.Page, request.PageSize);
+            .AddPagination(query.Page, query.PageSize);
 
         var sql = $"""
                    select count(*) from volunteers;
@@ -87,11 +78,14 @@ public class GetHandler : IQueryHandler<GetObjectsWithPaginationResponse<Volunte
         var getObjectsWithPaginationResponse = new GetObjectsWithPaginationResponse<VolunteerDto>()
         {
             Data = volunteersDtos.ToArray(),
-            PageSize = request.PageSize,
-            Page = request.Page,
+            PageSize = query.PageSize,
+            Page = query.Page,
             Count = volunteersCount
         };
 
-        return getObjectsWithPaginationResponse;
+        var result = await _sut.Handle(query, cancellationToken);
+
+        result.IsSuccess.Should().BeTrue();
+        result.Value.Should().BeEquivalentTo(getObjectsWithPaginationResponse);
     }
 }

@@ -29,4 +29,7 @@ app.MapControllers();
 
 app.Run();
 
-public partial class Program;
+namespace PetFamily.API
+{
+    public partial class Program;
+}

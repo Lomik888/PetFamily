@@ -1,6 +1,5 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.Domain.Contracts;
-using PetFamily.Shared.Errors;
 using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 
 namespace PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;

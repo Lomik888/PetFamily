@@ -6,7 +6,7 @@ namespace PetFamily.Domain.VolunteerContext.VolunteerVO;
 
 public class Experience : ValueObject
 {
-    private const int VELUE_MAX_LENGHT = 150;
+    public const int VELUE_MAX_LENGHT = 150;
     private const bool VELUE_CAN_BE_NEGATIVE = false;
     public int Value { get; }
 

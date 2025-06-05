@@ -1,14 +1,21 @@
 ﻿using System.Data.Common;
+using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Npgsql;
+using NSubstitute;
+using PetFamily.API;
 using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
+using PetFamily.Application.Contracts.DTO;
+using PetFamily.Application.Providers;
 using PetFamily.Infrastructure;
 using PetFamily.Infrastructure.BackgroundWorkers;
 using PetFamily.Infrastructure.DbContext.PostgresSQL;
@@ -26,6 +33,7 @@ public class IntegrationsTestsWebAppFactory : WebApplicationFactory<Program>, IA
         .WithPassword("rootroot")
         .Build();
 
+    private readonly IFilesProvider _fileProviderMock = Substitute.For<IFilesProvider>();
     private Respawner _respawner = default!;
     private DbConnection _dbConnection = default!;
 
@@ -64,6 +72,10 @@ public class IntegrationsTestsWebAppFactory : WebApplicationFactory<Program>, IA
 
         services.RemoveAll(typeof(ILogger<>));
         services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
+
+
+        services.RemoveAll<IFilesProvider>();
+        services.AddScoped<IFilesProvider>(_ => _fileProviderMock);
     }
 
     private async Task InitializeRespawnerAsync()
@@ -94,5 +106,38 @@ public class IntegrationsTestsWebAppFactory : WebApplicationFactory<Program>, IA
     {
         await _postgreSqlContainer.StopAsync();
         await _postgreSqlContainer.DisposeAsync();
+    }
+
+    public void FileProviderSuccessUploadAsync()
+    {
+        var filePath = "someFilePathUploaded";
+
+        _fileProviderMock.UploadAsync(
+                Arg.Any<FilePathDto>(),
+                Arg.Any<Stream>(),
+                Arg.Any<CancellationToken>())
+            .Returns(filePath);
+    }
+
+    public void FileProviderSuccessRemoveAsync()
+    {
+        var filePath = "someFilePathDeleted";
+
+        _fileProviderMock.RemoveAsync(
+                Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
+            .Returns(filePath);
+    }
+
+    public void FileProviderSuccessPredefinedGetAsync()
+    {
+        var filePath = "someFilePathLink";
+
+        _fileProviderMock.PredefinedGetAsync(
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<string>(),
+                Arg.Any<CancellationToken>())
+            .Returns(filePath);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
 
-namespace PetFamily.Domain.UnitTests.VolunteerTests.Requests;
+namespace PetFamily.Data.Tests.Requests;
 
-public record class RequestPet(
+public record RequestPet(
     string Name,
     Guid SpeciesId,
     Guid BreedId,
