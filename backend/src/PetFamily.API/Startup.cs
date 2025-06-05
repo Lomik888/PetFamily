@@ -1,5 +1,7 @@
-﻿using PetFamily.API.Options;
+﻿using Microsoft.OpenApi.Models;
+using PetFamily.API.Options;
 using PetFamily.Application.DependencyInjection;
+using PetFamily.Infrastructure.Authorization.DependencyInjection;
 using PetFamily.Infrastructure.DependencyInjection;
 using Serilog;
 using Serilog.Events;
@@ -19,13 +21,42 @@ public static class Startup
 
     private static void AddLayers(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddInfrastructureAuthorization(configuration);
         services.AddInfrastructure(configuration);
         services.AddApplicationLayer(configuration);
     }
 
     private static void AddSwagger(this IServiceCollection services)
     {
-        services.AddSwaggerGen();
+        services.AddSwaggerGen(c =>
+        {
+            c.SwaggerDoc("v1", new OpenApiInfo
+            {
+                Title = "My API",
+                Version = "v1"
+            });
+            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            {
+                In = ParameterLocation.Header,
+                Description = "Please insert JWT with Bearer into field",
+                Name = "Authorization",
+                Type = SecuritySchemeType.ApiKey
+            });
+            c.AddSecurityRequirement(new OpenApiSecurityRequirement
+            {
+                {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                            Id = "Bearer"
+                        }
+                    },
+                    new string[] { }
+                }
+            });
+        });
     }
 
     private static void AddLogging(this IServiceCollection services, IConfiguration configuration)

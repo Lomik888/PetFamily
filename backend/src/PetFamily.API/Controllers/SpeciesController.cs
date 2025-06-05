@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts.Requests.Species;
 using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
@@ -14,6 +15,7 @@ namespace PetFamily.API.Controllers;
 
 public class SpeciesController : ApplicationController
 {
+    [AllowAnonymous]
     [HttpGet("species")]
     public async Task<ActionResult> Get(
         [FromQuery] GetWithPaginationSpeciesRequest request,
@@ -30,6 +32,7 @@ public class SpeciesController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [AllowAnonymous]
     [HttpGet("{speciesId:guid}/breeds")]
     public async Task<ActionResult> GetBreeds(
         [FromRoute] Guid speciesId,
@@ -47,6 +50,7 @@ public class SpeciesController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [Authorize]
     [HttpDelete("{speciesId:guid}/")]
     public async Task<IActionResult> DeletePetFiles(
         [FromRoute] Guid speciesId,
