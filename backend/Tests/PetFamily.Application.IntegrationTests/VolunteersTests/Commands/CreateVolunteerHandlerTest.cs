@@ -6,7 +6,7 @@ using PetFamily.Application.Contracts.SharedInterfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.Create;
 using PetFamily.Shared.Errors;
 
-namespace PetFamily.Application.IntegrationTests;
+namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
 public class CreateVolunteerHandlerTest : TestsBase
 {
