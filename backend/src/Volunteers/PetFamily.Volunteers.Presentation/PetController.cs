@@ -1,14 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Commands;
 using PetFamily.Framework.Abstractions;
 using PetFamily.Framework.Extensions;
 using PetFamily.Framework.Responses;
 using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.DeletePetFiles;
+using PetFamily.Volunteers.Application.Commands.UploadPetFiles;
 using PetFamily.Volunteers.Application.Dtos.PetDtos;
 using PetFamily.Volunteers.Application.Queries.GetPet;
 using PetFamily.Volunteers.Application.Queries.GetPets;
-using PetFamily.Volunteers.Presentation.Requests.Volunteer;
+using PetFamily.Volunteers.Presentation.Requests;
 
 namespace PetFamily.Volunteers.Presentation;
 
@@ -29,6 +33,46 @@ public class PetController : ApplicationController
         }
 
         return Ok(Envelope.Ok(result.Value));
+    }
+
+    [HttpPost("{volunteerId:guid}/pet-files/{petId:guid}")]
+    public async Task<IActionResult> UploadPetFiles(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromForm] IFormFileCollection files,
+        [FromServices] ICommandHandler<ErrorList, UploadFilesCommand> handler,
+        CancellationToken cancellationToken)
+    {
+        await using var fileProcess = new UploadFileProcess();
+        var filesDto = fileProcess.Process(files);
+        var command = new UploadFilesCommand(filesDto, volunteerId, petId);
+
+        var result = await handler.Handle(command, cancellationToken);
+
+        if (result.IsFailure == true)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HttpDelete("{volunteerId:guid}/pet-files/{petId:guid}")]
+    public async Task<IActionResult> DeletePetFiles(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromBody] DeletePetFilesRequest request,
+        [FromServices] ICommandHandler<ErrorList, DeletePetFilesCommand> handler,
+        CancellationToken cancellationToken)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure == true)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
     }
 
     [HttpGet("pets")]

@@ -11,7 +11,7 @@ using PetFamily.Specieses.Application.Queries.GetBreeds;
 using PetFamily.Specieses.Application.Queries.GetSpecies;
 using PetFamily.Specieses.Presentation.Requests;
 
-namespace PetFamily.Specieses.Presentation;
+namespace PetFamily.Specieses.Presentation.Controllers;
 
 public class SpeciesController : ApplicationController
 {

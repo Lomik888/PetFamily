@@ -1,4 +1,5 @@
-﻿using PetFamily.FileService.Providers.MinIo;
+﻿using Microsoft.Extensions.Options;
+using PetFamily.FileService.Providers.MinIo;
 
 namespace PetFamily.FileService.Providers;
 

@@ -1,6 +1,4 @@
-﻿
-
-using PetFamily.Data.Tests.Builders;
+﻿using PetFamily.Data.Tests.Builders;
 using PetFamily.Specieses.Domain;
 using PetFamily.Volunteers.Domain;
 

@@ -5,7 +5,7 @@ using PetFamily.Volunteers.Application.Dtos.PetDtos;
 using PetFamily.Volunteers.Application.Dtos.SharedDtos;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record UpdateFullPetRequest(
     string? NickName,

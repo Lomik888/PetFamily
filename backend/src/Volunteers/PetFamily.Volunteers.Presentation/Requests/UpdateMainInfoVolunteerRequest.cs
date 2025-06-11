@@ -2,7 +2,7 @@
 using PetFamily.Volunteers.Application.Commands.UpdateMainInfo;
 using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record UpdateMainInfoVolunteerRequest(
     NameUpdateDto? Name,

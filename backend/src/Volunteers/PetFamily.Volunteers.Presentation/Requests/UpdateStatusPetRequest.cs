@@ -2,7 +2,7 @@
 using PetFamily.Volunteers.Application.Commands.UpdateStatusPet;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record UpdateStatusPetRequest(HelpStatuses HelpStatus) : IToCommand<UpdateStatusPetCommand, Guid, Guid>
 {

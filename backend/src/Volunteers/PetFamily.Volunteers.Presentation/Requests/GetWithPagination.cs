@@ -1,7 +1,7 @@
 ﻿using PetFamily.Framework.Abstractions;
 using PetFamily.Volunteers.Application.Queries.Get;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public class GetWithPagination : IToQuery<GetQuery>
 {

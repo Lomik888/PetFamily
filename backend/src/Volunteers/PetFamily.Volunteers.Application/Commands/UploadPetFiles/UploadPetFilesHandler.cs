@@ -3,6 +3,7 @@ using FluentValidation;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Commands;
 using PetFamily.Core.Dtos;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
@@ -14,10 +15,10 @@ using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
 
 namespace PetFamily.Volunteers.Application.Commands.UploadPetFiles;
 
-public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadPetFilesCommand>
+public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadFilesCommand>
 {
     private readonly IVolunteerRepository _volunteerRepository;
-    private readonly IValidator<UploadPetFilesCommand> _validator;
+    private readonly IValidator<UploadFilesCommand> _validator;
     private readonly ILogger<UploadPetFilesHandler> _logger;
     private readonly IFilesProvider _filesProvider;
     private readonly IUnitOfWork _unitOfWork;
@@ -26,7 +27,7 @@ public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadPetFilesCo
     public UploadPetFilesHandler(
         IVolunteerRepository volunteerRepository,
         ILogger<UploadPetFilesHandler> logger,
-        IValidator<UploadPetFilesCommand> validator,
+        IValidator<UploadFilesCommand> validator,
         IFilesProvider filesProvider,
         IUnitOfWork unitOfWork,
         IChannelMessageQueue invalidFilesMessageQueue)
@@ -40,7 +41,7 @@ public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadPetFilesCo
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
-        UploadPetFilesCommand request,
+        UploadFilesCommand request,
         CancellationToken cancellationToken = default)
     {
         var validationResult = await _validator.ValidateAsync(request, cancellationToken);
@@ -139,7 +140,7 @@ public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadPetFilesCo
     }
 
     private async Task<List<Result<string, Error>>> UploadFilesAsync(
-        UploadPetFilesCommand request,
+        UploadFilesCommand request,
         CancellationToken cancellationToken)
     {
         var uploadFilesTasks = request.PetFilesDtos.Select(async x =>

@@ -1,7 +1,7 @@
 ﻿using PetFamily.Framework.Abstractions;
 using PetFamily.Volunteers.Application.Commands.Delete;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record DeleteVolunteersRequest(
     DeleteType DeleteType

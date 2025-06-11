@@ -1,7 +1,7 @@
 ﻿using PetFamily.Framework.Abstractions;
 using PetFamily.Volunteers.Application.Commands.MovePet;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record UpdateSerialNumberPetRequest(uint SerialNumber)
     : IToCommand<MovePetCommand, Guid, Guid>

@@ -1,4 +1,9 @@
-﻿using Exception = System.Exception;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
+using PetFamily.Core.Abstrations;
+using PetFamily.Core.Dtos;
+using Exception = System.Exception;
 
 namespace PetFamily.FileService.BackgroundWorkers;
 
@@ -10,13 +15,13 @@ public class DeleteInvalidFilesWorker : BackgroundService
     private readonly ILogger<DeleteInvalidFilesWorker> _logger;
     private readonly IServiceScopeFactory _scope;
     private readonly IChannelMessageQueue _channel;
-    private readonly IDeleteInvalidFilesWorkerLimiter _semaphore;
+    private readonly DeleteInvalidFilesWorkerLimiter _semaphore;
 
     public DeleteInvalidFilesWorker(
         ILogger<DeleteInvalidFilesWorker> logger,
         IServiceScopeFactory scope,
         IChannelMessageQueue channel,
-        IDeleteInvalidFilesWorkerLimiter semaphore)
+        DeleteInvalidFilesWorkerLimiter semaphore)
     {
         _logger = logger ??
                   throw new ArgumentNullException(nameof(logger));
@@ -46,7 +51,7 @@ public class DeleteInvalidFilesWorker : BackgroundService
         var minIoProvider = _scope.CreateAsyncScope().ServiceProvider.GetRequiredService<IFilesProvider>();
 
         var deleteInvalidFilesTask = filesPaths
-            .Select<FileToDelete, Task<(FileToDelete File, bool IsSuccess)>>(async x =>
+            .Select<FileToDeleteDto, Task<(FileToDeleteDto File, bool IsSuccess)>>(async x =>
             {
                 try
                 {

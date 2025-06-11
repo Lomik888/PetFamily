@@ -1,9 +1,9 @@
 ﻿using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Dtos;
 
-namespace PetFamily.Volunteers.Application.Commands.UploadPetFiles;
+namespace PetFamily.Core.Commands;
 
-public record UploadPetFilesCommand(
+public record UploadFilesCommand(
     IEnumerable<UploadFileDto> PetFilesDtos,
     Guid VolunteerId,
     Guid PetId) : ICommand;

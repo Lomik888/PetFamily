@@ -1,10 +1,11 @@
 ﻿using FluentValidation;
+using PetFamily.Core.Commands;
 using PetFamily.Core.Extensions;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
 
 namespace PetFamily.Volunteers.Application.Commands.UploadPetFiles;
 
-public class UploadPetFilesCommandValidation : AbstractValidator<UploadPetFilesCommand>
+public class UploadPetFilesCommandValidation : AbstractValidator<UploadFilesCommand>
 {
     public UploadPetFilesCommandValidation()
     {

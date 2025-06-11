@@ -1,6 +1,6 @@
 ﻿namespace PetFamily.FileService.BackgroundWorkers;
 
-public class DeleteInvalidFilesWorkerLimiter : IDeleteInvalidFilesWorkerLimiter
+public class DeleteInvalidFilesWorkerLimiter
 {
     public SemaphoreSlim SemaphoreSlim { get; }
 

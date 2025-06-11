@@ -1,7 +1,7 @@
 ﻿using PetFamily.Framework.Abstractions;
 using PetFamily.Volunteers.Application.Commands.DeletePetFiles;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record DeletePetFilesRequest(IEnumerable<string> FilesPaths) : IToCommand<DeletePetFilesCommand, Guid, Guid>
 {

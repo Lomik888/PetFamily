@@ -19,7 +19,7 @@ using PetFamily.Volunteers.Application.Commands.UpdateSocialNetworks;
 using PetFamily.Volunteers.Application.Commands.UpdateStatusPet;
 using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
 using PetFamily.Volunteers.Application.Queries.Get;
-using PetFamily.Volunteers.Presentation.Requests.Volunteer;
+using PetFamily.Volunteers.Presentation.Requests;
 
 namespace PetFamily.Volunteers.Presentation;
 

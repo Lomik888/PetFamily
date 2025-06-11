@@ -1,7 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using PetFamily.Core.Abstrations;
+using PetFamily.Core.Enums;
 using PetFamily.Specieses.Application.Abstractions;
 using PetFamily.Specieses.Contracts;
+using PetFamily.Specieses.Infrastructure;
 using PetFamily.Specieses.Infrastructure.Repositories;
 using PetFamily.Specieses.Presentation.Contracts;
 
@@ -13,5 +16,6 @@ public static class DependencyInjection
     {
         services.AddScoped<ISpeciesRepository, SpeciesRepository>();
         services.AddScoped<ISpeciesExistenceContracts, SpeciesExistenceContracts>();
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkTypes.Species);
     }
 }

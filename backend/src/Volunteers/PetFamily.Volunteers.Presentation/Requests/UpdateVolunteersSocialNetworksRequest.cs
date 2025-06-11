@@ -2,7 +2,7 @@
 using PetFamily.Volunteers.Application.Commands.UpdateSocialNetworks;
 using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record UpdateVolunteersSocialNetworksRequest(IEnumerable<SocialNetworkDto> SocialNetworksDto)
     : IToCommand<UpdateVolunteersSocialNetworksCommand, Guid>

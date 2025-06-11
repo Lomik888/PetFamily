@@ -2,7 +2,7 @@
 using PetFamily.Volunteers.Application.Commands.Delete;
 using PetFamily.Volunteers.Application.Commands.DeletePet;
 
-namespace PetFamily.Volunteers.Presentation.Requests.Volunteer;
+namespace PetFamily.Volunteers.Presentation.Requests;
 
 public record DeletePetRequest(DeleteType DeleteType) : IToCommand<DeletePetCommand, Guid, Guid>
 {
