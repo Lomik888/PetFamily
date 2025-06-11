@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.SpeciesUseCases.Commands.Delete;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Specieses.Application.Commands.Delete;
+
 
 namespace PetFamily.Application.IntegrationTests.SpeciesTests.Command;
 
@@ -48,7 +49,7 @@ public class DeleteSpecieAndBreedHandleTest : TestsBase
         var command = new DeleteSpecieAndBreedCommand(specie.Id.Value, breed.Id.Value);
 
         var result = await _sut.Handle(command, cancellationToken);
-        
+
         var specieNotExists = DbContext.Species.Any(x => x.Id == specie.Id);
 
         result.IsSuccess.Should().BeTrue();

@@ -3,11 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Contracts.DTO.PetDtos;
 using PetFamily.Application.Contracts.DTO.SharedDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.CreatePet;
 using PetFamily.Data.Tests.Builders;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Shared.Errors;
 using PhoneNumberDto = PetFamily.Application.Contracts.DTO.PetDtos.PhoneNumberDto;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;

@@ -1,4 +1,4 @@
-﻿using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
+﻿using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
 
 namespace PetFamily.Data.Tests.Requests;
 

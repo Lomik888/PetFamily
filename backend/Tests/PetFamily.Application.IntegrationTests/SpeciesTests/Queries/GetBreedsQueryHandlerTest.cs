@@ -1,12 +1,14 @@
 ﻿using Dapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.Extensions;
-using PetFamily.Application.SpeciesUseCases.Queries.GetBreeds;
+using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Extensions;
+using PetFamily.Core;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Specieses.Application.Dtos;
+using PetFamily.Specieses.Application.Queries.GetBreeds;
+
 
 namespace PetFamily.Application.IntegrationTests.SpeciesTests.Queries;
 
@@ -34,7 +36,7 @@ public class GetBreedsQueryHandlerTest : TestsBase
             DbContext,
             COUNT_SPECIES,
             COUNT_BREEDS);
-        
+
         var speciesIndex = Random.Next(0, COUNT_SPECIES);
         var specie = species[speciesIndex];
 

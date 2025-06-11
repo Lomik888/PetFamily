@@ -3,12 +3,12 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Contracts.DTO.VolunteerDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateSocialNetworks;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.Domain.VolunteerContext.VolunteerVO;
 using PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
-using PetFamily.Shared.Errors;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 

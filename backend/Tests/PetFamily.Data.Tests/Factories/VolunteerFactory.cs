@@ -1,10 +1,10 @@
 ﻿using PetFamily.Data.Tests.Requests;
-using PetFamily.Domain.VolunteerContext.Entities;
-using PetFamily.Domain.VolunteerContext.IdsVO;
-using PetFamily.Domain.VolunteerContext.SharedVO;
-using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
-using PetFamily.Domain.VolunteerContext.VolunteerVO;
-using PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
+using PetFamily.Volunteers.Domain;
+using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
+using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
+using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
+using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
+using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
 
 namespace PetFamily.Data.Tests.Factories;
 
@@ -37,7 +37,7 @@ public static class VolunteerFactory
             socialNetworks,
             detailsForHelps,
             files);
-        
+
         return volunteer;
     }
 

@@ -1,7 +1,7 @@
 ﻿using PetFamily.Data.Tests.Requests;
-using PetFamily.Domain.SpeciesContext.Entities;
-using PetFamily.Domain.SpeciesContext.Ids;
-using PetFamily.Domain.SpeciesContext.SharedVO;
+using PetFamily.Specieses.Domain;
+using PetFamily.Specieses.Domain.Ids;
+using PetFamily.Specieses.Domain.SharedValueObjects;
 
 namespace PetFamily.Data.Tests.Factories;
 

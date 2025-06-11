@@ -2,11 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Contracts.DTO.PetDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.UploadPetFiles;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
-using PetFamily.Shared.Errors;
 using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
@@ -63,7 +62,7 @@ public class UploadPetFilesHandlerTest : TestsBase
 
         var fileInfoDto = new FileInfoDto(fileFirst.FullPath, ".png", 234);
         var stream = Stream.Null;
-        var fileDto = new UploadPetFileDto(stream, fileInfoDto);
+        var fileDto = new UploadFileDto(stream, fileInfoDto);
 
         var command = new UploadPetFilesCommand([fileDto], volunteer.Id.Value, pet.Id.Value);
 

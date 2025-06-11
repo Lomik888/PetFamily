@@ -3,14 +3,14 @@ using Dapper;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.Delete;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateStatusPet;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.Domain.VolunteerContext.Entities;
 using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Domain.VolunteerContext.PetsVO.Enums;
-using PetFamily.Shared.Errors;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 

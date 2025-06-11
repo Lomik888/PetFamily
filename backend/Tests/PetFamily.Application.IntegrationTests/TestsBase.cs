@@ -1,6 +1,8 @@
 ﻿using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Infrastructure.DbContext.PostgresSQL;
+using PetFamily.Core.Abstrations;
+using PetFamily.Specieses.Infrastructure.Database;
+using PetFamily.Volunteers.Infrastructure.DbContext.PostgresSQL;
 
 namespace PetFamily.Application.IntegrationTests;
 
@@ -9,7 +11,8 @@ public class TestsBase : IClassFixture<IntegrationsTestsWebAppFactory>, IAsyncLi
     protected readonly IntegrationsTestsWebAppFactory Factory;
     protected readonly ISqlConnectionFactory SqlConnectionFactory;
     protected readonly IServiceScope Scope;
-    protected readonly ApplicationDbContext DbContext;
+    protected readonly VolunteerDbContext VolunteerDbContext;
+    protected readonly SpeciesDbContext SpeciesDbContext;
     protected readonly IFixture Fixture;
     protected readonly Random Random = new Random();
 
@@ -20,7 +23,8 @@ public class TestsBase : IClassFixture<IntegrationsTestsWebAppFactory>, IAsyncLi
         Factory = factory;
         _resetDatabase = factory.ResetDatabaseAsync;
         Scope = factory.Services.CreateScope();
-        DbContext = Scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        VolunteerDbContext = Scope.ServiceProvider.GetRequiredService<VolunteerDbContext>();
+        SpeciesDbContext = Scope.ServiceProvider.GetRequiredService<SpeciesDbContext>();
         Fixture = new Fixture();
         SqlConnectionFactory = Scope.ServiceProvider.GetRequiredService<ISqlConnectionFactory>();
     }

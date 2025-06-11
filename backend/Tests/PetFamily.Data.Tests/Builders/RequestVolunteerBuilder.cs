@@ -1,7 +1,6 @@
 ﻿using AutoFixture;
-using PetFamily.Application.Contracts.DTO.VolunteerDtos;
 using PetFamily.Data.Tests.Requests;
-using PetFamily.Domain.VolunteerContext.VolunteerVO;
+using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 
 namespace PetFamily.Data.Tests.Builders;
 

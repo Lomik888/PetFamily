@@ -1,11 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.SetMainFilePet;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
-using PetFamily.Shared.Errors;
 using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;

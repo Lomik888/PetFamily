@@ -2,14 +2,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Application.Contracts.DTO.SharedDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.MovePet;
 using PetFamily.Application.VolunteerUseCases.Commands.UpdateDetailsForHelps;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.Domain.VolunteerContext.PetsVO;
 using PetFamily.Domain.VolunteerContext.SharedVO;
 using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
-using PetFamily.Shared.Errors;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -36,7 +36,7 @@ public class UpdateVolunteersDetailsForHelpHandlerTest : TestsBase
 
         var detailsForHelp = DetailsForHelp.Create("SomeTitle", "SomeDescription").Value;
         var detailsForHelpDto = new DetailsForHelpDto("SomeTitle", "SomeDescription");
-        
+
         var detailsForHelps = DetailsForHelps.Create([detailsForHelp]).Value;
         volunteer.SetDetailsForHelps(detailsForHelps);
         var command = new UpdateVolunteersDetailsForHelpCommand(volunteer.Id.Value,

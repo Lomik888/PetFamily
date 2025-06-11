@@ -1,12 +1,14 @@
 ﻿using Dapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.Extensions;
-using PetFamily.Application.SpeciesUseCases.Queries.GetSpecies;
+using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Extensions;
+using PetFamily.Core;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Specieses.Application.Dtos;
+using PetFamily.Specieses.Application.Queries.GetSpecies;
+
 
 namespace PetFamily.Application.IntegrationTests.SpeciesTests.Queries;
 

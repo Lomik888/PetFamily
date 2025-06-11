@@ -1,11 +1,11 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.SharedInterfaces;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Application.VolunteerUseCases.Commands.MovePet;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.Domain.VolunteerContext.PetsVO;
-using PetFamily.Shared.Errors;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
