@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts;
 using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.API.Contracts.Response.Envelope;
@@ -12,6 +13,7 @@ namespace PetFamily.API.Controllers;
 
 public class FilesController : ApplicationController
 {
+    [Authorize]
     [HttpPost("{volunteerId:guid}/pet-files/{petId:guid}")]
     public async Task<IActionResult> UploadPetFiles(
         [FromRoute] Guid volunteerId,
@@ -34,6 +36,7 @@ public class FilesController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpDelete("{volunteerId:guid}/pet-files/{petId:guid}")]
     public async Task<IActionResult> DeletePetFiles(
         [FromRoute] Guid volunteerId,

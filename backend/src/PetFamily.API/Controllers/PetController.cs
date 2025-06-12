@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts.Requests;
 using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
@@ -13,6 +14,7 @@ namespace PetFamily.API.Controllers;
 
 public class PetController : ApplicationController
 {
+    [AllowAnonymous]
     [HttpGet("pet/{petId:guid}")]
     public async Task<ActionResult> GetPetById(
         [FromRoute] Guid petId,
@@ -30,6 +32,7 @@ public class PetController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [AllowAnonymous]
     [HttpGet("pets")]
     public async Task<ActionResult> GetPets(
         [FromBody] GetPetsRequest request,

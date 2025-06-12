@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PetFamily.API.Contracts.Requests.Volunteer;
 using PetFamily.API.Contracts.Response.Envelope;
 using PetFamily.API.Extensions;
@@ -24,6 +25,7 @@ namespace PetFamily.API.Controllers;
 
 public class VolunteerController : ApplicationController
 {
+    [Authorize]
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] ICommandHandler<Guid, ErrorList, CreateVolunteerCommand> handler,
@@ -40,6 +42,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/{petId:guid}/main-file")]
     public async Task<ActionResult<Guid>> SetMainFilePet(
         [FromRoute] Guid volunteerId,
@@ -58,6 +61,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpDelete("{volunteerId:guid}/{petId:guid}")]
     public async Task<ActionResult<Guid>> DeletePet(
         [FromRoute] Guid volunteerId,
@@ -76,6 +80,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/{petId:guid}/status")]
     public async Task<ActionResult<Guid>> UpdateStatus(
         [FromRoute] Guid volunteerId,
@@ -94,6 +99,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpPatch("{volunteerId:guid}/{petId:guid}/full-info")]
     public async Task<ActionResult<Guid>> UpdateMainInfo(
         [FromRoute] Guid volunteerId,
@@ -112,6 +118,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpPatch("{volunteerId:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdateMainInfo(
         [FromRoute] Guid volunteerId,
@@ -129,6 +136,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/pets/{petId:guid}")]
     public async Task<ActionResult> UpdateSerialNumberPet(
         [FromRoute] Guid volunteerId,
@@ -147,6 +155,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpPost("{volunteerId:guid}/pets")]
     public async Task<ActionResult> UpdateSocials(
         [FromRoute] Guid volunteerId,
@@ -164,6 +173,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/socials")]
     public async Task<ActionResult> UpdateSocials(
         [FromRoute] Guid volunteerId,
@@ -181,6 +191,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/details-for-help")]
     public async Task<ActionResult> UpdateDetailsForHelp(
         [FromRoute] Guid volunteerId,
@@ -198,6 +209,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}/account-status")]
     public async Task<ActionResult> DeleteAccount(
         [FromRoute] Guid volunteerId,
@@ -215,6 +227,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [AllowAnonymous]
     [HttpGet("volunteers")]
     public async Task<ActionResult> Get(
         [FromQuery] GetWithPagination request,
@@ -231,6 +244,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [Authorize]
     [HttpPut("{volunteerId:guid}")]
     public async Task<ActionResult> ActivateAccount(
         [FromRoute] Guid volunteerId,
