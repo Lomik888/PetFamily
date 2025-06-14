@@ -92,7 +92,7 @@ public class GetPetQueryHandlerTest : TestsBase
                    where p.id = @id;
                    """;
 
-        var resultTest = await connection.QuerySingleOrDefaultAsync<PetDto>(sql,parameters);
+        var resultTest = await connection.QuerySingleOrDefaultAsync<PetDto>(sql, parameters);
 
         var result = await _sut.Handle(query, cancellationToken);
 

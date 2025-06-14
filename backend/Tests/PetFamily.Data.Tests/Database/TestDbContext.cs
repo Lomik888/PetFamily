@@ -2,12 +2,10 @@
 using Microsoft.Extensions.Logging;
 using PetFamily.Specieses.Domain;
 using PetFamily.Specieses.Infrastructure.Database;
-using PetFamily.Specieses.Marker;
 using PetFamily.Volunteers.Domain;
 using PetFamily.Volunteers.Infrastructure.DbContext;
-using PetFamily.Volunteers.Infrastructure.Marker;
 
-namespace PetFamily.Data.Tests;
+namespace PetFamily.Data.Tests.Database;
 
 public class TestDbContext : DbContext
 {

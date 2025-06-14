@@ -12,7 +12,7 @@ using NSubstitute;
 using PetFamily.API;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Dtos;
-using PetFamily.Data.Tests;
+using PetFamily.Data.Tests.Database;
 using PetFamily.FileService.BackgroundWorkers;
 using PetFamily.Specieses.Infrastructure;
 using PetFamily.Specieses.Infrastructure.Database;

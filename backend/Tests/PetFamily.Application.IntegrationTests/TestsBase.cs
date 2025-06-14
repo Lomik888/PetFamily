@@ -1,7 +1,7 @@
 ﻿using AutoFixture;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstrations;
-using PetFamily.Data.Tests;
+using PetFamily.Data.Tests.Database;
 using PetFamily.Specieses.Infrastructure.Database;
 using PetFamily.Volunteers.Infrastructure.DbContext;
 
