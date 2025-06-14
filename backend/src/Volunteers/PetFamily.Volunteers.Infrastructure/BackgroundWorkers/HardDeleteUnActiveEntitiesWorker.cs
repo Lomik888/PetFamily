@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using PetFamily.SharedKernel.Validation;
 using PetFamily.Volunteers.Application.Abstractions;
 
-namespace PetFamily.Volunteers.Infrastructure.BackgroundWorkers.HardDeleteWorker;
+namespace PetFamily.Volunteers.Infrastructure.BackgroundWorkers;
 
 public class HardDeleteUnActiveEntitiesWorker : BackgroundService
 {

@@ -5,24 +5,20 @@ using Minio.DataModel.Args;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Dtos;
 using PetFamily.SharedKernel.Errors;
-using PetFamily.SharedKernel.Validation;
 
-namespace PetFamily.FileService.Providers.MinIo;
+namespace PetFamily.FileService.Providers;
 
 public class MinIoProvider : IFilesProvider
 {
     private readonly IMinioClient _minioClient;
     private readonly ILogger<MinIoProvider> _logger;
-    private readonly IMinIoLimiter _minioSemaphore;
+    private readonly MinIoLimiter _minioSemaphore;
 
     public MinIoProvider(
         IMinioClient minioClient,
         ILogger<MinIoProvider> logger,
-        IMinIoLimiter minioSemaphore)
+        MinIoLimiter minioSemaphore)
     {
-        Validator.Guard.NotNull(minioClient);
-        Validator.Guard.NotNull(logger);
-
         _minioClient = minioClient;
         _logger = logger;
         _minioSemaphore = minioSemaphore;

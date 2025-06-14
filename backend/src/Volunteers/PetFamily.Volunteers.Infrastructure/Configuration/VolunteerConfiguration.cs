@@ -14,7 +14,7 @@ public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
 {
     public void Configure(EntityTypeBuilder<Volunteer> builder)
     {
-        builder.ToTable("volunteers");
+        builder.ToTable("volunteers", schema: "Volunteers");
 
         builder.HasKey(x => x.Id);
 

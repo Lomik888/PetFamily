@@ -21,15 +21,9 @@ public class SetMainFilePetHandler : ICommandHandler<ErrorList, SetMainFilePetCo
         IValidator<SetMainFilePetCommand> validator,
         ILogger<SetMainFilePetHandler> logger)
     {
-        _volunteerRepository = volunteerRepository ??
-                               throw new ArgumentNullException(
-                                   nameof(volunteerRepository), "VolunteerRepository is missing");
-        _validator = validator ??
-                     throw new ArgumentNullException(
-                         nameof(validator), "validator is missing");
-        _logger = logger ??
-                  throw new ArgumentNullException(
-                      nameof(logger), "logger is missing");
+        _volunteerRepository = volunteerRepository;
+        _validator = validator;
+        _logger = logger;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(

@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Microsoft.EntityFrameworkCore;
 using PetFamily.Core.Abstrations;
-using PetFamily.Volunteers.Infrastructure.DbContext.PostgresSQL;
+using PetFamily.Volunteers.Infrastructure.DbContext;
 
 namespace PetFamily.Volunteers.Infrastructure;
 

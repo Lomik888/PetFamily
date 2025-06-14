@@ -2,9 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstrations.Interfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.MovePet;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.PetsVO;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.MovePet;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO;
 
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
@@ -34,7 +35,7 @@ public class MovePetHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -57,7 +58,7 @@ public class MovePetHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .Include(x => x.Pets)
             .SingleAsync(x => x.Id == volunteer.Id, default);
 

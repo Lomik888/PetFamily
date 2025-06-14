@@ -24,14 +24,8 @@ public class GetBreedsQueryHandler
         IValidator<GetBreedsQuery> validator)
     {
         _connectionFactory = connectionFactory;
-        _logger = logger ??
-                  throw new ArgumentNullException(
-                      nameof(logger),
-                      "logger is missing");
-        _validator = validator ??
-                     throw new ArgumentNullException(
-                         nameof(validator),
-                         "validator is missing");
+        _logger = logger;
+        _validator = validator;
     }
 
     public async Task<Result<GetObjectsWithPaginationResponse<BreedsDto>, ErrorList>> Handle(
@@ -51,12 +45,12 @@ public class GetBreedsQueryHandler
         parameters.Add("@speciesId", request.SpeciesId);
 
         var sql = $"""
-                   select count(*) from breeds where species_id = @speciesId;                  
+                   select count(*) from "Species".breeds where species_id = @speciesId;                  
 
                    select
                        id as Id, 
                        name as Name 
-                   from breeds
+                   from "Species".breeds
                    where species_id = @speciesId
                    offset @offset
                    limit @limit

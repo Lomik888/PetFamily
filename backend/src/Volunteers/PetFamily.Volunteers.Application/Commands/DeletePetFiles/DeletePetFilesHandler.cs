@@ -1,8 +1,10 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Enums;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.Volunteers.Application.Abstractions;
@@ -25,6 +27,7 @@ public class DeletePetFilesHandler :
         IVolunteerRepository volunteerRepository,
         ILogger<DeletePetFilesHandler> logger,
         IValidator<DeletePetFilesCommand> validator,
+        [FromKeyedServices(UnitOfWorkTypes.Volunteers)]
         IUnitOfWork unitOfWork,
         IFilesProvider filesProvider)
     {

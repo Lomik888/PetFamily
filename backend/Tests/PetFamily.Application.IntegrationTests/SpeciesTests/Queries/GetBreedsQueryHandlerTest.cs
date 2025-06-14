@@ -33,7 +33,7 @@ public class GetBreedsQueryHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var species = await DomainSeedFactory.SeedSpeciesWithBreedsAsync(
-            DbContext,
+            SpeciesDbContext,
             COUNT_SPECIES,
             COUNT_BREEDS);
 
@@ -48,12 +48,12 @@ public class GetBreedsQueryHandlerTest : TestsBase
         parameters.Add("@speciesId", request.SpeciesId);
 
         var sql = $"""
-                   select count(*) from breeds where species_id = @speciesId;                  
+                   select count(*) from "Species".breeds where species_id = @speciesId;                  
 
                    select
                        id as Id, 
                        name as Name 
-                   from breeds
+                   from "Species".breeds
                    where species_id = @speciesId
                    offset @offset
                    limit @limit

@@ -45,10 +45,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FileService", "FileService"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.FileService", "src\FileService\PetFamily.FileService\PetFamily.FileService.csproj", "{0A0EFD5F-D535-4AF3-950E-0C6A27B70E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.FileService.Contracts", "src\FileService\PetFamily.FileService.Contracts\PetFamily.FileService.Contracts.csproj", "{28B28F70-2E4C-4116-A50C-7564A5639D3A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.FileService.Presentation", "src\FileService\PetFamily.FileService.Presentation\PetFamily.FileService.Presentation.csproj", "{573417C0-39D9-4326-A1C0-6820E7330DB9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -122,14 +118,6 @@ Global
 		{0A0EFD5F-D535-4AF3-950E-0C6A27B70E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A0EFD5F-D535-4AF3-950E-0C6A27B70E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A0EFD5F-D535-4AF3-950E-0C6A27B70E1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{28B28F70-2E4C-4116-A50C-7564A5639D3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28B28F70-2E4C-4116-A50C-7564A5639D3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{28B28F70-2E4C-4116-A50C-7564A5639D3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28B28F70-2E4C-4116-A50C-7564A5639D3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{573417C0-39D9-4326-A1C0-6820E7330DB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{573417C0-39D9-4326-A1C0-6820E7330DB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{573417C0-39D9-4326-A1C0-6820E7330DB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{573417C0-39D9-4326-A1C0-6820E7330DB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0DAE0075-2445-471C-A283-C0C07455E734} = {047153CD-A20C-4673-8263-B6BAD5EAB030}
@@ -147,7 +135,5 @@ Global
 		{F53642B5-D150-4202-A988-322A150C09E0} = {D2A1B448-4CD8-4889-8BC6-52B375BE77F2}
 		{8F90660E-C672-4DBE-A58A-3D4E4CC6CFC5} = {D2A1B448-4CD8-4889-8BC6-52B375BE77F2}
 		{0A0EFD5F-D535-4AF3-950E-0C6A27B70E1D} = {FC683698-2036-4E91-AFD7-2BAE8795D7BC}
-		{28B28F70-2E4C-4116-A50C-7564A5639D3A} = {FC683698-2036-4E91-AFD7-2BAE8795D7BC}
-		{573417C0-39D9-4326-A1C0-6820E7330DB9} = {FC683698-2036-4E91-AFD7-2BAE8795D7BC}
 	EndGlobalSection
 EndGlobal

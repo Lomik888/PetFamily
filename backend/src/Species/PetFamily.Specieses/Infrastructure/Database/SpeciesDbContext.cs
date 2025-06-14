@@ -22,5 +22,6 @@ public class SpeciesDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(SpeciesDbContext).Assembly);
+        ;
     }
 }

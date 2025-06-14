@@ -2,9 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstrations.Interfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.UpdateMainInfo;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.SharedVO;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.UpdateMainInfo;
+using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
 
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
@@ -27,7 +28,7 @@ public class UpdateMainInfoVolunteerHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var volunteers = await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(
-            DbContext,
+            VolunteerDbContext,
             COUNT_VOLUNTEERS);
 
         var volunteer = volunteers.Single();
@@ -41,7 +42,7 @@ public class UpdateMainInfoVolunteerHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .Where(x => x.Id == volunteer.Id)
             .SingleAsync(default);
 

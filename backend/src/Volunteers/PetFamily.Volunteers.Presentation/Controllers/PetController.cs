@@ -8,13 +8,12 @@ using PetFamily.Framework.Extensions;
 using PetFamily.Framework.Responses;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.Volunteers.Application.Commands.DeletePetFiles;
-using PetFamily.Volunteers.Application.Commands.UploadPetFiles;
 using PetFamily.Volunteers.Application.Dtos.PetDtos;
 using PetFamily.Volunteers.Application.Queries.GetPet;
 using PetFamily.Volunteers.Application.Queries.GetPets;
 using PetFamily.Volunteers.Presentation.Requests;
 
-namespace PetFamily.Volunteers.Presentation;
+namespace PetFamily.Volunteers.Presentation.Controllers;
 
 public class PetController : ApplicationController
 {

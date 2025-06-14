@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using PetFamily.Framework.Extensions;
+﻿using PetFamily.Framework.Extensions;
 using PetFamily.Framework.Responses;
 using PetFamily.SharedKernel.Errors;
 
-namespace PetFamily.Framework.Middleware;
+namespace PetFamily.API.Middleware;
 
 public class ExceptionMiddleware
 {

@@ -2,11 +2,13 @@
 using Dapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Extensions;
-using PetFamily.Application.VolunteerUseCases.Queries.GetPets;
+using PetFamily.Core;
 using PetFamily.Data.Tests.Factories;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Dtos.PetDtos;
+using PetFamily.Volunteers.Application.Queries.GetPets;
 
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Queries;
@@ -37,7 +39,7 @@ public class GetPetsQueryHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -66,7 +68,7 @@ public class GetPetsQueryHandlerTest : TestsBase
 
         using var connection = SqlConnectionFactory.Create();
         var sql = $"""
-                   select count(*) from pets;
+                   select count(*) from "Volunteers".pets;
 
                    select p.volunteer_id                                       as VolunteerId,
                           concat_ws(' ', v.first_name, v.last_name, v.surname) as FullName,
@@ -93,10 +95,10 @@ public class GetPetsQueryHandlerTest : TestsBase
                           p.status                                             as HelpStatus,
                           p.details_for_help                                   as DetailsForHelps,
                           p.files                                              as FilesPet
-                   from pets as p
-                            left join volunteers as v on v.id = p.volunteer_id
-                            left join species as s on s.id = p.species_id
-                            left join breeds as b on b.id = p.breed_id
+                   from "Volunteers".pets as p
+                            left join "Volunteers".volunteers as v on v.id = p.volunteer_id
+                            left join "Species".species as s on s.id = p.species_id
+                            left join "Species".breeds as b on b.id = p.breed_id
                             
                    """;
 

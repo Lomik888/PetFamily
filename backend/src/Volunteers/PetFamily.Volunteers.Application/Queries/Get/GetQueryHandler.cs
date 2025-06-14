@@ -24,14 +24,8 @@ public class GetQueryHandler : IQueryHandler<GetObjectsWithPaginationResponse<Vo
         IValidator<GetQuery> validator)
     {
         _connectionFactory = connectionFactory;
-        _logger = logger ??
-                  throw new ArgumentNullException(
-                      nameof(logger),
-                      "logger  is missing");
-        _validator = validator ??
-                     throw new ArgumentNullException(
-                         nameof(validator),
-                         "validator  is missing");
+        _logger = logger;
+        _validator = validator;
     }
 
     public async Task<Result<GetObjectsWithPaginationResponse<VolunteerDto>, ErrorList>> Handle(
@@ -51,7 +45,7 @@ public class GetQueryHandler : IQueryHandler<GetObjectsWithPaginationResponse<Vo
             .AddPagination(request.Page, request.PageSize);
 
         var sql = $"""
-                   select count(*) from volunteers;
+                   select count(*) from "Volunteers".volunteers;
 
                    select v.id            as Id,
                           v.first_name      as FirstName,
@@ -60,8 +54,8 @@ public class GetQueryHandler : IQueryHandler<GetObjectsWithPaginationResponse<Vo
                           v.experience      as Experience,
                           v.social_networks as SocialNetworks,
                           COUNT(p.id)       as PetCount
-                   from volunteers as v
-                            left join pets as p on v.id = p.volunteer_id
+                   from "Volunteers".volunteers as v
+                            left join "Volunteers".pets as p on v.id = p.volunteer_id
                    GROUP BY v.id,
                             v.first_name,
                             v.last_name,

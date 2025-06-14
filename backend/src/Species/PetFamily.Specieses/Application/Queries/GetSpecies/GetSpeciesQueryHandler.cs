@@ -24,14 +24,8 @@ public class
         IValidator<GetSpeciesQuery> validator)
     {
         _connectionFactory = connectionFactory;
-        _logger = logger ??
-                  throw new ArgumentNullException(
-                      nameof(logger),
-                      "logger is missing");
-        _validator = validator ??
-                     throw new ArgumentNullException(
-                         nameof(validator),
-                         "validator is missing");
+        _logger = logger;
+        _validator = validator;
     }
 
     public async Task<Result<GetObjectsWithPaginationResponse<SpeciesDto>, ErrorList>> Handle(
@@ -50,12 +44,12 @@ public class
         var parameters = new DynamicParameters().AddPagination(request.Page, request.PageSize);
 
         var sql = $"""
-                   select count(*) from species;                  
+                   select count(*) from "Species".species;                  
 
                    select
                        id as Id, 
                        name as Name 
-                   from species
+                   from "Species".species
                    offset @offset
                    limit @limit
                    """;

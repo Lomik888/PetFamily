@@ -1,12 +1,13 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.DTO.PetDtos;
 using PetFamily.Core.Abstrations.Interfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.UploadPetFiles;
+using PetFamily.Core.Commands;
+using PetFamily.Core.Dtos;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
-using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
+using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -20,13 +21,13 @@ public class UploadPetFilesHandlerTest : TestsBase
     private const int COUNT_SPECIES_MIN = 1;
     private const int COUNT_BREEDS_MAX = 0;
     private const int COUNT_BREEDS_MIN = 1;
-    private ICommandHandler<ErrorList, UploadPetFilesCommand> _sut;
+    private ICommandHandler<ErrorList, UploadFilesCommand> _sut;
 
     public UploadPetFilesHandlerTest(
         IntegrationsTestsWebAppFactory factory) : base(factory)
     {
         _sut = Scope.ServiceProvider
-            .GetRequiredService<ICommandHandler<ErrorList, UploadPetFilesCommand>>();
+            .GetRequiredService<ICommandHandler<ErrorList, UploadFilesCommand>>();
     }
 
     [Fact]
@@ -37,7 +38,7 @@ public class UploadPetFilesHandlerTest : TestsBase
 
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -64,11 +65,11 @@ public class UploadPetFilesHandlerTest : TestsBase
         var stream = Stream.Null;
         var fileDto = new UploadFileDto(stream, fileInfoDto);
 
-        var command = new UploadPetFilesCommand([fileDto], volunteer.Id.Value, pet.Id.Value);
+        var command = new UploadFilesCommand([fileDto], volunteer.Id.Value, pet.Id.Value);
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .Include(x => x.Pets)
             .SingleAsync(x => x.Id == volunteer.Id, default);
 

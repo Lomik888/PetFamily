@@ -21,7 +21,7 @@ using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
 using PetFamily.Volunteers.Application.Queries.Get;
 using PetFamily.Volunteers.Presentation.Requests;
 
-namespace PetFamily.Volunteers.Presentation;
+namespace PetFamily.Volunteers.Presentation.Controllers;
 
 public class VolunteerController : ApplicationController
 {

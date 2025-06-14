@@ -10,4 +10,9 @@
       <ProjectReference Include="..\PetFamily.Volunteers.Application\PetFamily.Volunteers.Application.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Npgsql" Version="8.0.6" />
+      <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.11" />
+    </ItemGroup>
+
 </Project>

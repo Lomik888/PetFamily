@@ -4,7 +4,7 @@ using PetFamily.SharedKernel.Validation;
 using PetFamily.Volunteers.Application.Abstractions;
 using PetFamily.Volunteers.Domain;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
-using PetFamily.Volunteers.Infrastructure.DbContext.PostgresSQL;
+using PetFamily.Volunteers.Infrastructure.DbContext;
 
 namespace PetFamily.Volunteers.Infrastructure.Repositories;
 

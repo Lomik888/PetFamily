@@ -31,20 +31,9 @@ public class CreatePetHandler : ICommandHandler<ErrorList, CreatePetCommand>
         ILogger<CreatePetHandler> logger,
         ISqlConnectionFactory connectionFactory)
     {
-        _volunteerRepository = volunteerRepository ??
-                               throw new ArgumentNullException(
-                                   nameof(volunteerRepository),
-                                   "Volunteer Repository is missing");
-
-        _validator = validator ??
-                     throw new ArgumentNullException(
-                         nameof(validator),
-                         "Create Pet Command Validator is missing");
-
-        _logger = logger ??
-                  throw new ArgumentNullException(
-                      nameof(logger),
-                      "Logger is missing");
+        _volunteerRepository = volunteerRepository;
+        _validator = validator;
+        _logger = logger;
         _connectionFactory = connectionFactory;
     }
 
@@ -70,8 +59,8 @@ public class CreatePetHandler : ICommandHandler<ErrorList, CreatePetCommand>
         var sql = $"""
                    select exists(
                       select 1
-                          from breeds as b
-                          right join species as s on s.id = b.species_id 
+                          from "Species".breeds as b
+                          right join "Species".species as s on s.id = b.species_id 
                           where 
                               s.id = @speciesId 
                             and b.id = @breedsId) as result

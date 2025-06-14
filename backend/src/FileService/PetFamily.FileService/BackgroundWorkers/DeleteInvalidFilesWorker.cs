@@ -23,14 +23,10 @@ public class DeleteInvalidFilesWorker : BackgroundService
         IChannelMessageQueue channel,
         DeleteInvalidFilesWorkerLimiter semaphore)
     {
-        _logger = logger ??
-                  throw new ArgumentNullException(nameof(logger));
-        _scope = scope ??
-                 throw new ArgumentNullException(nameof(scope));
-        _channel = channel ??
-                   throw new ArgumentNullException(nameof(channel));
-        _semaphore = semaphore ??
-                     throw new ArgumentNullException(nameof(semaphore));
+        _logger = logger;
+        _scope = scope;
+        _channel = channel;
+        _semaphore = semaphore;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)

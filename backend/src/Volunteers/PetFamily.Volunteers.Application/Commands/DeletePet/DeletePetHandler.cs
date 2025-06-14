@@ -1,9 +1,11 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Dtos;
+using PetFamily.Core.Enums;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.Errors.Enums;
@@ -30,6 +32,7 @@ public class DeletePetHandler : ICommandHandler<ErrorList, DeletePetCommand>
         ILogger<DeletePetHandler> logger,
         IValidator<DeletePetCommand> validator,
         IFilesProvider fileProvider,
+        [FromKeyedServices(UnitOfWorkTypes.Volunteers)]
         IUnitOfWork unitOfWork,
         IChannelMessageQueue invalidFilesMessageQueue)
     {

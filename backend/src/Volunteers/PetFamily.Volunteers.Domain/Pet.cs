@@ -84,7 +84,14 @@ public sealed class Pet : SoftDeletableEntity<PetId>, ICloneable
     internal void SetMainFile(File file)
     {
         var files = FilesPet.Items.ToList();
-        MoveFile(files, file, 0);
+        if (files.Count > 0)
+        {
+            MoveFile(files, file, 0);
+        }
+        else
+        {
+            files.Add(file);
+        }
 
         var newFiles = FilesPet.Create(files).Value;
 

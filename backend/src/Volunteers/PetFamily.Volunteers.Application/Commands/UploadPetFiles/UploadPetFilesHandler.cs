@@ -1,10 +1,12 @@
 ﻿using CSharpFunctionalExtensions;
 using FluentValidation;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Commands;
 using PetFamily.Core.Dtos;
+using PetFamily.Core.Enums;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.Volunteers.Application.Abstractions;
@@ -29,6 +31,7 @@ public class UploadPetFilesHandler : ICommandHandler<ErrorList, UploadFilesComma
         ILogger<UploadPetFilesHandler> logger,
         IValidator<UploadFilesCommand> validator,
         IFilesProvider filesProvider,
+        [FromKeyedServices(UnitOfWorkTypes.Volunteers)]
         IUnitOfWork unitOfWork,
         IChannelMessageQueue invalidFilesMessageQueue)
     {

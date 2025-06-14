@@ -1,10 +1,11 @@
 ﻿using Dapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts;
 using PetFamily.Core.Abstrations.Interfaces;
-using PetFamily.Application.VolunteerUseCases.Queries.GetPet;
 using PetFamily.Data.Tests.Factories;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Dtos.PetDtos;
+using PetFamily.Volunteers.Application.Queries.GetPet;
 
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Queries;
@@ -34,7 +35,7 @@ public class GetPetQueryHandlerTest : TestsBase
         var cancellationToken = new CancellationToken();
 
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -84,16 +85,14 @@ public class GetPetQueryHandlerTest : TestsBase
                           p.status                                             as HelpStatus,
                           p.details_for_help                                   as DetailsForHelps,
                           p.files                                              as FilesPet
-                   from pets as p
-                            left join volunteers as v on v.id = p.volunteer_id
-                            left join species as s on s.id = p.species_id
-                            left join breeds as b on b.id = p.breed_id
+                   from "Volunteers".pets as p
+                            left join "Volunteers".volunteers as v on v.id = p.volunteer_id
+                            left join "Species".species as s on s.id = p.species_id
+                            left join "Species".breeds as b on b.id = p.breed_id
                    where p.id = @id;
                    """;
 
-        var command = new CommandDefinition(sql, parameters);
-
-        var resultTest = await connection.QuerySingleOrDefaultAsync<PetDto>(command);
+        var resultTest = await connection.QuerySingleOrDefaultAsync<PetDto>(sql,parameters);
 
         var result = await _sut.Handle(query, cancellationToken);
 

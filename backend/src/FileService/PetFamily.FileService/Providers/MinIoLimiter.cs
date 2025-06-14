@@ -1,9 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
-using PetFamily.FileService.Providers.MinIo;
 
 namespace PetFamily.FileService.Providers;
 
-public class MinIoLimiter : IMinIoLimiter
+public class MinIoLimiter
 {
     public SemaphoreSlim SemaphoreSlim { get; }
 

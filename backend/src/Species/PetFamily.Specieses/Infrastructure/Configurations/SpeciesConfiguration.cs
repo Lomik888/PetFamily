@@ -10,7 +10,7 @@ public class SpeciesConfiguration : IEntityTypeConfiguration<Species>
 {
     public void Configure(EntityTypeBuilder<Species> builder)
     {
-        builder.ToTable("species");
+        builder.ToTable("species", schema: "Species");
 
         builder.HasKey(x => x.Id);
 

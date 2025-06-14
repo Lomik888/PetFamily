@@ -81,10 +81,10 @@ public class GetPetQueryHandler : IQueryHandler<PetDto, ErrorList, GetPetQuery>
                           p.status                                             as HelpStatus,
                           p.details_for_help                                   as DetailsForHelps,
                           p.files                                              as FilesPet
-                   from pets as p
-                            left join volunteers as v on v.id = p.volunteer_id
-                            left join species as s on s.id = p.species_id
-                            left join breeds as b on b.id = p.breed_id
+                   from "Volunteers".pets as p
+                            left join "Volunteers".volunteers as v on v.id = p.volunteer_id
+                            left join "Species".species as s on s.id = p.species_id
+                            left join "Species".breeds as b on b.id = p.breed_id
                    where p.id = @id;
                    """;
 

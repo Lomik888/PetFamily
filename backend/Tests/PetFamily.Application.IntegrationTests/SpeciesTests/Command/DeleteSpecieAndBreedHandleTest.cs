@@ -31,7 +31,7 @@ public class DeleteSpecieAndBreedHandleTest : TestsBase
     public async Task Delete_specie_and_breed_handle_Result_should_be_true_and_db_valid_version()
     {
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -50,7 +50,7 @@ public class DeleteSpecieAndBreedHandleTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var specieNotExists = DbContext.Species.Any(x => x.Id == specie.Id);
+        var specieNotExists = SpeciesDbContext.Species.Any(x => x.Id == specie.Id);
 
         result.IsSuccess.Should().BeTrue();
         specieNotExists.Should().BeFalse();

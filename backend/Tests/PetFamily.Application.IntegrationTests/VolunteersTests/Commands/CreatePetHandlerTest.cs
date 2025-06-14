@@ -1,13 +1,13 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.DTO.PetDtos;
-using PetFamily.Application.Contracts.DTO.SharedDtos;
 using PetFamily.Core.Abstrations.Interfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.CreatePet;
 using PetFamily.Data.Tests.Builders;
 using PetFamily.Data.Tests.Factories;
-using PhoneNumberDto = PetFamily.Application.Contracts.DTO.PetDtos.PhoneNumberDto;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.CreatePet;
+using PetFamily.Volunteers.Application.Dtos.PetDtos;
+using PetFamily.Volunteers.Application.Dtos.SharedDtos;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -29,14 +29,15 @@ public class CreatePetHandlerTest : TestsBase
     [Fact]
     public async Task Create_pet_handle_Result_should_be_true_and_valid_entity_in_db()
     {
-        var speciesList = await DomainSeedFactory.SeedSpeciesWithBreedsAsync(DbContext, COUNT_SPECIES, COUNT_BREEDS);
+        var speciesList =
+            await DomainSeedFactory.SeedSpeciesWithBreedsAsync(SpeciesDbContext, COUNT_SPECIES, COUNT_BREEDS);
         var species = speciesList.Single();
 
         var petRequest = RequestPetBuilder.PetBuild(species.Id.Value, species.Breeds.First().Id.Value);
 
-        var volunteerList = await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(DbContext, COUNT_VOLUNTEERS_);
+        var volunteerList =
+            await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(VolunteerDbContext, COUNT_VOLUNTEERS_);
         var volunteer = volunteerList.Single();
-        var pet = PetsFactory.CreatePet(volunteer, petRequest);
         var cancellationToken = new CancellationToken();
 
         IEnumerable<DetailsForHelpDto> detailsForHelps = [];
@@ -71,7 +72,7 @@ public class CreatePetHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerWithPetFromDb = await DbContext.Volunteers
+        var volunteerWithPetFromDb = await VolunteerDbContext.Volunteers
             .Where(x => x.Id == volunteer.Id)
             .Include(x => x.Pets)
             .SingleAsync(default);

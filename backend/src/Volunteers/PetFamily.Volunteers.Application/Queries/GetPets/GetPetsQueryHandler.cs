@@ -63,7 +63,7 @@ public class GetPetsQueryHandler : IQueryHandler<GetObjectsWithPaginationRespons
         using var connection = _sqlConnectionFactory.Create();
 
         var sql = $"""
-                   select count(*) from pets;
+                   select count(*) from "Volunteers".pets;
 
                    select p.volunteer_id                                       as VolunteerId,
                           concat_ws(' ', v.first_name, v.last_name, v.surname) as FullName,
@@ -90,10 +90,10 @@ public class GetPetsQueryHandler : IQueryHandler<GetObjectsWithPaginationRespons
                           p.status                                             as HelpStatus,
                           p.details_for_help                                   as DetailsForHelps,
                           p.files                                              as FilesPet
-                   from pets as p
-                            left join volunteers as v on v.id = p.volunteer_id
-                            left join species as s on s.id = p.species_id
-                            left join breeds as b on b.id = p.breed_id
+                   from "Volunteers".pets as p
+                            left join "Volunteers".volunteers as v on v.id = p.volunteer_id
+                            left join "Species".species as s on s.id = p.species_id
+                            left join "Species".breeds as b on b.id = p.breed_id
                             
                    """;
 

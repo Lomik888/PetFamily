@@ -66,9 +66,9 @@ public class DeleteSpecieAndBreedHandle : ICommandHandler<ErrorList, DeleteSpeci
 
         var sql = $"""
                    select 
-                    exists(select 1 from pets where species_id = @specieId)
+                    exists(select 1 from "Volunteers".pets where species_id = @specieId)
                         as SpeciesExist,
-                    exists(select 1 from pets where species_id = @specieId and breed_id = @breedId)
+                    exists(select 1 from "Volunteers".pets where species_id = @specieId and breed_id = @breedId)
                         as SpeciesAndBreedsExist
                    """;
 

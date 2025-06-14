@@ -1,4 +1,4 @@
-﻿namespace PetFamily.FileService.Providers.MinIo;
+﻿namespace PetFamily.FileService.Providers;
 
 public sealed class MinIoProviderOptions
 {

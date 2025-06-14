@@ -3,8 +3,9 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstrations.Interfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.Delete;
 using PetFamily.Data.Tests.Factories;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.Delete;
 
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
@@ -34,7 +35,7 @@ public class DeleteVolunteerHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -49,14 +50,14 @@ public class DeleteVolunteerHandlerTest : TestsBase
         var volunteer = volunteers[volunteerIndex];
         var volunteerPetsCount = volunteer.Pets.Count;
         using var connection = SqlConnectionFactory.Create();
-        var sql = $"""select count(*) from pets;""";
+        var sql = $"""select count(*) from "Volunteers".pets;""";
         var petCountForEqual = await connection.QuerySingleAsync<long>(sql);
 
         var command = new DeleteVolunteerCommand(volunteer.Id.Value, DeleteType.HARD);
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteersCountAfterHandle = await DbContext.Volunteers.CountAsync(default);
+        var volunteersCountAfterHandle = await VolunteerDbContext.Volunteers.CountAsync(default);
 
         var petCountFromDb = await connection.QuerySingleAsync<long>(sql);
 
@@ -71,7 +72,7 @@ public class DeleteVolunteerHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -85,7 +86,7 @@ public class DeleteVolunteerHandlerTest : TestsBase
         var volunteerIndex = Random.Next(0, volunteersCount);
         var volunteer = volunteers[volunteerIndex];
         using var connection = SqlConnectionFactory.Create();
-        var sql = $"""select count(*) from pets;""";
+        var sql = $"""select count(*) from "Volunteers".pets;""";
         var petCountForEqual = await connection.QuerySingleAsync<long>(sql);
 
         volunteer.UnActivate();
@@ -94,8 +95,8 @@ public class DeleteVolunteerHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteersCountAfterHandle = await DbContext.Volunteers.CountAsync(default);
-        var volunteerFromDb = await DbContext.Volunteers.SingleAsync(x => x.Id == volunteer.Id, default);
+        var volunteersCountAfterHandle = await VolunteerDbContext.Volunteers.CountAsync(default);
+        var volunteerFromDb = await VolunteerDbContext.Volunteers.SingleAsync(x => x.Id == volunteer.Id, default);
         var petCountFromDb = await connection.QuerySingleAsync<long>(sql);
 
         result.IsSuccess.Should().BeTrue();
