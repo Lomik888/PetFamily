@@ -9,6 +9,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj" />
         <ProjectReference Include="..\FileService\PetFamily.FileService\PetFamily.FileService.csproj" />
         <ProjectReference Include="..\Shared\PetFamily.Framework\PetFamily.Framework.csproj"/>
         <ProjectReference Include="..\Species\PetFamily.Specieses.Presentation\PetFamily.Specieses.Presentation.csproj" />

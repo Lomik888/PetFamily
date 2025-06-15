@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core;
 using PetFamily.Core.Abstrations.Interfaces;
@@ -17,6 +18,7 @@ namespace PetFamily.Volunteers.Presentation.Controllers;
 
 public class PetController : ApplicationController
 {
+    [AllowAnonymous]
     [HttpGet("pet/{petId:guid}")]
     public async Task<ActionResult> GetPetById(
         [FromRoute] Guid petId,
@@ -34,6 +36,7 @@ public class PetController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
+    [Authorize]
     [HttpPost("{volunteerId:guid}/pet-files/{petId:guid}")]
     public async Task<IActionResult> UploadPetFiles(
         [FromRoute] Guid volunteerId,
@@ -56,6 +59,7 @@ public class PetController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [Authorize]
     [HttpDelete("{volunteerId:guid}/pet-files/{petId:guid}")]
     public async Task<IActionResult> DeletePetFiles(
         [FromRoute] Guid volunteerId,
@@ -74,6 +78,7 @@ public class PetController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
+    [AllowAnonymous]
     [HttpGet("pets")]
     public async Task<ActionResult> GetPets(
         [FromBody] GetPetsRequest request,
