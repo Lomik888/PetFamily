@@ -1,12 +1,12 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.SetMainFilePet;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
-using PetFamily.Shared.Errors;
-using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.SetMainFilePet;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
+using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -35,7 +35,7 @@ public class SetMainFilePetHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -47,7 +47,6 @@ public class SetMainFilePetHandlerTest : TestsBase
 
         var volunteer = volunteers.Single();
         var volunteerPetsCount = volunteer.Pets.Count;
-        var serialNumber = (uint)Random.Next(1, volunteerPetsCount + 1);
         var petIndex = Random.Next(0, volunteerPetsCount);
         var pet = volunteer.Pets[petIndex];
 
@@ -57,7 +56,7 @@ public class SetMainFilePetHandlerTest : TestsBase
         var filesPet = FilesPet.Create([fileFirst, fileSecond]).Value;
         volunteer.SetPetFiles(pet, filesPet);
 
-        await DbContext.SaveChangesAsync(default);
+        await VolunteerDbContext.SaveChangesAsync(default);
 
         volunteer.SetMainFilePet(pet, fileSecond);
 
@@ -65,7 +64,7 @@ public class SetMainFilePetHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .Include(x => x.Pets)
             .SingleAsync(x => x.Id == volunteer.Id, default);
 

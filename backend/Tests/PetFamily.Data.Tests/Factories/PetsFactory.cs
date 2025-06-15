@@ -1,11 +1,11 @@
 ﻿using PetFamily.Data.Tests.Requests;
-using PetFamily.Domain.Contracts;
-using PetFamily.Domain.VolunteerContext.Entities;
-using PetFamily.Domain.VolunteerContext.IdsVO;
-using PetFamily.Domain.VolunteerContext.PetsVO;
-using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
-using PetFamily.Domain.VolunteerContext.SharedVO;
-using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
+using PetFamily.Volunteers.Domain;
+using PetFamily.Volunteers.Domain.Dtos;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
+using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
+using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
+using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 
 namespace PetFamily.Data.Tests.Factories;
 

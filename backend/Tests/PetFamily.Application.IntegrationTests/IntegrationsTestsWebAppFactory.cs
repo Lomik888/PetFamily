@@ -1,24 +1,23 @@
 ﻿using System.Data.Common;
-using CSharpFunctionalExtensions;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Npgsql;
 using NSubstitute;
 using PetFamily.API;
-using PetFamily.Application.BackgroundWorkers.HardDeleteWorker;
-using PetFamily.Application.Contracts.DTO;
-using PetFamily.Application.Providers;
-using PetFamily.Infrastructure;
-using PetFamily.Infrastructure.BackgroundWorkers;
-using PetFamily.Infrastructure.DbContext.PostgresSQL;
+using PetFamily.Core.Abstrations;
+using PetFamily.Core.Dtos;
+using PetFamily.Data.Tests.Database;
+using PetFamily.FileService.BackgroundWorkers;
+using PetFamily.Specieses.Infrastructure;
+using PetFamily.Specieses.Infrastructure.Database;
+using PetFamily.Volunteers.Infrastructure.BackgroundWorkers;
+using PetFamily.Volunteers.Infrastructure.DbContext;
 using Respawn;
 using Testcontainers.PostgreSql;
 
@@ -28,7 +27,7 @@ public class IntegrationsTestsWebAppFactory : WebApplicationFactory<Program>, IA
 {
     private readonly PostgreSqlContainer _postgreSqlContainer = new PostgreSqlBuilder()
         .WithImage("postgres")
-        .WithDatabase("my_pet_family_tests")
+        .WithDatabase("1332132_pet_family_tests")
         .WithUsername("rootroot")
         .WithPassword("rootroot")
         .Build();
@@ -63,16 +62,17 @@ public class IntegrationsTestsWebAppFactory : WebApplicationFactory<Program>, IA
         services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>(_ =>
             new SqlConnectionFactory(_postgreSqlContainer.GetConnectionString()));
 
-        services.RemoveAll<ApplicationDbContext>();
-        services.RemoveAll<DbContextOptions<ApplicationDbContext>>();
-        services.AddDbContext<ApplicationDbContext>(options =>
-        {
-            options.UseNpgsql(_postgreSqlContainer.GetConnectionString());
-        });
+        services.RemoveAll<SpeciesDbContext>();
+        services.RemoveAll<VolunteerDbContext>();
+        services.RemoveAll<DbContextOptions<SpeciesDbContext>>();
+        services.RemoveAll<DbContextOptions<VolunteerDbContext>>();
+
+        services.AddDbContext<SpeciesDbContext>(x => x.UseNpgsql(_postgreSqlContainer.GetConnectionString()));
+        services.AddDbContext<VolunteerDbContext>(x => x.UseNpgsql(_postgreSqlContainer.GetConnectionString()));
+        services.AddDbContext<TestDbContext>(x => x.UseNpgsql(_postgreSqlContainer.GetConnectionString()));
 
         services.RemoveAll(typeof(ILogger<>));
         services.AddSingleton(typeof(ILogger<>), typeof(NullLogger<>));
-
 
         services.RemoveAll<IFilesProvider>();
         services.AddScoped<IFilesProvider>(_ => _fileProviderMock);
@@ -83,7 +83,7 @@ public class IntegrationsTestsWebAppFactory : WebApplicationFactory<Program>, IA
         await _dbConnection.OpenAsync();
         _respawner = await Respawner.CreateAsync(_dbConnection, new RespawnerOptions()
         {
-            SchemasToInclude = ["public"],
+            SchemasToInclude = ["public", "Species", "Volunteers"],
             DbAdapter = DbAdapter.Postgres
         });
     }
@@ -93,7 +93,7 @@ public class IntegrationsTestsWebAppFactory : WebApplicationFactory<Program>, IA
         await _postgreSqlContainer.StartAsync();
 
         using var scope = Services.CreateScope();
-        var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+        var dbContext = scope.ServiceProvider.GetRequiredService<TestDbContext>();
 
         await dbContext.Database.EnsureDeletedAsync();
         await dbContext.Database.EnsureCreatedAsync();

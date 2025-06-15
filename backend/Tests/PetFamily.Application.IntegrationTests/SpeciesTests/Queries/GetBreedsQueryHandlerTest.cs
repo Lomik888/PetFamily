@@ -1,12 +1,14 @@
 ﻿using Dapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.Extensions;
-using PetFamily.Application.SpeciesUseCases.Queries.GetBreeds;
+using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Extensions;
+using PetFamily.Core;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Specieses.Application.Dtos;
+using PetFamily.Specieses.Application.Queries.GetBreeds;
+
 
 namespace PetFamily.Application.IntegrationTests.SpeciesTests.Queries;
 
@@ -31,10 +33,10 @@ public class GetBreedsQueryHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var species = await DomainSeedFactory.SeedSpeciesWithBreedsAsync(
-            DbContext,
+            SpeciesDbContext,
             COUNT_SPECIES,
             COUNT_BREEDS);
-        
+
         var speciesIndex = Random.Next(0, COUNT_SPECIES);
         var specie = species[speciesIndex];
 
@@ -46,12 +48,12 @@ public class GetBreedsQueryHandlerTest : TestsBase
         parameters.Add("@speciesId", request.SpeciesId);
 
         var sql = $"""
-                   select count(*) from breeds where species_id = @speciesId;                  
+                   select count(*) from "Species".breeds where species_id = @speciesId;                  
 
                    select
                        id as Id, 
                        name as Name 
-                   from breeds
+                   from "Species".breeds
                    where species_id = @speciesId
                    offset @offset
                    limit @limit

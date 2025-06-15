@@ -28,7 +28,9 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\FileService\PetFamily.FileService\PetFamily.FileService.csproj" />
       <ProjectReference Include="..\..\src\PetFamily.API\PetFamily.API.csproj" />
+      <ProjectReference Include="..\..\src\Volunteers\PetFamily.Volunteers.Infrastructure\PetFamily.Volunteers.Infrastructure.csproj" />
       <ProjectReference Include="..\PetFamily.Domain.UnitTests\PetFamily.Domain.UnitTests.csproj" />
     </ItemGroup>
 

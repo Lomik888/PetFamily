@@ -2,13 +2,14 @@
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.DTO.VolunteerDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.UpdateSocialNetworks;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.VolunteerVO;
-using PetFamily.Domain.VolunteerContext.VolunteerVO.Collections;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.UpdateSocialNetworks;
+using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
+using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
+using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -37,7 +38,7 @@ public class UpdateVolunteersSocialNetworksHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -64,7 +65,7 @@ public class UpdateVolunteersSocialNetworksHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .Where(x => x.Id == volunteer.Id)
             .Include(x => x.Pets)
             .SingleAsync(default);

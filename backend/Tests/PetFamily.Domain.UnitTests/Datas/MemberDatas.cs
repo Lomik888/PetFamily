@@ -1,7 +1,7 @@
 ﻿using PetFamily.Domain.UnitTests.VolunteerTests;
-using PetFamily.Domain.VolunteerContext.PetsVO;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO;
 
-namespace PetFamily.Data.Tests.Datas;
+namespace PetFamily.Domain.UnitTests.Datas;
 
 public class MemberDatas
 {

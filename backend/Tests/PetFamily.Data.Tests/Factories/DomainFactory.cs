@@ -1,6 +1,6 @@
 ﻿using PetFamily.Data.Tests.Builders;
-using PetFamily.Domain.SpeciesContext.Entities;
-using PetFamily.Domain.VolunteerContext.Entities;
+using PetFamily.Specieses.Domain;
+using PetFamily.Volunteers.Domain;
 
 namespace PetFamily.Data.Tests.Factories;
 

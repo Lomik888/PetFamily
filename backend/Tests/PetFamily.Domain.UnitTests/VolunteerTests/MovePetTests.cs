@@ -1,10 +1,10 @@
 ﻿using FluentAssertions;
 using PetFamily.Data.Tests.Builders;
-using PetFamily.Data.Tests.Datas;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.Entities;
-using PetFamily.Domain.VolunteerContext.PetsVO;
-using PetFamily.Shared.Errors.Enums;
+using PetFamily.Domain.UnitTests.Datas;
+using PetFamily.SharedKernel.Errors.Enums;
+using PetFamily.Volunteers.Domain;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO;
 
 namespace PetFamily.Domain.UnitTests.VolunteerTests;
 

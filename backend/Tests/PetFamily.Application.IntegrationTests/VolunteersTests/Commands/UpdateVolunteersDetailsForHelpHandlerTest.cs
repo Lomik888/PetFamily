@@ -1,15 +1,14 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.DTO.SharedDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.MovePet;
-using PetFamily.Application.VolunteerUseCases.Commands.UpdateDetailsForHelps;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.PetsVO;
-using PetFamily.Domain.VolunteerContext.SharedVO;
-using PetFamily.Domain.VolunteerContext.SharedVO.Collections;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.UpdateDetailsForHelps;
+using PetFamily.Volunteers.Application.Dtos.SharedDtos;
+using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
+using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -30,13 +29,13 @@ public class UpdateVolunteersDetailsForHelpHandlerTest : TestsBase
         Move_pet_handle_Result_should_be_true_and_volunteer_is_valid()
     {
         var cancellationToken = new CancellationToken();
-        var volunteers = await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(DbContext, COUNT_VOLUNTEERS);
+        var volunteers = await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(VolunteerDbContext, COUNT_VOLUNTEERS);
 
         var volunteer = volunteers.Single();
 
         var detailsForHelp = DetailsForHelp.Create("SomeTitle", "SomeDescription").Value;
         var detailsForHelpDto = new DetailsForHelpDto("SomeTitle", "SomeDescription");
-        
+
         var detailsForHelps = DetailsForHelps.Create([detailsForHelp]).Value;
         volunteer.SetDetailsForHelps(detailsForHelps);
         var command = new UpdateVolunteersDetailsForHelpCommand(volunteer.Id.Value,
@@ -44,7 +43,7 @@ public class UpdateVolunteersDetailsForHelpHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .SingleAsync(x => x.Id == volunteer.Id, default);
 
         result.IsSuccess.Should().BeTrue();

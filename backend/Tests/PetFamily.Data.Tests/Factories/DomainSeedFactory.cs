@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PetFamily.Data.Tests.Builders;
-using PetFamily.Domain.SpeciesContext.Entities;
-using PetFamily.Domain.VolunteerContext.Entities;
+using PetFamily.Specieses.Domain;
+using PetFamily.Volunteers.Domain;
 
 namespace PetFamily.Data.Tests.Factories;
 
@@ -27,7 +27,7 @@ public static class DomainSeedFactory
     }
 
     public static async Task<(List<Volunteer>, List<Species>)> SeedFullModelsAsync(
-        DbContext dbContext,
+        DbContext testDbContext,
         int volunteersMinCount,
         int volunteersMaxCount,
         int petsMinCount,
@@ -47,9 +47,9 @@ public static class DomainSeedFactory
             breedsMinCount,
             breedsMaxCount);
 
-        await dbContext.AddRangeAsync(species);
-        await dbContext.AddRangeAsync(volunteers);
-        await dbContext.SaveChangesAsync();
+        await testDbContext.AddRangeAsync(species);
+        await testDbContext.AddRangeAsync(volunteers);
+        await testDbContext.SaveChangesAsync();
 
         return (volunteers, species);
     }

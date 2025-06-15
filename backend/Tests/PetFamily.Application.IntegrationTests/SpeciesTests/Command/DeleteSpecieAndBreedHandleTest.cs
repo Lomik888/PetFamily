@@ -1,9 +1,10 @@
 ﻿using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.SpeciesUseCases.Commands.Delete;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Specieses.Application.Commands.Delete;
+
 
 namespace PetFamily.Application.IntegrationTests.SpeciesTests.Command;
 
@@ -30,7 +31,7 @@ public class DeleteSpecieAndBreedHandleTest : TestsBase
     public async Task Delete_specie_and_breed_handle_Result_should_be_true_and_db_valid_version()
     {
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -48,8 +49,8 @@ public class DeleteSpecieAndBreedHandleTest : TestsBase
         var command = new DeleteSpecieAndBreedCommand(specie.Id.Value, breed.Id.Value);
 
         var result = await _sut.Handle(command, cancellationToken);
-        
-        var specieNotExists = DbContext.Species.Any(x => x.Id == specie.Id);
+
+        var specieNotExists = SpeciesDbContext.Species.Any(x => x.Id == specie.Id);
 
         result.IsSuccess.Should().BeTrue();
         specieNotExists.Should().BeFalse();

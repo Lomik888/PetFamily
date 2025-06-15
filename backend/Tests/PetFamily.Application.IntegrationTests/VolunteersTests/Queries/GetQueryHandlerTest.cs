@@ -2,13 +2,14 @@
 using Dapper;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.DTO;
-using PetFamily.Application.Contracts.DTO.VolunteerDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.Extensions;
-using PetFamily.Application.VolunteerUseCases.Queries.Get;
+using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Extensions;
+using PetFamily.Core;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
+using PetFamily.Volunteers.Application.Queries.Get;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Queries;
 
@@ -31,7 +32,7 @@ public class GetQueryHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
 
-        await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(DbContext, COUNT_VOLUNTEERS);
+        await DomainSeedFactory.SeedVolunteersWithOutPetsAsync(VolunteerDbContext, COUNT_VOLUNTEERS);
 
         var query = new GetQuery(PAGE, PAGESIZE);
 
@@ -41,7 +42,7 @@ public class GetQueryHandlerTest : TestsBase
             .AddPagination(query.Page, query.PageSize);
 
         var sql = $"""
-                   select count(*) from volunteers;
+                   select count(*) from "Volunteers".volunteers;
 
                    select v.id            as Id,
                           v.first_name      as FirstName,
@@ -50,8 +51,8 @@ public class GetQueryHandlerTest : TestsBase
                           v.experience      as Experience,
                           v.social_networks as SocialNetworks,
                           COUNT(p.id)       as PetCount
-                   from volunteers as v
-                            left join pets as p on v.id = p.volunteer_id
+                   from "Volunteers".volunteers as v
+                            left join "Volunteers".pets as p on v.id = p.volunteer_id
                    GROUP BY v.id,
                             v.first_name,
                             v.last_name,

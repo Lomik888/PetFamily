@@ -1,12 +1,12 @@
-﻿using File = PetFamily.Domain.VolunteerContext.SharedVO.File;
-using FluentAssertions;
+﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.DeletePetFiles;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.PetsVO.Collections;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.DeletePetFiles;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
+using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -35,7 +35,7 @@ public class DeletePetFilesHandlerTest : TestsBase
     {
         var cancellationToken = new CancellationToken();
         var (volunteers, species) = await DomainSeedFactory.SeedFullModelsAsync(
-            DbContext,
+            TestDbContext,
             COUNT_VOLUNTEERS_MIN,
             COUNT_VOLUNTEERS_MAX,
             COUNT_PETS_MIN,
@@ -57,7 +57,7 @@ public class DeletePetFilesHandlerTest : TestsBase
         var filesPet = FilesPet.Create([fileFirst, fileSecond, fileThird]).Value;
         volunteer.SetPetFiles(pet, filesPet);
 
-        await DbContext.SaveChangesAsync(default);
+        await VolunteerDbContext.SaveChangesAsync(default);
 
         var filesToDelete = FilesPet.Create([fileFirst, fileThird]).Value;
         volunteer.RemovePetFiles(pet, filesToDelete);
@@ -66,7 +66,7 @@ public class DeletePetFilesHandlerTest : TestsBase
 
         var result = await _sut.Handle(command, cancellationToken);
 
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .Include(x => x.Pets)
             .SingleAsync(x => x.Id == volunteer.Id, default);
 

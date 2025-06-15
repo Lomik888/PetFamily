@@ -1,5 +1,4 @@
-﻿
-namespace PetFamily.Data.Tests.Requests;
+﻿namespace PetFamily.Data.Tests.Requests;
 
 public record RequestVolunteer(
     Guid VolunteerId,

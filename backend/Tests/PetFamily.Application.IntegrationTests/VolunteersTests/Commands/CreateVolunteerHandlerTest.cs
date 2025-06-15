@@ -1,14 +1,14 @@
 ﻿using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using PetFamily.Application.Contracts.DTO.VolunteerDtos;
-using PetFamily.Application.Contracts.SharedInterfaces;
-using PetFamily.Application.VolunteerUseCases.Commands.Create;
+using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Builders;
 using PetFamily.Data.Tests.Factories;
-using PetFamily.Domain.VolunteerContext.Entities;
-using PetFamily.Domain.VolunteerContext.IdsVO;
-using PetFamily.Shared.Errors;
+using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.Create;
+using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
+using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
+
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 
@@ -40,7 +40,7 @@ public class CreateVolunteerHandlerTest : TestsBase
         var result = await _sut.Handle(command, cancellationToken);
 
         var volunteerId = VolunteerId.Create(result.Value).Value;
-        var volunteerFromDb = await DbContext.Volunteers
+        var volunteerFromDb = await VolunteerDbContext.Volunteers
             .Include(x => x.Pets)
             .SingleAsync(x => x.Id == volunteerId, default);
 
