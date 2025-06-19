@@ -4,8 +4,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.DapperModifications;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using PetFamily.SharedKernel.ValueObjects;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 
 namespace PetFamily.Volunteers.Application.DependencyInjection;
 

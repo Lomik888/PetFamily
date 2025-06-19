@@ -43,12 +43,12 @@ public class UpdateVolunteersSocialNetworksHandler :
             VolunteerId.Create(request.VolunteerId).Value,
             cancellationToken);
 
-        var newSocials = request.SocialNetworkCollectionDto.SocialNetworks
-            .Select(social => SocialNetwork.Create(social.Title, social.Url).Value).ToList();
+        //var newSocials = request.SocialNetworkCollectionDto.SocialNetworks
+        //.Select(social => SocialNetwork.Create(social.Title, social.Url).Value).ToList();
 
-        var newSocialNetworks = SocialNetworks.Create(newSocials).Value;
+        //var newSocialNetworks = SocialNetworks.Create(newSocials).Value;
 
-        volunteer.SetSocialNetworks(newSocialNetworks);
+        //volunteer.SetSocialNetworks(newSocialNetworks);
 
         await _volunteerRepository.UpdateAsAlreadyTrackingAsync(volunteer, cancellationToken);
 

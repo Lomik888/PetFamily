@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using PetFamily.Core.Extensions;
+using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 
@@ -11,7 +12,7 @@ public class CreateVolunteerCommandValidator : AbstractValidator<CreateVolunteer
     {
         RuleFor(x => x.Email).MustBeValueObject(x => Email.Create(x));
         RuleFor(x => x.Description).MustBeValueObject(x => Description.Create(x));
-        RuleFor(x => x.Experience).MustBeValueObject(x => Experience.Create(x));
+        //RuleFor(x => x.Experience).MustBeValueObject(x => Experience.Create(x));
 
         RuleFor(x => x.VolunteerName)
             .MustBeValueObject(x => Name.Create(x.FirstName, x.LastName, x.Surname));

@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using PetFamily.Core.Extensions;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 
 namespace PetFamily.Volunteers.Application.Commands.SetMainFilePet;
 

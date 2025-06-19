@@ -10,7 +10,7 @@ using PetFamily.SharedKernel.Errors;
 using PetFamily.Volunteers.Application.Abstractions;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 
 namespace PetFamily.Volunteers.Application.Commands.DeletePetFiles;
 

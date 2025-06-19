@@ -9,6 +9,7 @@ using PetFamily.Volunteers.Application.Commands.UpdateSocialNetworks;
 using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
+using PetFemily.Accounts.Domain.ValueObjects;
 
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
@@ -61,7 +62,7 @@ public class UpdateVolunteersSocialNetworksHandlerTest : TestsBase
 
         var socialNetwork = SocialNetwork.Create(socialNetworkDto.Title, socialNetworkDto.Url).Value;
         var socialNetworks = SocialNetworks.Create([socialNetwork]).Value;
-        volunteer.SetSocialNetworks(socialNetworks);
+        //volunteer.SetSocialNetworks(socialNetworks);
 
         var result = await _sut.Handle(command, cancellationToken);
 

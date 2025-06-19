@@ -1,13 +1,13 @@
 ﻿using FluentValidation;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Validation;
+using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 
 namespace PetFamily.Volunteers.Application.Commands.UpdateFullPet;
 

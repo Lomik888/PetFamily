@@ -1,6 +1,7 @@
-﻿using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
+﻿using PetFamily.SharedKernel.ValueObjects;
+using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 
 namespace PetFamily.Volunteers.Application.Dtos.PetDtos;
 

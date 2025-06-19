@@ -7,13 +7,13 @@ using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.Errors.Enums;
+using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Application.Abstractions;
 using PetFamily.Volunteers.Domain.Dtos;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 
 namespace PetFamily.Volunteers.Application.Commands.CreatePet;

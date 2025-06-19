@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Framework;
 using PetFamily.Framework.Abstractions;
 using PetFamily.Framework.Extensions;
 using PetFamily.Framework.Responses;
@@ -26,7 +27,7 @@ namespace PetFamily.Volunteers.Presentation.Controllers;
 
 public class VolunteerController : ApplicationController
 {
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Volunteer.Create)]
     [HttpPost]
     public async Task<ActionResult<Guid>> Create(
         [FromServices] ICommandHandler<Guid, ErrorList, CreateVolunteerCommand> handler,
@@ -43,83 +44,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
-    [Authorize]
-    [HttpPut("{volunteerId:guid}/{petId:guid}/main-file")]
-    public async Task<ActionResult<Guid>> SetMainFilePet(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromServices] ICommandHandler<ErrorList, SetMainFilePetCommand> handler,
-        [FromBody] SetMainFilePetRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return result.Error.Errors.ToErrorActionResult();
-        }
-
-        return Ok(Envelope.OkEmpty());
-    }
-
-    [Authorize]
-    [HttpDelete("{volunteerId:guid}/{petId:guid}")]
-    public async Task<ActionResult<Guid>> DeletePet(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromServices] ICommandHandler<ErrorList, DeletePetCommand> handler,
-        [FromBody] DeletePetRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return result.Error.Errors.ToErrorActionResult();
-        }
-
-        return Ok(Envelope.OkEmpty());
-    }
-
-    [Authorize]
-    [HttpPut("{volunteerId:guid}/{petId:guid}/status")]
-    public async Task<ActionResult<Guid>> UpdateStatus(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromServices] ICommandHandler<ErrorList, UpdateStatusPetCommand> handler,
-        [FromBody] UpdateStatusPetRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return result.Error.Errors.ToErrorActionResult();
-        }
-
-        return Ok(Envelope.OkEmpty());
-    }
-
-    [Authorize]
-    [HttpPatch("{volunteerId:guid}/{petId:guid}/full-info")]
-    public async Task<ActionResult<Guid>> UpdateMainInfo(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromServices] ICommandHandler<ErrorList, UpdateFullPetCommand> handler,
-        [FromBody] UpdateFullPetRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return result.Error.Errors.ToErrorActionResult();
-        }
-
-        return Ok(Envelope.OkEmpty());
-    }
-
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Volunteer.UpdateMainInfo)]
     [HttpPatch("{volunteerId:guid}/main-info")]
     public async Task<ActionResult<Guid>> UpdateMainInfo(
         [FromRoute] Guid volunteerId,
@@ -137,44 +62,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
-    [Authorize]
-    [HttpPut("{volunteerId:guid}/pets/{petId:guid}")]
-    public async Task<ActionResult> UpdateSerialNumberPet(
-        [FromRoute] Guid volunteerId,
-        [FromRoute] Guid petId,
-        [FromServices] ICommandHandler<ErrorList, MovePetCommand> handler,
-        [FromBody] UpdateSerialNumberPetRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return result.Error.Errors.ToErrorActionResult();
-        }
-
-        return Ok(Envelope.OkEmpty());
-    }
-
-    [Authorize]
-    [HttpPost("{volunteerId:guid}/pets")]
-    public async Task<ActionResult> UpdateSocials(
-        [FromRoute] Guid volunteerId,
-        [FromServices] ICommandHandler<ErrorList, CreatePetCommand> handler,
-        [FromBody] CreatePetRequest request,
-        CancellationToken cancellationToken = default)
-    {
-        var result = await handler.Handle(request.ToCommand(), cancellationToken);
-
-        if (result.IsFailure)
-        {
-            return result.Error.Errors.ToErrorActionResult();
-        }
-
-        return Ok(Envelope.OkEmpty());
-    }
-
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Volunteer.UpdateSocials)]
     [HttpPut("{volunteerId:guid}/socials")]
     public async Task<ActionResult> UpdateSocials(
         [FromRoute] Guid volunteerId,
@@ -192,7 +80,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Volunteer.UpdateDetailsForHelp)]
     [HttpPut("{volunteerId:guid}/details-for-help")]
     public async Task<ActionResult> UpdateDetailsForHelp(
         [FromRoute] Guid volunteerId,
@@ -210,7 +98,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Volunteer.DeleteAccount)]
     [HttpPut("{volunteerId:guid}/account-status")]
     public async Task<ActionResult> DeleteAccount(
         [FromRoute] Guid volunteerId,
@@ -245,7 +133,7 @@ public class VolunteerController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Volunteer.ActivateAccount)]
     [HttpPut("{volunteerId:guid}")]
     public async Task<ActionResult> ActivateAccount(
         [FromRoute] Guid volunteerId,

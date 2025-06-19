@@ -38,7 +38,7 @@ public class UpdateMainInfoVolunteerHandlerTest : TestsBase
 
         var command = new UpdateMainInfoVolunteerCommand(volunteer.Id.Value, null, description, null);
 
-        volunteer.UpdateMainInfo(volunteer.Name, descriptionVo, volunteer.Experience);
+        //volunteer.UpdateMainInfo(volunteer.Name, descriptionVo, volunteer.Experience);
 
         var result = await _sut.Handle(command, cancellationToken);
 

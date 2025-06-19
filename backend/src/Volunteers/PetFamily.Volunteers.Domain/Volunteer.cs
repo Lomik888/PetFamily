@@ -7,10 +7,8 @@ using PetFamily.Volunteers.Domain.ValueObjects.PetsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
-using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 using Name = PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Name;
 
 namespace PetFamily.Volunteers.Domain;
@@ -19,13 +17,9 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
 {
     private readonly List<Pet> _pets = [];
     public Name Name { get; private set; }
-    public Email Email { get; private set; }
     public Description Description { get; private set; }
-    public Experience Experience { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public Files Files { get; private set; }
-    public SocialNetworks SocialNetworks { get; private set; }
-    public DetailsForHelps DetailsForHelps { get; private set; }
     public IReadOnlyList<Pet> Pets => _pets;
 
     private Volunteer(VolunteerId id) : base(id)
@@ -35,21 +29,13 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
     public Volunteer(
         VolunteerId id,
         Name name,
-        Email email,
         Description description,
-        Experience experience,
         PhoneNumber phoneNumber,
-        SocialNetworks socialNetworks,
-        DetailsForHelps detailsForHelps,
         Files files) : base(id)
     {
         Name = name;
-        Email = email;
         Description = description;
-        Experience = experience;
         PhoneNumber = phoneNumber;
-        SocialNetworks = socialNetworks;
-        DetailsForHelps = detailsForHelps;
         Files = files;
     }
 
@@ -86,22 +72,10 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
 
     public void UpdateMainInfo(
         Name name,
-        Description description,
-        Experience experience)
+        Description description)
     {
         Name = name;
         Description = description;
-        Experience = experience;
-    }
-
-    public void SetSocialNetworks(SocialNetworks socialNetworks)
-    {
-        SocialNetworks = socialNetworks;
-    }
-
-    public void SetDetailsForHelps(DetailsForHelps detailsForHelps)
-    {
-        DetailsForHelps = detailsForHelps;
     }
 
     public void DeletePet(Pet pet)
@@ -355,16 +329,10 @@ public sealed class Volunteer : SoftDeletableEntity<VolunteerId>, ICloneable
                 this.Name.FirstName,
                 this.Name.LastName,
                 this.Name.Surname).Value,
-            Email.Create(this.Email.Value).Value,
             Description.Create(this.Description.Value).Value,
-            Experience.Create(this.Experience.Value).Value,
             PhoneNumber.Create(
                 this.PhoneNumber.RegionCode,
                 this.PhoneNumber.Number).Value,
-            SocialNetworks.Create(this.SocialNetworks.Items
-                .Select(x => SocialNetwork.Create(x.Title, x.Url).Value)).Value,
-            DetailsForHelps.Create(this.DetailsForHelps.Items
-                .Select(x => DetailsForHelp.Create(x.Title, x.Description).Value)).Value,
             Files.Create(this.Files.Items
                 .Select(x => File.Create(x.FullPath).Value)).Value
         );

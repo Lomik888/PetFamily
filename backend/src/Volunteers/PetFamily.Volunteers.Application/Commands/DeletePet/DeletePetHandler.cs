@@ -13,7 +13,7 @@ using PetFamily.Volunteers.Application.Abstractions;
 using PetFamily.Volunteers.Application.Commands.Delete;
 using PetFamily.Volunteers.Domain;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 using IsolationLevel = System.Data.IsolationLevel;
 
 namespace PetFamily.Volunteers.Application.Commands.DeletePet;

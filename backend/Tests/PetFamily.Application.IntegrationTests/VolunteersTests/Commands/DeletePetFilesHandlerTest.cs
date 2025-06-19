@@ -6,7 +6,7 @@ using PetFamily.Data.Tests.Factories;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.Volunteers.Application.Commands.DeletePetFiles;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
 

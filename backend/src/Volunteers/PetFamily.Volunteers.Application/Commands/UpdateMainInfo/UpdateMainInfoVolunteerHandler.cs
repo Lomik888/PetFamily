@@ -48,7 +48,7 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorList, U
         string? lastName = null;
         string? sureName = null;
         Description? description = null;
-        Experience? experience = null;
+        //Experience? experience = null;
 
         foreach (var req in request.GetNotNullPropertiesEnumerator())
         {
@@ -57,9 +57,9 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorList, U
                 case "Description":
                     description = Description.Create(req!.Value!.ToString()!).Value;
                     break;
-                case "Experience":
-                    experience = Experience.Create((int)req!.Value!).Value;
-                    break;
+                // case "Experience":
+                //     experience = Experience.Create((int)req!.Value!).Value;
+                //     break;
                 case "FirstName":
                     firstName = req.Value!.ToString()!;
                     break;
@@ -85,8 +85,8 @@ public class UpdateMainInfoVolunteerHandler : ICommandHandler<Guid, ErrorList, U
                 lastName ?? volunteer.Name.LastName,
                 sureName ?? volunteer.Name.Surname
             ).Value,
-            description ?? volunteer.Description,
-            experience ?? volunteer.Experience
+            description ?? volunteer.Description
+            //experience ?? volunteer.Experience
         );
 
         await _volunteerRepository.UpdateAsAlreadyTrackingAsync(volunteer, cancellationToken);

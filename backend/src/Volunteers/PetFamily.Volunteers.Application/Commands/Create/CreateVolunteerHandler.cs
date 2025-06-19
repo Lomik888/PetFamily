@@ -8,7 +8,6 @@ using PetFamily.Volunteers.Application.Abstractions;
 using PetFamily.Volunteers.Domain;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
 
@@ -45,23 +44,23 @@ public class CreateVolunteerHandler : ICommandHandler<Guid, ErrorList, CreateVol
         var id = VolunteerId.Create().Value;
         var nameResult = Name.Create(request.VolunteerName.FirstName, request.VolunteerName.LastName,
             request.VolunteerName.Surname).Value;
-        var emailResult = Email.Create(request.Email).Value;
+        //var emailResult = Email.Create(request.Email).Value;
         var descriptionResult = Description.Create(request.Description).Value;
-        var experienceResult = Experience.Create(request.Experience).Value;
+        // var experienceResult = Experience.Create(request.Experience).Value;
         var phoneNumberResult = PhoneNumber.Create(request.Phone.RegionCode, request.Phone.Number).Value;
-        var socialNetworks = SocialNetworks.CreateEmpty().Value;
-        var detailsForHelps = DetailsForHelps.CreateEmpty().Value;
+        // var socialNetworks = SocialNetworks.CreateEmpty().Value;
+        //var detailsForHelps = DetailsForHelps.CreateEmpty().Value;
         var files = Files.CreateEmpty().Value;
 
         var volunteer = new Volunteer(
             id,
             nameResult,
-            emailResult,
+            //emailResult,
             descriptionResult,
-            experienceResult,
+            //experienceResult,
             phoneNumberResult,
-            socialNetworks,
-            detailsForHelps,
+            //socialNetworks,
+            //detailsForHelps,
             files
         );
 

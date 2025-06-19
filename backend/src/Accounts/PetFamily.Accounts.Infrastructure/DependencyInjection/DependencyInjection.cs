@@ -1,5 +1,6 @@
 ﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Accounts.Infrastructure.Providers;
+using PetFamily.Framework;
 using PetFemily.Accounts.Application.Providers;
 using PetFemily.Accounts.Domain;
 
@@ -63,6 +65,7 @@ public static class DependencyInjection
     private static void AddAuthorization(this IServiceCollection services)
     {
         services.AddAuthorization(options => { });
+        services.AddSingleton<IAuthorizationPolicyProvider, PermissionAuthorizationPolicyProvider>();
     }
 
     private static void AddAuthentication(this IServiceCollection services, IConfiguration configuration)

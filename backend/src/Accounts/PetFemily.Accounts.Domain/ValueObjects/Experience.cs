@@ -2,7 +2,7 @@
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.Validation;
 
-namespace PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
+namespace PetFemily.Accounts.Domain.ValueObjects;
 
 public class Experience : ValueObject
 {
