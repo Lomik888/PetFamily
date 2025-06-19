@@ -10,6 +10,10 @@ builder.Services.ConfigureServices(builder.Configuration);
 
 var app = builder.Build();
 
+using var scope = app.Services.CreateScope();
+var seedRolesPermissions = scope.ServiceProvider.GetRequiredService<SeedRolesPermissions>();
+await seedRolesPermissions.Seed();
+
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseSerilogRequestLogging();

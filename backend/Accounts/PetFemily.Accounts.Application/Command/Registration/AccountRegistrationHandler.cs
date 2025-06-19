@@ -49,7 +49,7 @@ public class AccountRegistrationHandler : ICommandHandler<ErrorList, AccountRegi
         var user = new User()
         {
             UserName = request.Email,
-           // Email = request.Email
+            // Email = request.Email
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);

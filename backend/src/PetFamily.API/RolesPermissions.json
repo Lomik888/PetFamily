@@ -1,0 +1,53 @@
+﻿{
+  "Roles": {
+    "User": [],
+    "Admin": [
+      "create.volunteer",
+      "activate.account.volunteer",
+      "delete.account.volunteer",
+      "delete.pet.files",
+      "delete.pet",
+      "delete.species.and.breed"
+    ],
+    "Volunteer": [
+      "create.volunteer",
+      "update.main.info.volunteer",
+      "activate.account.volunteer",
+      "delete.account.volunteer",
+      "update.details.for.help.volunteer",
+      "update.socials.volunteer",
+      "delete.pet.files",
+      "upload.pet.files",
+      "set.main.file.pet",
+      "delete.pet",
+      "update.status.pet",
+      "update.main.info.pet",
+      "update.serial.number.pet",
+      "update.socials.pet"
+    ],
+    "Participant": []
+  },
+  "Permissions": {
+    "Volunteers": [
+      "create.volunteer",
+      "update.main.info.volunteer",
+      "activate.account.volunteer",
+      "delete.account.volunteer",
+      "update.details.for.help.volunteer",
+      "update.socials.volunteer"
+    ],
+    "Pets": [
+      "delete.pet.files",
+      "upload.pet.files",
+      "set.main.file.pet",
+      "delete.pet",
+      "update.status.pet",
+      "update.main.info.pet",
+      "update.serial.number.pet",
+      "update.socials.pet"
+    ],
+    "Species": [
+      "delete.species.and.breed"
+    ]
+  }
+}

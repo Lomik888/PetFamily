@@ -55,8 +55,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFemily.Accounts.Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Presentation", "src\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj", "{2BD00D60-1271-461A-9428-4057364BD297}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "etc", "etc", "{4BF65AF8-9EB2-43F2-8DBB-04239C79FD2C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
