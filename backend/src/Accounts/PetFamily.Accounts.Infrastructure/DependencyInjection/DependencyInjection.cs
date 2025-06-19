@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Accounts.Infrastructure.Providers;
 using PetFamily.Framework;
+using PetFemily.Accounts.Application;
 using PetFemily.Accounts.Application.Providers;
 using PetFemily.Accounts.Domain;
 
@@ -23,6 +24,8 @@ public static class DependencyInjection
         services.AddDatabase(configuration);
         services.AddIdentity();
         services.AddProviders();
+
+        services.AddScoped<IAccountRepository, AccountRepository>();
     }
 
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)

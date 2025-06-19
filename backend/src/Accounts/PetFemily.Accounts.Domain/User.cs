@@ -7,8 +7,7 @@ namespace PetFemily.Accounts.Domain;
 
 public class User : IdentityUser<Guid>
 {
-    public SocialNetworks SocialNetworks { get; set; } = default!;
-    public new Email Email { get; set; } = default!;
+    public SocialNetworks SocialNetworks { get; set; } = SocialNetworks.CreateEmpty().Value;
     public Guid RoleId { get; set; }
     public File? Photo { get; set; }
     public string FullName { get; set; } = default!;

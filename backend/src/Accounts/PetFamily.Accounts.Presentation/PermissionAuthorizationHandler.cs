@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.JsonWebTokens;
@@ -16,12 +17,14 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<HasPermission
         _scopeFactory = scopeFactory;
     }
 
-    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, HasPermission requirement)
+    protected override async Task HandleRequirementAsync(
+        AuthorizationHandlerContext context,
+        HasPermission requirement)
     {
         using var scope = _scopeFactory.CreateScope();
         var accountDbContext = scope.ServiceProvider.GetRequiredService<AccountDbContext>();
 
-        var roleName = context.User.Claims.FirstOrDefault(x => x.Type == JwtRegisteredClaimNames.Typ);
+        var roleName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
         if (roleName is null)
         {
             context.Fail();
@@ -34,10 +37,9 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<HasPermission
             context.Succeed(requirement);
             return;
         }
-
-        var userHavePermission = await accountDbContext.Permissions
-            .AnyAsync(x => x.Code == policy && x.Roles.Any(x => x.Name == roleName.Value));
-
+        
+        var userHavePermission = await accountDbContext.Roles.Where(x => x.Name == roleName.Value)
+            .AnyAsync(x => x.Permissions.Any(x => x.Code == policy));
         if (userHavePermission == false)
         {
             context.Fail();

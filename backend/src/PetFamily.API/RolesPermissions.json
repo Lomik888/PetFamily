@@ -1,6 +1,8 @@
 ﻿{
   "Roles": {
-    "User": [],
+    "User": [
+      "create.volunteer"
+    ],
     "Admin": [
       "create.volunteer",
       "activate.account.volunteer",

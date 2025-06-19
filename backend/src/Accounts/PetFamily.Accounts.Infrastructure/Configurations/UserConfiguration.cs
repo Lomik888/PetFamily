@@ -31,15 +31,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnType("jsonb");
         });
 
-        builder.Property(x => x.Email)
-            .IsRequired()
-            .HasColumnName("email")
-            .HasMaxLength(Email.EMAIL_MAX_LENGTH)
-            .ValueGeneratedNever()
-            .HasConversion(
-                email => email.Value,
-                value => Email.Create(value).Value);
-
         builder.Property(x => x.Photo).IsRequired().HasColumnName("username")
             .HasConversion(
                 file => file != null ? file.FullPath : null,

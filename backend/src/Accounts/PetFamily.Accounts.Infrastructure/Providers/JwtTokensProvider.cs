@@ -26,9 +26,9 @@ public class JwtTokensProvider : IJwtTokensProvider
     {
         var claims = new List<Claim>()
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email.Value ?? ""),
-            new Claim(JwtRegisteredClaimNames.Typ, RolesTypes.User),
+            new Claim(JwtClaimsTypesCustom.Sub, user.Id.ToString()),
+            new Claim(JwtClaimsTypesCustom.Email, user.Email ?? ""),
+            new Claim(JwtClaimsTypesCustom.Role, RolesTypes.User),
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.SecurityKey));

@@ -9,5 +9,5 @@ public class VolunteerAccount
     public Guid UserId { get; set; }
     public string? Certificates { get; set; }
     public DetailsForHelps DetailsForHelps { get; set; } = DetailsForHelps.CreateEmpty().Value;
-    public Experience Experience { get; set; } = default!;
+    public Experience Experience { get; set; } = Experience.Create(0).Value;
 }
