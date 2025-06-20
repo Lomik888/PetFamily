@@ -17,7 +17,7 @@ namespace PetFamily.Specieses.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.15")
+                .HasAnnotation("ProductVersion", "8.0.16")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
@@ -35,14 +35,11 @@ namespace PetFamily.Specieses.Migrations
                         .HasColumnName("name");
 
                     b.Property<Guid>("species_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("species_id");
+                        .HasColumnType("uuid");
 
-                    b.HasKey("Id")
-                        .HasName("pk_breeds");
+                    b.HasKey("Id");
 
-                    b.HasIndex("species_id")
-                        .HasDatabaseName("ix_breeds_species_id");
+                    b.HasIndex("species_id");
 
                     b.ToTable("breeds", "Species");
                 });
@@ -59,8 +56,7 @@ namespace PetFamily.Specieses.Migrations
                         .HasColumnType("character varying(30)")
                         .HasColumnName("name");
 
-                    b.HasKey("Id")
-                        .HasName("pk_species");
+                    b.HasKey("Id");
 
                     b.ToTable("species", "Species");
                 });
@@ -71,8 +67,7 @@ namespace PetFamily.Specieses.Migrations
                         .WithMany("Breeds")
                         .HasForeignKey("species_id")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_breeds_species_species_id");
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PetFamily.Specieses.Domain.Species", b =>

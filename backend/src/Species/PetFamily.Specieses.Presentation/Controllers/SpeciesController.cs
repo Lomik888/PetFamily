@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Framework;
 using PetFamily.Framework.Abstractions;
 using PetFamily.Framework.Extensions;
 using PetFamily.Framework.Responses;
@@ -51,9 +52,9 @@ public class SpeciesController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
-    [Authorize]
+    [HasPermission(PermissionTypes.SpeciesModule.DeleteSpecieAndBreed)]
     [HttpDelete("{speciesId:guid}/")]
-    public async Task<IActionResult> DeletePetFiles(
+    public async Task<IActionResult> DeleteSpecieAndBreed(
         [FromRoute] Guid speciesId,
         [FromBody] DeleteSpecieAndBreedRequest request,
         [FromServices] ICommandHandler<ErrorList, DeleteSpecieAndBreedCommand> handler,

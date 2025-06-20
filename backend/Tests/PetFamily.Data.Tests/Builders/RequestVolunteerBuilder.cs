@@ -6,7 +6,7 @@ namespace PetFamily.Data.Tests.Builders;
 
 public static class RequestVolunteerBuilder
 {
-    private const int MAX_EXPERIENCE = Experience.VELUE_MAX_LENGHT;
+    //private const int MAX_EXPERIENCE = Experience.VELUE_MAX_LENGHT;
 
     private static readonly Fixture _autoFixture = new Fixture();
     private static readonly Random _random = new Random();
@@ -102,7 +102,7 @@ public static class RequestVolunteerBuilder
 
     public static RequestVolunteer VolunteerBuild()
     {
-        var experience = _random.Next(0, MAX_EXPERIENCE + 1);
+        //var experience = _random.Next(0, MAX_EXPERIENCE + 1);
         var regionCode = _random.Next(1, 10);
         var number = _random.Next(10, int.MaxValue);
         var randomEmailNumber = _random.Next(100, 1000000);
@@ -114,7 +114,7 @@ public static class RequestVolunteerBuilder
             .With(x => x.FirstName, "Артем")
             .With(x => x.LastName, "Торак")
             .With(x => x.Surname, "Генрихович")
-            .With(x => x.Experience, experience)
+            //.With(x => x.Experience, experience)
             .With(x => x.RegionCode, $"+{regionCode}")
             .With(x => x.Number, number.ToString())
             .Create();

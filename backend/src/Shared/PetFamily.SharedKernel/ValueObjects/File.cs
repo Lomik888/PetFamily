@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
 
-namespace PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
+namespace PetFamily.SharedKernel.ValueObjects;
 
 public class File : ValueObject
 {

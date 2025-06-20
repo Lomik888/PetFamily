@@ -2,7 +2,7 @@
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.ValueObjects;
 
-namespace PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
+namespace PetFemily.Accounts.Domain.ValueObjects;
 
 public class SocialNetworks : ValueObjectList<SocialNetwork>
 {

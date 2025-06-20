@@ -18,9 +18,9 @@ public class UpdateMainInfoVolunteerCommandValidator : AbstractValidator<UpdateM
             .MustBeValueObject(x => Description.Create(x!))
             .When(x => string.IsNullOrWhiteSpace(x.Description));
 
-        RuleFor(x => x.Experience)
-            .MustBeValueObject(x => Experience.Create((int)x!))
-            .When(x => x.Experience != null);
+        // RuleFor(x => x.Experience)
+        //     .MustBeValueObject(x => Experience.Create((int)x!))
+        //     .When(x => x.Experience != null);
 
         When(x => x.Name is not null, () =>
         {

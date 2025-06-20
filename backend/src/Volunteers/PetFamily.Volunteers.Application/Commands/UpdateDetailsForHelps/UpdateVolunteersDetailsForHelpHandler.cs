@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
+using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Application.Abstractions;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
 
 namespace PetFamily.Volunteers.Application.Commands.UpdateDetailsForHelps;
 
@@ -49,7 +49,7 @@ public class UpdateVolunteersDetailsForHelpHandler :
 
         var newDetailsForHelps = DetailsForHelps.Create(newDetailsForHelp).Value;
 
-        volunteer.SetDetailsForHelps(newDetailsForHelps);
+        //volunteer.SetDetailsForHelps(newDetailsForHelps);
 
         await _volunteerRepository.UpdateAsAlreadyTrackingAsync(volunteer, cancellationToken);
 

@@ -1,8 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
-using PetFamily.SharedKernel.ValueObjects;
 
-namespace PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
+namespace PetFamily.SharedKernel.ValueObjects;
 
 public class DetailsForHelps : ValueObjectList<DetailsForHelp>
 {

@@ -4,11 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using PetFamily.Core;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Commands;
+using PetFamily.Framework;
 using PetFamily.Framework.Abstractions;
 using PetFamily.Framework.Extensions;
 using PetFamily.Framework.Responses;
 using PetFamily.SharedKernel.Errors;
+using PetFamily.Volunteers.Application.Commands.CreatePet;
+using PetFamily.Volunteers.Application.Commands.DeletePet;
 using PetFamily.Volunteers.Application.Commands.DeletePetFiles;
+using PetFamily.Volunteers.Application.Commands.MovePet;
+using PetFamily.Volunteers.Application.Commands.SetMainFilePet;
+using PetFamily.Volunteers.Application.Commands.UpdateFullPet;
+using PetFamily.Volunteers.Application.Commands.UpdateStatusPet;
 using PetFamily.Volunteers.Application.Dtos.PetDtos;
 using PetFamily.Volunteers.Application.Queries.GetPet;
 using PetFamily.Volunteers.Application.Queries.GetPets;
@@ -18,6 +25,119 @@ namespace PetFamily.Volunteers.Presentation.Controllers;
 
 public class PetController : ApplicationController
 {
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.UpdateMainInfo)]
+    [HttpPatch("{volunteerId:guid}/{petId:guid}/full-info")]
+    public async Task<ActionResult<Guid>> UpdateMainInfo(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, UpdateFullPetCommand> handler,
+        [FromBody] UpdateFullPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.UpdateStatus)]
+    [HttpPut("{volunteerId:guid}/{petId:guid}/status")]
+    public async Task<ActionResult<Guid>> UpdateStatus(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, UpdateStatusPetCommand> handler,
+        [FromBody] UpdateStatusPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.DeletePet)]
+    [HttpDelete("{volunteerId:guid}/{petId:guid}")]
+    public async Task<ActionResult<Guid>> DeletePet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, DeletePetCommand> handler,
+        [FromBody] DeletePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.UpdateSocials)]
+    [HttpPost("{volunteerId:guid}/pets")]
+    public async Task<ActionResult> UpdateSocials(
+        [FromRoute] Guid volunteerId,
+        [FromServices] ICommandHandler<ErrorList, CreatePetCommand> handler,
+        [FromBody] CreatePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.UpdateSerialNumberPet)]
+    [HttpPut("{volunteerId:guid}/pets/{petId:guid}")]
+    public async Task<ActionResult> UpdateSerialNumberPet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, MovePetCommand> handler,
+        [FromBody] UpdateSerialNumberPetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.SetMainFilePet)]
+    [HttpPut("{volunteerId:guid}/{petId:guid}/main-file")]
+    public async Task<ActionResult<Guid>> SetMainFilePet(
+        [FromRoute] Guid volunteerId,
+        [FromRoute] Guid petId,
+        [FromServices] ICommandHandler<ErrorList, SetMainFilePetCommand> handler,
+        [FromBody] SetMainFilePetRequest request,
+        CancellationToken cancellationToken = default)
+    {
+        var result = await handler.Handle(request.ToCommand(volunteerId, petId), cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.OkEmpty());
+    }
+
     [AllowAnonymous]
     [HttpGet("pet/{petId:guid}")]
     public async Task<ActionResult> GetPetById(
@@ -36,7 +156,7 @@ public class PetController : ApplicationController
         return Ok(Envelope.Ok(result.Value));
     }
 
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.UploadPetFiles)]
     [HttpPost("{volunteerId:guid}/pet-files/{petId:guid}")]
     public async Task<IActionResult> UploadPetFiles(
         [FromRoute] Guid volunteerId,
@@ -59,7 +179,7 @@ public class PetController : ApplicationController
         return Ok(Envelope.OkEmpty());
     }
 
-    [Authorize]
+    [HasPermission(PermissionTypes.VolunteersModule.Pet.DeletePetFiles)]
     [HttpDelete("{volunteerId:guid}/pet-files/{petId:guid}")]
     public async Task<IActionResult> DeletePetFiles(
         [FromRoute] Guid volunteerId,

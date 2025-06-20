@@ -2,7 +2,6 @@
 using PetFamily.Volunteers.Domain;
 using PetFamily.Volunteers.Domain.ValueObjects.IdsVO;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
 
@@ -17,25 +16,25 @@ public static class VolunteerFactory
             requestVolunteer.FirstName,
             requestVolunteer.LastName,
             requestVolunteer.Surname).Value;
-        var email = Email.Create(requestVolunteer.Email).Value;
+        //var email = Email.Create(requestVolunteer.Email).Value;
         var description = Description.Create(requestVolunteer.Description).Value;
-        var experience = Experience.Create(requestVolunteer.Experience).Value;
+        //var experience = Experience.Create(requestVolunteer.Experience).Value;
         var phoneNumber = PhoneNumber.Create(
             requestVolunteer.RegionCode,
             requestVolunteer.Number).Value;
-        var socialNetworks = SocialNetworks.CreateEmpty().Value;
-        var detailsForHelps = DetailsForHelps.CreateEmpty().Value;
+        //var socialNetworks = SocialNetworks.CreateEmpty().Value;
+        //var detailsForHelps = DetailsForHelps.CreateEmpty().Value;
         var files = Files.CreateEmpty().Value;
 
         var volunteer = new Volunteer(
             volunteerId,
             name,
-            email,
+            //email,
             description,
-            experience,
+            //experience,
             phoneNumber,
-            socialNetworks,
-            detailsForHelps,
+            //socialNetworks,
+            //detailsForHelps,
             files);
 
         return volunteer;

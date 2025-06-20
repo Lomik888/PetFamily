@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PetFamily.Volunteers.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_volunteers_module : Migration
+    public partial class initial_volunteers_module : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -20,12 +20,8 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    email = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     description = table.Column<string>(type: "character varying(500)", maxLength: 500, nullable: false),
-                    experience = table.Column<int>(type: "integer", nullable: false),
                     files = table.Column<string>(type: "jsonb", nullable: false),
-                    social_networks = table.Column<string>(type: "jsonb", nullable: false),
-                    details_for_help = table.Column<string>(type: "jsonb", nullable: false),
                     first_name = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
                     last_name = table.Column<string>(type: "character varying(25)", maxLength: 25, nullable: false),
                     surname = table.Column<string>(type: "character varying(15)", maxLength: 15, nullable: false),
@@ -36,7 +32,7 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_volunteers", x => x.id);
+                    table.PrimaryKey("PK_volunteers", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -78,9 +74,9 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_pets", x => x.id);
+                    table.PrimaryKey("PK_pets", x => x.id);
                     table.ForeignKey(
-                        name: "fk_pets_volunteers_volunteer_id",
+                        name: "FK_pets_volunteers_volunteer_id",
                         column: x => x.volunteer_id,
                         principalSchema: "Volunteers",
                         principalTable: "volunteers",
@@ -89,7 +85,7 @@ namespace PetFamily.Volunteers.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_pets_volunteer_id",
+                name: "IX_pets_volunteer_id",
                 schema: "Volunteers",
                 table: "pets",
                 column: "volunteer_id");

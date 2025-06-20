@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PetFamily.Specieses.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_species_module : Migration
+    public partial class initial_species_module : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,7 +24,7 @@ namespace PetFamily.Specieses.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_species", x => x.id);
+                    table.PrimaryKey("PK_species", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -38,9 +38,9 @@ namespace PetFamily.Specieses.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_breeds", x => x.id);
+                    table.PrimaryKey("PK_breeds", x => x.id);
                     table.ForeignKey(
-                        name: "fk_breeds_species_species_id",
+                        name: "FK_breeds_species_species_id",
                         column: x => x.species_id,
                         principalSchema: "Species",
                         principalTable: "species",
@@ -49,7 +49,7 @@ namespace PetFamily.Specieses.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_breeds_species_id",
+                name: "IX_breeds_species_id",
                 schema: "Species",
                 table: "breeds",
                 column: "species_id");

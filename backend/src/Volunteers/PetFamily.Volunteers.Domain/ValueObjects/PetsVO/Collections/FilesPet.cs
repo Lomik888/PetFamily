@@ -1,8 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.ValueObjects;
-using File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
-using SharedVO_File = PetFamily.Volunteers.Domain.ValueObjects.SharedVO.File;
+using File = PetFamily.SharedKernel.ValueObjects.File;
+using SharedVO_File = PetFamily.SharedKernel.ValueObjects.File;
 
 namespace PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
 

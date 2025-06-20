@@ -4,10 +4,10 @@ using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.SharedKernel.Errors;
+using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.Volunteers.Application.Commands.UpdateDetailsForHelps;
 using PetFamily.Volunteers.Application.Dtos.SharedDtos;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
-using PetFamily.Volunteers.Domain.ValueObjects.SharedVO.Collections;
 
 
 namespace PetFamily.Application.IntegrationTests.VolunteersTests.Commands;
@@ -37,7 +37,7 @@ public class UpdateVolunteersDetailsForHelpHandlerTest : TestsBase
         var detailsForHelpDto = new DetailsForHelpDto("SomeTitle", "SomeDescription");
 
         var detailsForHelps = DetailsForHelps.Create([detailsForHelp]).Value;
-        volunteer.SetDetailsForHelps(detailsForHelps);
+        //volunteer.SetDetailsForHelps(detailsForHelps);
         var command = new UpdateVolunteersDetailsForHelpCommand(volunteer.Id.Value,
             new DetailsForHelpCollectionDto([detailsForHelpDto]));
 

@@ -5,6 +5,7 @@ using Microsoft.Extensions.Logging;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
+using PetFamily.SharedKernel.ValueObjects;
 using PetFemily.Accounts.Application.Extensions;
 using PetFemily.Accounts.Domain;
 
@@ -13,17 +14,20 @@ namespace PetFemily.Accounts.Application.Command.Registration;
 public class AccountRegistrationHandler : ICommandHandler<ErrorList, AccountRegistrationCommand>
 {
     private readonly UserManager<User> _userManager;
+    private readonly IAccountRepository _roleRepository;
     private readonly ILogger<AccountRegistrationHandler> _logger;
     private readonly IValidator<AccountRegistrationCommand> _validator;
 
     public AccountRegistrationHandler(
         UserManager<User> userManager,
         ILogger<AccountRegistrationHandler> logger,
-        IValidator<AccountRegistrationCommand> validator)
+        IValidator<AccountRegistrationCommand> validator,
+        IAccountRepository roleRepository)
     {
         _userManager = userManager;
         _logger = logger;
         _validator = validator;
+        _roleRepository = roleRepository;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
@@ -46,10 +50,14 @@ public class AccountRegistrationHandler : ICommandHandler<ErrorList, AccountRegi
             return ErrorList.Create(error);
         }
 
+        var roleId = await _roleRepository.GetRoleIdByNameAsync("User");
+
         var user = new User()
         {
             UserName = request.Email,
-            Email = request.Email
+            Email = request.Email,
+            FullName = request.Email,
+            RoleId = roleId
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);

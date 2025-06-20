@@ -3,7 +3,7 @@ using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.Validation;
 
-namespace PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
+namespace PetFamily.SharedKernel.ValueObjects;
 
 public class DetailsForHelp : ValueObject
 {

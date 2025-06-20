@@ -5,6 +5,7 @@ using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Infrastructure.Options;
+using PetFamily.Framework;
 using PetFamily.SharedKernel.Errors;
 using PetFemily.Accounts.Application.Providers;
 using PetFemily.Accounts.Domain;
@@ -25,8 +26,9 @@ public class JwtTokensProvider : IJwtTokensProvider
     {
         var claims = new List<Claim>()
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? ""),
+            new Claim(JwtClaimsTypesCustom.Sub, user.Id.ToString()),
+            new Claim(JwtClaimsTypesCustom.Email, user.Email ?? ""),
+            new Claim(JwtClaimsTypesCustom.Role, RolesTypes.User),
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Value.SecurityKey));
