@@ -29,7 +29,7 @@ public class AccountDbContext : IdentityDbContext<User, Role, Guid>
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Ignore<IdentityUserRole<Guid>>();
+        builder.Entity<IdentityUserRole<Guid>>().ToTable("users_roles", schema: "Accounts");
         builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims", schema: "Accounts");
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens", schema: "Accounts");
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins", schema: "Accounts");

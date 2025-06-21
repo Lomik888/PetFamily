@@ -1,14 +1,22 @@
 ﻿{
   "Roles": {
     "User": [
-      "create.volunteer"
     ],
     "Admin": [
       "create.volunteer",
+      "update.main.info.volunteer",
       "activate.account.volunteer",
       "delete.account.volunteer",
+      "update.details.for.help.volunteer",
+      "update.socials.volunteer",
       "delete.pet.files",
+      "upload.pet.files",
+      "set.main.file.pet",
       "delete.pet",
+      "update.status.pet",
+      "update.main.info.pet",
+      "update.serial.number.pet",
+      "update.socials.pet",
       "delete.species.and.breed"
     ],
     "Volunteer": [

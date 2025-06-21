@@ -13,7 +13,7 @@ using PetFamily.Accounts.Infrastructure;
 namespace PetFamily.Accounts.Infrastructure.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    [Migration("20250619150345_Initial_account_module")]
+    [Migration("20250621141926_Initial_account_module")]
     partial class Initial_account_module
     {
         /// <inheritdoc />
@@ -93,6 +93,21 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("user_logins", "Accounts");
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("UserId", "RoleId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("users_roles", "Accounts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
@@ -266,9 +281,8 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                         .HasColumnType("text")
                         .HasColumnName("username");
 
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("role_id");
+                    b.Property<Guid?>("RoleId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -347,6 +361,21 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
+                {
+                    b.HasOne("PetFemily.Accounts.Domain.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetFemily.Accounts.Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("PetFemily.Accounts.Domain.User", null)
@@ -393,9 +422,7 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 {
                     b.HasOne("PetFemily.Accounts.Domain.Role", null)
                         .WithMany("Users")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .HasForeignKey("RoleId");
 
                     b.OwnsOne("PetFemily.Accounts.Domain.ValueObjects.SocialNetworks", "SocialNetworks", b1 =>
                         {

@@ -1,8 +1,12 @@
-﻿using CSharpFunctionalExtensions;
+﻿using System.Text.Json;
+using CSharpFunctionalExtensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using PetFamily.Core.Abstrations;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Enums;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.ValueObjects;
@@ -14,7 +18,7 @@ namespace PetFemily.Accounts.Application.Command.Registration;
 public class AccountRegistrationHandler : ICommandHandler<ErrorList, AccountRegistrationCommand>
 {
     private readonly UserManager<User> _userManager;
-    private readonly IAccountRepository _roleRepository;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly ILogger<AccountRegistrationHandler> _logger;
     private readonly IValidator<AccountRegistrationCommand> _validator;
 
@@ -22,12 +26,14 @@ public class AccountRegistrationHandler : ICommandHandler<ErrorList, AccountRegi
         UserManager<User> userManager,
         ILogger<AccountRegistrationHandler> logger,
         IValidator<AccountRegistrationCommand> validator,
-        IAccountRepository roleRepository)
+        IAccountRepository roleRepository,
+        [FromKeyedServices(UnitOfWorkTypes.Accounts)]
+        IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
         _logger = logger;
         _validator = validator;
-        _roleRepository = roleRepository;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<UnitResult<ErrorList>> Handle(
@@ -50,22 +56,36 @@ public class AccountRegistrationHandler : ICommandHandler<ErrorList, AccountRegi
             return ErrorList.Create(error);
         }
 
-        var roleId = await _roleRepository.GetRoleIdByNameAsync("User");
-
-        var user = new User()
+        var userParticipant = User.CreateParticipantAccount(
+            request.Email,
+            request.Email,
+            request.Email);
+        try
         {
-            UserName = request.Email,
-            Email = request.Email,
-            FullName = request.Email,
-            RoleId = roleId
-        };
+            await _unitOfWork.BeginTransactionAsync(cancellationToken: cancellationToken);
 
-        var result = await _userManager.CreateAsync(user, request.Password);
-        if (result.Succeeded == false)
+            var userParticipantResult = await _userManager.CreateAsync(userParticipant, request.Password);
+            if (userParticipantResult.Succeeded == false)
+            {
+                var json = JsonSerializer.Serialize(userParticipantResult.Errors);
+                _logger.LogError(json);
+                throw new ApplicationException();
+            }
+
+            var addToRoleResult =
+                await _userManager.AddToRoleAsync(userParticipant, ParticipantAccount.RoleName.ToUpper());
+            if (addToRoleResult.Succeeded == false)
+            {
+                var json = JsonSerializer.Serialize(addToRoleResult.Errors);
+                _logger.LogError(json);
+                throw new ApplicationException();
+            }
+
+            await _unitOfWork.CommitAsync(cancellationToken);
+        }
+        catch (Exception e)
         {
-            _logger.LogInformation("Can't create user, something wrong");
-            var errors = result.Errors.ToErrors();
-            return ErrorList.Create(errors);
+            await _unitOfWork.RollbackAsync(cancellationToken);
         }
 
         _logger.LogInformation("User created a new account with password.");
