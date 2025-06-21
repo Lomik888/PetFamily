@@ -13,12 +13,5 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
         builder.Property(x => x.Name).IsRequired().HasColumnName("name");
 
         builder.HasMany(x => x.Permissions).WithMany(x => x.Roles);
-
-        builder
-            .HasMany(x => x.Users)
-            .WithOne()
-            .HasForeignKey(x => x.RoleId)
-            .IsRequired()
-            .OnDelete(DeleteBehavior.Restrict);
     }
 }

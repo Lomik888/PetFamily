@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using PetFamily.SharedKernel.ValueObjects;
 using PetFemily.Accounts.Domain;
 using PetFemily.Accounts.Domain.ValueObjects;
 using File = PetFamily.SharedKernel.ValueObjects.File;
@@ -38,8 +37,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired(false);
 
         builder.Property(x => x.FullName).IsRequired().HasColumnName("full_name");
-
-        builder.Property(x => x.RoleId).IsRequired().HasColumnName("role_id");
 
         builder.HasOne(x => x.AdminAccount)
             .WithOne()

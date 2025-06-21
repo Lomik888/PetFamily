@@ -101,9 +101,9 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     social_networks = table.Column<string>(type: "jsonb", nullable: false),
-                    role_id = table.Column<Guid>(type: "uuid", nullable: false),
                     username = table.Column<string>(type: "text", nullable: true),
                     full_name = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uuid", nullable: false),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -123,12 +123,12 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_users_roles_role_id",
-                        column: x => x.role_id,
+                        name: "FK_users_roles_RoleId",
+                        column: x => x.RoleId,
                         principalSchema: "Accounts",
                         principalTable: "roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -314,10 +314,10 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_role_id",
+                name: "IX_users_RoleId",
                 schema: "Accounts",
                 table: "users",
-                column: "role_id");
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
