@@ -14,6 +14,7 @@ public class AccountDbContext : IdentityDbContext<User, Role, Guid>
     public DbSet<AdminAccount> AdminAccount { get; set; }
     public DbSet<VolunteerAccount> VolunteerAccount { get; set; }
     public DbSet<ParticipantAccount> ParticipantAccount { get; set; }
+    public DbSet<RefreshSessions> RefreshSessions { get; set; }
 
     public AccountDbContext(DbContextOptions<AccountDbContext> options) : base(options)
     {

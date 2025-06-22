@@ -11,7 +11,17 @@ public static class ErrorsPreform
             return Error.Create(
                 message,
                 ErrorCodes.General.InvalidField,
-                ErrorType.VALIDATION, invalidField);
+                ErrorType.VALIDATION, 
+                invalidField);
+        }
+
+        public static Error Validation(string message)
+        {
+            return Error.Create(
+                message,
+                ErrorCodes.General.InvalidField,
+                ErrorType.VALIDATION,
+                null);
         }
 
         public static Error NotFound(Guid? id)

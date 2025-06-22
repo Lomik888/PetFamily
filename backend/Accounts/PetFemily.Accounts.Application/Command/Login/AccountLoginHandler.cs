@@ -10,26 +10,29 @@ using PetFemily.Accounts.Domain;
 
 namespace PetFemily.Accounts.Application.Command.Login;
 
-public class AccountLoginHandler : ICommandHandler<string, ErrorList, AccountLoginCommand>
+public class AccountLoginHandler : ICommandHandler<LoginResponseDto, ErrorList, AccountLoginCommand>
 {
     private readonly UserManager<User> _userManager;
     private readonly ILogger<AccountLoginHandler> _logger;
     private readonly IValidator<AccountLoginCommand> _validator;
     private readonly IJwtTokensProvider _tokensProvider;
+    private readonly IAccountManager _accountManager;
 
     public AccountLoginHandler(
         UserManager<User> userManager,
         ILogger<AccountLoginHandler> logger,
         IValidator<AccountLoginCommand> validator,
-        IJwtTokensProvider tokensProvider)
+        IJwtTokensProvider tokensProvider,
+        IAccountManager accountManager)
     {
         _userManager = userManager;
         _logger = logger;
         _validator = validator;
         _tokensProvider = tokensProvider;
+        _accountManager = accountManager;
     }
 
-    public async Task<Result<string, ErrorList>> Handle(
+    public async Task<Result<LoginResponseDto, ErrorList>> Handle(
         AccountLoginCommand request,
         CancellationToken cancellationToken = default)
     {
@@ -65,6 +68,25 @@ public class AccountLoginHandler : ICommandHandler<string, ErrorList, AccountLog
             return ErrorList.Create(errors);
         }
 
-        return tokenResult.Value;
+        var jwtToken = tokenResult.Value.jwt;
+        var jti = tokenResult.Value.jti;
+
+        var refreshTokenResult = _tokensProvider.CreateRefreshToken(user.Id, new Guid(jti));
+        if (refreshTokenResult.IsSuccess == false)
+        {
+            _logger.LogInformation("Cant Create refresh token");
+            var errors = refreshTokenResult.Error;
+            return ErrorList.Create(errors);
+        }
+
+        var refreshToken = refreshTokenResult.Value;
+
+        await _accountManager.AddRefreshSession(refreshToken, cancellationToken);
+
+        var response = new LoginResponseDto(jwtToken, refreshToken.Id.ToString(), refreshToken.ExpireAt);
+
+        return response;
     }
 }
+
+public record LoginResponseDto(string Jwt, string RefreshToken, DateTime ExpireAt);

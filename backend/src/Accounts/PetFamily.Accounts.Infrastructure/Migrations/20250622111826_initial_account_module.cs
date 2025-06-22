@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace PetFamily.Accounts.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial_account_module : Migration
+    public partial class initial_account_module : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -172,6 +172,29 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "refresh_sessions",
+                schema: "Accounts",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    jti = table.Column<Guid>(type: "uuid", nullable: false),
+                    user_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    created_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    expire_at = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_refresh_sessions", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_refresh_sessions_users_user_id",
+                        column: x => x.user_id,
+                        principalSchema: "Accounts",
+                        principalTable: "users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "user_claims",
                 schema: "Accounts",
                 columns: table => new
@@ -309,6 +332,12 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 column: "RolesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_refresh_sessions_user_id",
+                schema: "Accounts",
+                table: "refresh_sessions",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_role_claims_RoleId",
                 schema: "Accounts",
                 table: "role_claims",
@@ -379,6 +408,10 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "PermissionRole",
+                schema: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "refresh_sessions",
                 schema: "Accounts");
 
             migrationBuilder.DropTable(

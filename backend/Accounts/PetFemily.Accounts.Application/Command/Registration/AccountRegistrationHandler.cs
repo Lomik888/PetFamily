@@ -9,8 +9,6 @@ using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Enums;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
-using PetFamily.SharedKernel.ValueObjects;
-using PetFemily.Accounts.Application.Extensions;
 using PetFemily.Accounts.Domain;
 
 namespace PetFemily.Accounts.Application.Command.Registration;
@@ -26,7 +24,6 @@ public class AccountRegistrationHandler : ICommandHandler<ErrorList, AccountRegi
         UserManager<User> userManager,
         ILogger<AccountRegistrationHandler> logger,
         IValidator<AccountRegistrationCommand> validator,
-        IAccountRepository roleRepository,
         [FromKeyedServices(UnitOfWorkTypes.Accounts)]
         IUnitOfWork unitOfWork)
     {
