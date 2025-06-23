@@ -39,7 +39,7 @@ public class AccountManager : IAccountManager
         RefreshSessions refreshSessions,
         CancellationToken cancellationToken)
     {
-        await _dbContext.AddAsync(refreshSessions, cancellationToken);
+        _dbContext.Remove(refreshSessions);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 }

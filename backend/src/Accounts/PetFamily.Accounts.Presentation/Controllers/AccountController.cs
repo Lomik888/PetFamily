@@ -36,23 +36,6 @@ public class AccountController : ApplicationController
     [HttpPost("login")]
     public async Task<IActionResult> LoginAccount(
         [FromBody] AccountLoginRequest request,
-        [FromServices] ICommandHandler<string, ErrorList, AccountLoginCommand> handler,
-        CancellationToken cancellationToken)
-    {
-        var result = await handler.Handle(request.ToCommand(), cancellationToken);
-
-        if (result.IsFailure == true)
-        {
-            return result.Error.Errors.ToErrorActionResult();
-        }
-
-        return Ok(Envelope.Ok(result.Value));
-    }
-
-    [AllowAnonymous]
-    [HttpPost("login")]
-    public async Task<IActionResult> LoginAccount(
-        [FromBody] AccountLoginRequest request,
         [FromServices] ICommandHandler<LoginResponseDto, ErrorList, AccountLoginCommand> handler,
         CancellationToken cancellationToken)
     {
@@ -80,11 +63,11 @@ public class AccountController : ApplicationController
 
     [AllowAnonymous]
     [HttpPost("login-refresh")]
-    public async Task<IActionResult> LoginAccount(
-        [FromBody] AccountLoginRefreshRequest request,
+    public async Task<IActionResult> LoginRefreshAccount(
         [FromServices] ICommandHandler<LoginResponseDto, ErrorList, RefreshLoginCommand> handler,
         CancellationToken cancellationToken)
     {
+        var request = new AccountLoginRefreshRequest();
         var jwt =
             HttpContext.Request.Headers.Authorization.FirstOrDefault(x => x != null && x.StartsWith("Bearer "));
         if (jwt == null)
@@ -92,9 +75,16 @@ public class AccountController : ApplicationController
             return Unauthorized();
         }
 
+        var refreshToken =
+            HttpContext.Request.Cookies["refresh_token"];
+        if (refreshToken == null)
+        {
+            return Unauthorized();
+        }
+
         var token = jwt.Split(' ').Last();
 
-        var result = await handler.Handle(request.ToCommand(token), cancellationToken);
+        var result = await handler.Handle(request.ToCommand(token, refreshToken), cancellationToken);
 
         if (result.IsFailure == true)
         {

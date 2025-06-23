@@ -3,10 +3,10 @@ using PetFemily.Accounts.Application.Command.RefreshLogin;
 
 namespace PetFamily.Accounts.Presentation.Requests;
 
-public record AccountLoginRefreshRequest(string RefreshToken) : IToCommand<RefreshLoginCommand, string>
+public record AccountLoginRefreshRequest() : IToCommand<RefreshLoginCommand, string, string>
 {
-    public RefreshLoginCommand ToCommand(string jwt)
+    public RefreshLoginCommand ToCommand(string jwt, string refreshToken)
     {
-        return new RefreshLoginCommand(jwt, RefreshToken);
+        return new RefreshLoginCommand(jwt, refreshToken);
     }
 }
