@@ -9,6 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Accounts.Infrastructure.Providers;
+using PetFamily.Core.Abstrations;
+using PetFamily.Core.Enums;
 using PetFamily.Framework;
 using PetFemily.Accounts.Application;
 using PetFemily.Accounts.Application.Providers;
@@ -25,6 +27,7 @@ public static class DependencyInjection
         services.AddIdentity();
         services.AddProviders();
 
+        services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkTypes.Accounts);
         services.AddScoped<IAccountRepository, AccountRepository>();
     }
 

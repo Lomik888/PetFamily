@@ -1,8 +1,11 @@
+using DotNetEnv;
 using PetFamily.API;
 using PetFamily.API.Middleware;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Env.Load();
 
 builder.Host.UseSerilog();
 
@@ -13,6 +16,8 @@ var app = builder.Build();
 using var scope = app.Services.CreateScope();
 var seedRolesPermissions = scope.ServiceProvider.GetRequiredService<SeedRolesPermissions>();
 await seedRolesPermissions.Seed();
+var seedAdmin = scope.ServiceProvider.GetRequiredService<SeedAccounts>();
+await seedAdmin.Seed();
 
 app.UseMiddleware<ExceptionMiddleware>();
 

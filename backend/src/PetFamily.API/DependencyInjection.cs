@@ -27,6 +27,7 @@ public static class DependencyInjection
             .GetValue<string>(SeqOptions.API_KEY_FOR_SEQ);
 
         services.AddScoped<SeedRolesPermissions>();
+        services.AddScoped<SeedAccounts>();
         services.AddSingleton<ISqlConnectionFactory, SqlConnectionFactory>(_ =>
             new SqlConnectionFactory(connectionString));
 
