@@ -98,8 +98,10 @@ public class RefreshLoginHandler : ICommandHandler<LoginResponseDto, ErrorList, 
         try
         {
             await _unitOfWork.BeginTransactionAsync(cancellationToken: cancellationToken);
+
             await _accountManager.DeleteRefreshSessionAsync(refreshTokenOld, cancellationToken);
             await _accountManager.AddRefreshSession(newRefreshTokenResult.Value, cancellationToken);
+
             await _unitOfWork.CommitAsync(cancellationToken);
         }
         catch (Exception e)

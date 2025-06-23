@@ -9,5 +9,7 @@ public class RefreshLoginCommandValidator : AbstractValidator<RefreshLoginComman
     {
         RuleFor(x => x.RefreshToken).Must(x => string.IsNullOrWhiteSpace(x) == false)
             .WithMessageCustom("Refresh token is required");
+        RuleFor(x => x.Jwt).Must(x => string.IsNullOrWhiteSpace(x) == false)
+            .WithMessageCustom("Refresh token is required");
     }
 }
