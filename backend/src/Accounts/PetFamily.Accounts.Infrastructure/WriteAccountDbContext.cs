@@ -6,7 +6,7 @@ using PetFemily.Accounts.Domain;
 
 namespace PetFamily.Accounts.Infrastructure;
 
-public class AccountDbContext : IdentityDbContext<User, Role, Guid>
+public class WriteAccountDbContext : IdentityDbContext<User, Role, Guid>
 {
     public new DbSet<User> Users { get; set; }
     public new DbSet<Role> Roles { get; set; }
@@ -16,7 +16,7 @@ public class AccountDbContext : IdentityDbContext<User, Role, Guid>
     public DbSet<ParticipantAccount> ParticipantAccount { get; set; }
     public DbSet<RefreshSessions> RefreshSessions { get; set; }
 
-    public AccountDbContext(DbContextOptions<AccountDbContext> options) : base(options)
+    public WriteAccountDbContext(DbContextOptions<WriteAccountDbContext> options) : base(options)
     {
     }
 
@@ -35,6 +35,6 @@ public class AccountDbContext : IdentityDbContext<User, Role, Guid>
         builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens", schema: "Accounts");
         builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins", schema: "Accounts");
         builder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims", schema: "Accounts");
-        builder.ApplyConfigurationsFromAssembly(typeof(AccountDbContext).Assembly);
+        builder.ApplyConfigurationsFromAssembly(typeof(WriteAccountDbContext).Assembly);
     }
 }

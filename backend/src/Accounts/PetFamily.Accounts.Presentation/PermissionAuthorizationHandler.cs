@@ -22,7 +22,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<HasPermission
         HasPermission requirement)
     {
         using var scope = _scopeFactory.CreateScope();
-        var accountDbContext = scope.ServiceProvider.GetRequiredService<AccountDbContext>();
+        var accountDbContext = scope.ServiceProvider.GetRequiredService<WriteAccountDbContext>();
 
         var roleName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
         if (roleName is null)

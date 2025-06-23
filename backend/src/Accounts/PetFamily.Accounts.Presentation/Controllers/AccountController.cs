@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PetFamily.Accounts.Presentation.Requests;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Framework;
 using PetFamily.Framework.Abstractions;
 using PetFamily.Framework.Extensions;
 using PetFamily.Framework.Responses;
@@ -10,11 +11,31 @@ using PetFamily.SharedKernel.Errors;
 using PetFemily.Accounts.Application.Command.Login;
 using PetFemily.Accounts.Application.Command.RefreshLogin;
 using PetFemily.Accounts.Application.Command.Registration;
+using PetFemily.Accounts.Application.Dto;
+using PetFemily.Accounts.Application.Quries.GetAccountFullInfo;
 
 namespace PetFamily.Accounts.Presentation.Controllers;
 
 public class AccountController : ApplicationController
 {
+    [HasPermission(PermissionTypes.AccountModule.GetAccountInfo)]
+    [HttpGet("{accountId:guid}/account-info")]
+    public async Task<IActionResult> GetAccountInfo(
+        [FromRoute] Guid accountId,
+        [FromServices] IQueryHandler<UserDto, ErrorList, GetAccountFullInfoQuery> handler,
+        CancellationToken cancellationToken)
+    {
+        var getAccountFullInfoQuery = new GetAccountFullInfoQuery(accountId);
+        var result = await handler.Handle(getAccountFullInfoQuery, cancellationToken);
+
+        if (result.IsFailure == true)
+        {
+            return result.Error.Errors.ToErrorActionResult();
+        }
+
+        return Ok(Envelope.Ok(result.Value));
+    }
+
     [AllowAnonymous]
     [HttpPost("registration")]
     public async Task<IActionResult> RegistrationAccount(

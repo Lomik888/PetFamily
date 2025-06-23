@@ -1,4 +1,7 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -30,7 +33,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnType("jsonb");
         });
 
-        builder.Property(x => x.Photo).IsRequired().HasColumnName("username")
+        builder.Property(x => x.Photo).IsRequired().HasColumnName("photo")
             .HasConversion(
                 file => file != null ? file.FullPath : null,
                 value => value == null ? null : File.Create(value).Value)

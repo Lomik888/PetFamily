@@ -1,4 +1,5 @@
-﻿using PetFamily.Framework.Abstractions;
+﻿using PetFamily.Core.Dtos;
+using PetFamily.Framework.Abstractions;
 using PetFamily.Volunteers.Application.Commands.UpdateSocialNetworks;
 using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;
 

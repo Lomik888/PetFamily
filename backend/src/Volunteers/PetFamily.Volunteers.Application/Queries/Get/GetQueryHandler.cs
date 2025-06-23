@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using PetFamily.Core;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Dtos;
 using PetFamily.Core.Extensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;

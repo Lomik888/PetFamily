@@ -30,6 +30,18 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PermissionDtoRoleDto",
+                columns: table => new
+                {
+                    PermissionsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RolesId = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PermissionDtoRoleDto", x => new { x.PermissionsId, x.RolesId });
+                });
+
+            migrationBuilder.CreateTable(
                 name: "roles",
                 schema: "Accounts",
                 columns: table => new
@@ -101,7 +113,7 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     social_networks = table.Column<string>(type: "jsonb", nullable: false),
-                    username = table.Column<string>(type: "text", nullable: true),
+                    photo = table.Column<string>(type: "text", nullable: true),
                     full_name = table.Column<string>(type: "text", nullable: false),
                     RoleId = table.Column<Guid>(type: "uuid", nullable: true),
                     UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
@@ -326,6 +338,11 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_PermissionDtoRoleDto_RolesId",
+                table: "PermissionDtoRoleDto",
+                column: "RolesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PermissionRole_RolesId",
                 schema: "Accounts",
                 table: "PermissionRole",
@@ -405,6 +422,9 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "participants_accounts",
                 schema: "Accounts");
+
+            migrationBuilder.DropTable(
+                name: "PermissionDtoRoleDto");
 
             migrationBuilder.DropTable(
                 name: "PermissionRole",
