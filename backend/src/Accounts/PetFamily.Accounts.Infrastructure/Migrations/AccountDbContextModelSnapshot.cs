@@ -197,6 +197,36 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                     b.ToTable("permission", "Accounts");
                 });
 
+            modelBuilder.Entity("PetFemily.Accounts.Domain.RefreshSessions", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("ExpireAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expire_at");
+
+                    b.Property<Guid>("Jti")
+                        .HasColumnType("uuid")
+                        .HasColumnName("jti");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("refresh_sessions", "Accounts");
+                });
+
             modelBuilder.Entity("PetFemily.Accounts.Domain.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -411,6 +441,15 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                     b.HasOne("PetFemily.Accounts.Domain.User", null)
                         .WithOne("ParticipantAccount")
                         .HasForeignKey("PetFemily.Accounts.Domain.ParticipantAccount", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Domain.RefreshSessions", b =>
+                {
+                    b.HasOne("PetFemily.Accounts.Domain.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
