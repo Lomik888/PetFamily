@@ -11,14 +11,14 @@ namespace PetFemily.Accounts.Application.Quries.GetAccountFullInfo;
 public class GetAccountFullInfoQueryHandler : IQueryHandler<UserFullInfoDto, ErrorList, GetAccountFullInfoQuery>
 {
     private readonly IValidator<GetAccountFullInfoQuery> _validator;
-    private readonly IAccountManager _accountManager;
+    private readonly IAccountReadRepository _accountReadRepository;
 
     public GetAccountFullInfoQueryHandler(
         IValidator<GetAccountFullInfoQuery> validator,
-        IAccountManager accountManager)
+        IAccountReadRepository accountReadRepository)
     {
+        _accountReadRepository = accountReadRepository;
         _validator = validator;
-        _accountManager = accountManager;
     }
 
     public async Task<Result<UserFullInfoDto, ErrorList>> Handle(
@@ -32,14 +32,14 @@ public class GetAccountFullInfoQueryHandler : IQueryHandler<UserFullInfoDto, Err
             return ErrorList.Create(errors);
         }
 
-        var userExist = await _accountManager.UserExistByIdAsync(request.UserId, cancellationToken);
+        var userExist = await _accountReadRepository.UserExistByIdAsync(request.UserId, cancellationToken);
         if (userExist == false)
         {
             var error = ErrorsPreform.General.NotFound("User not found");
             return ErrorList.Create(error);
         }
 
-        var userFullInfo = await _accountManager.GetFullInfoUserByIdAsync(request.UserId, cancellationToken);
+        var userFullInfo = await _accountReadRepository.GetFullInfoUserByIdAsync(request.UserId, cancellationToken);
 
         var permissionCodes = userFullInfo.Roles
             .SelectMany(x => x.Permissions.Select(x => x.Code));

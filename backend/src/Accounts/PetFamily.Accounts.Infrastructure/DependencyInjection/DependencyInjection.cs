@@ -30,6 +30,7 @@ public static class DependencyInjection
 
         services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkTypes.Accounts);
         services.AddScoped<IAccountManager, AccountManager>();
+        services.AddScoped<IAccountReadRepository, AccountReadRepository>();
     }
 
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)

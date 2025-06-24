@@ -16,10 +16,4 @@ public interface IAccountManager
     Task DeleteRefreshSessionAsync(
         RefreshSessions refreshSessions,
         CancellationToken cancellationToken);
-
-    Task<UserDto> GetFullInfoUserByIdAsync(
-        Guid userId,
-        CancellationToken cancellationToken);
-
-    Task<bool> UserExistByIdAsync(Guid userId, CancellationToken cancellationToken);
 }

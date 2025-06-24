@@ -12,13 +12,10 @@ namespace PetFamily.Accounts.Infrastructure;
 public class AccountManager : IAccountManager
 {
     private readonly WriteAccountDbContext _writeDbContext;
-    private readonly ReadAccountDbContext _readDbContext;
 
     public AccountManager(
-        WriteAccountDbContext writeDbContext,
-        ReadAccountDbContext readDbContext)
+        WriteAccountDbContext writeDbContext)
     {
-        _readDbContext = readDbContext;
         _writeDbContext = writeDbContext;
     }
 
@@ -50,27 +47,5 @@ public class AccountManager : IAccountManager
     {
         _writeDbContext.Remove(refreshSessions);
         await _writeDbContext.SaveChangesAsync(cancellationToken);
-    }
-
-    public async Task<UserDto> GetFullInfoUserByIdAsync(Guid userId, CancellationToken cancellationToken)
-    {
-        var userDto = await _readDbContext.Users
-            .Where(x => x.Id == userId)
-            .Include(x => x.AdminAccount)
-            .Include(x => x.VolunteerAccount)
-            .Include(x => x.ParticipantAccount)
-            .Include(x => x.Roles)
-            .ThenInclude(x => x.Permissions)
-            .SingleAsync(cancellationToken);
-
-        return userDto;
-    }
-
-    public async Task<bool> UserExistByIdAsync(Guid userId, CancellationToken cancellationToken)
-    {
-        var userExist = await _readDbContext.Users
-            .AnyAsync(x => x.Id == userId, cancellationToken);
-
-        return userExist;
     }
 }
