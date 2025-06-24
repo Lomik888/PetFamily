@@ -51,11 +51,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFemily.Accounts.Domain", "src\Accounts\PetFemily.Accounts.Domain\PetFemily.Accounts.Domain.csproj", "{636AB1EB-E669-4C1F-9374-0FD3DD372FCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFemily.Accounts.Application", "Accounts\PetFemily.Accounts.Application\PetFemily.Accounts.Application.csproj", "{56ABAA2E-AFD7-4E0B-8055-D71CD395B955}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFemily.Accounts.Application", "src\Accounts\PetFemily.Accounts.Application\PetFemily.Accounts.Application.csproj", "{56ABAA2E-AFD7-4E0B-8055-D71CD395B955}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Presentation", "src\Accounts\PetFamily.Accounts.Presentation\PetFamily.Accounts.Presentation.csproj", "{2BD00D60-1271-461A-9428-4057364BD297}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Contracts", "Accounts\PetFamily.Accounts.Contracts\PetFamily.Accounts.Contracts.csproj", "{DB948524-A696-436F-A103-20493D10C8AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PetFamily.Accounts.Contracts", "src\Accounts\PetFamily.Accounts.Contracts\PetFamily.Accounts.Contracts.csproj", "{DB948524-A696-436F-A103-20493D10C8AE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

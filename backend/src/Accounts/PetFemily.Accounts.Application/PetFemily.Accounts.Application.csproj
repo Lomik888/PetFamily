@@ -7,8 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Accounts\PetFemily.Accounts.Domain\PetFemily.Accounts.Domain.csproj" />
-      <ProjectReference Include="..\..\src\Shared\PetFamily.Core\PetFamily.Core.csproj" />
+      <ProjectReference Include="..\..\Shared\PetFamily.Core\PetFamily.Core.csproj" />
+      <ProjectReference Include="..\PetFemily.Accounts.Domain\PetFemily.Accounts.Domain.csproj" />
     </ItemGroup>
 
 </Project>
