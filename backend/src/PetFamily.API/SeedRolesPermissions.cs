@@ -63,7 +63,7 @@ public class SeedRolesPermissions
         var rolesHash = roles.OrderBy(x => x.Name).GetHashCode();
         var rolesWithPermissionsHash = rolesWithPermissions.OrderBy(x => x.Name).GetHashCode();
 
-        if (rolesHash == rolesWithPermissionsHash && roles.Count != 0)
+        if (rolesHash != rolesWithPermissionsHash && roles.Count != 0)
         {
             _logger.LogInformation("Roles permissions already exist.");
             return;

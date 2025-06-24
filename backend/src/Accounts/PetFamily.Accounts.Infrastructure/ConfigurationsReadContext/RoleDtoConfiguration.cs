@@ -11,6 +11,12 @@ public class RoleDtoConfiguration : IEntityTypeConfiguration<RoleDto>
         builder.ToView("roles", schema: "Accounts");
 
         builder.Property(x => x.Name).IsRequired().HasColumnName("name");
-        builder.HasMany(x => x.Permissions).WithMany(x => x.Roles);
+
+        builder.HasMany(x => x.Permissions).WithMany(x => x.Roles)
+            .UsingEntity<Dictionary<Guid, Guid>>(
+                right => right.HasOne<PermissionDto>().WithMany().HasForeignKey("permissions_id"),
+                left => left.HasOne<RoleDto>().WithMany().HasForeignKey("role_id")
+            )
+            .ToView("permissions_roles", schema: "Accounts");
     }
 }

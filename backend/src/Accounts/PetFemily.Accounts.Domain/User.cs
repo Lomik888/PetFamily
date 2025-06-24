@@ -14,7 +14,7 @@ public sealed class User : IdentityUser<Guid>
     public AdminAccount? AdminAccount { get; set; }
     public VolunteerAccount? VolunteerAccount { get; set; }
     public ParticipantAccount? ParticipantAccount { get; set; }
-    public Role? Role { get; set; }
+    public List<Role> Roles { get; set; }
 
     private User()
     {

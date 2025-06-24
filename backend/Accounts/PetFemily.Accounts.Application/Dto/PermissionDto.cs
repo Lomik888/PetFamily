@@ -6,6 +6,6 @@ public class PermissionDto
 {
     public Guid Id { get; init; }
     public string Code { get; init; } = default!;
-    [JsonIgnore]
+
     public List<RoleDto> Roles { get; init; } = [];
 }

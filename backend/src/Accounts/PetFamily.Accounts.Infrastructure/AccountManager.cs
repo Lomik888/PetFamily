@@ -59,7 +59,7 @@ public class AccountManager : IAccountManager
             .Include(x => x.AdminAccount)
             .Include(x => x.VolunteerAccount)
             .Include(x => x.ParticipantAccount)
-            .Include(x => x.Role)
+            .Include(x => x.Roles)
             .ThenInclude(x => x.Permissions)
             .SingleAsync(cancellationToken);
 

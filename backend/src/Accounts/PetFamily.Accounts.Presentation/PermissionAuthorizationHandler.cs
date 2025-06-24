@@ -37,7 +37,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<HasPermission
             context.Succeed(requirement);
             return;
         }
-        
+
         var userHavePermission = await accountDbContext.Roles.Where(x => x.Name == roleName.Value)
             .AnyAsync(x => x.Permissions.Any(x => x.Code == policy));
         if (userHavePermission == false)

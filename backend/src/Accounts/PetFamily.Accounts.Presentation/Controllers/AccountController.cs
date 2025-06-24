@@ -18,11 +18,12 @@ namespace PetFamily.Accounts.Presentation.Controllers;
 
 public class AccountController : ApplicationController
 {
-    [HasPermission(PermissionTypes.AccountModule.GetAccountInfo)]
+    [AllowAnonymous]
+    //[HasPermission(PermissionTypes.AccountModule.GetAccountInfo)]
     [HttpGet("{accountId:guid}/account-info")]
     public async Task<IActionResult> GetAccountInfo(
         [FromRoute] Guid accountId,
-        [FromServices] IQueryHandler<UserDto, ErrorList, GetAccountFullInfoQuery> handler,
+        [FromServices] IQueryHandler<UserFullInfoDto, ErrorList, GetAccountFullInfoQuery> handler,
         CancellationToken cancellationToken)
     {
         var getAccountFullInfoQuery = new GetAccountFullInfoQuery(accountId);

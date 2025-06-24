@@ -1,11 +1,5 @@
-﻿using CSharpFunctionalExtensions;
-using FluentValidation;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using PetFamily.Core.Abstrations.Interfaces;
+﻿using FluentValidation;
 using PetFamily.Core.Extensions;
-using PetFamily.SharedKernel.Errors;
-using PetFemily.Accounts.Domain;
 
 namespace PetFemily.Accounts.Application.Quries.GetAccountFullInfo;
 

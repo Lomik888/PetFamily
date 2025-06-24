@@ -43,21 +43,19 @@ public class UserDtoConfiguration : IEntityTypeConfiguration<UserDto>
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(x => x.Role)
+        builder.HasMany(x => x.Roles)
             .WithMany(x => x.Users)
-            .UsingEntity<IdentityUserRole<Guid>>(join => join
-                    .HasOne<RoleDto>()
-                    .WithMany()
-                    .HasForeignKey(r => r.RoleId),
-                join => join
-                    .HasOne<UserDto>()
-                    .WithMany()
-                    .HasForeignKey(r => r.UserId),
+            .UsingEntity<IdentityUserRole<Guid>>(
+                join =>
+                    join.HasOne<RoleDto>().WithMany().HasForeignKey(x => x.RoleId),
+                join =>
+                    join.HasOne<UserDto>().WithMany().HasForeignKey(x => x.UserId),
                 join =>
                 {
-                    join.ToTable("users_roles", schema: "Accounts");
-                    join.HasKey(x => new { x.UserId, x.RoleId });
+                    join.HasKey(ur => new { ur.UserId, ur.RoleId });
+                    join.Property(x => x.RoleId).IsRequired().HasColumnName("role_id");
+                    join.Property(x => x.UserId).IsRequired().HasColumnName("user_id");
+                    join.ToView("users_roles", schema: "Accounts");
                 });
-        ;
     }
 }

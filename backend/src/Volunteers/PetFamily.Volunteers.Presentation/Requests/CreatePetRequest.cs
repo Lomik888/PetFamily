@@ -1,4 +1,5 @@
-﻿using PetFamily.Framework.Abstractions;
+﻿using PetFamily.Core.Dtos;
+using PetFamily.Framework.Abstractions;
 using PetFamily.Volunteers.Application.Commands.CreatePet;
 using PetFamily.Volunteers.Application.Dtos.PetDtos;
 using PetFamily.Volunteers.Application.Dtos.SharedDtos;

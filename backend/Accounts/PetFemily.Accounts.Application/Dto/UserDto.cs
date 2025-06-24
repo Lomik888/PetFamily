@@ -12,12 +12,12 @@ public class UserDto : IdentityUser<Guid>
     public string? Photo { get; init; }
     public string FullName { get; init; } = default!;
     public string Email { get; init; } = default!;
-    [JsonIgnore]
+
     public AdminAccountDto? AdminAccount { get; init; }
-    [JsonIgnore]
+
     public VolunteerAccountDto? VolunteerAccount { get; init; }
-    [JsonIgnore]
+
     public ParticipantAccountDto? ParticipantAccount { get; init; }
-    [JsonIgnore]
-    public List<RoleDto> Role { get; init; }
+
+    public List<RoleDto> Roles { get; init; }
 }

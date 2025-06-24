@@ -8,7 +8,7 @@ using PetFemily.Accounts.Application.Dto;
 
 namespace PetFemily.Accounts.Application.Quries.GetAccountFullInfo;
 
-public class GetAccountFullInfoQueryHandler : IQueryHandler<UserDto, ErrorList, GetAccountFullInfoQuery>
+public class GetAccountFullInfoQueryHandler : IQueryHandler<UserFullInfoDto, ErrorList, GetAccountFullInfoQuery>
 {
     private readonly IValidator<GetAccountFullInfoQuery> _validator;
     private readonly IAccountManager _accountManager;
@@ -21,7 +21,7 @@ public class GetAccountFullInfoQueryHandler : IQueryHandler<UserDto, ErrorList, 
         _accountManager = accountManager;
     }
 
-    public async Task<Result<UserDto, ErrorList>> Handle(
+    public async Task<Result<UserFullInfoDto, ErrorList>> Handle(
         GetAccountFullInfoQuery request,
         CancellationToken cancellationToken = default)
     {
@@ -41,6 +41,27 @@ public class GetAccountFullInfoQueryHandler : IQueryHandler<UserDto, ErrorList, 
 
         var userFullInfo = await _accountManager.GetFullInfoUserByIdAsync(request.UserId, cancellationToken);
 
-        return userFullInfo;
+        var permissionCodes = userFullInfo.Roles
+            .SelectMany(x => x.Permissions.Select(x => x.Code));
+
+        var userFullInfoDto = new UserFullInfoDto(
+            userFullInfo.Id,
+            userFullInfo.SocialNetworks,
+            userFullInfo.Photo,
+            userFullInfo.FullName,
+            userFullInfo.Email,
+            userFullInfo.UserName!,
+            userFullInfo.PhoneNumber,
+            userFullInfo.Roles.Select(x => x.Name),
+            permissionCodes,
+            userFullInfo.AdminAccount?.Id,
+            userFullInfo.VolunteerAccount?.Id,
+            userFullInfo.ParticipantAccount?.Id,
+            userFullInfo.ParticipantAccount?.FavoritePetsIds,
+            userFullInfo.VolunteerAccount?.Certificates,
+            userFullInfo.VolunteerAccount?.DetailsForHelps!,
+            userFullInfo.VolunteerAccount?.Experience);
+
+        return userFullInfoDto;
     }
 }
