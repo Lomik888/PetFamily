@@ -4,7 +4,7 @@ namespace PetFemily.Accounts.Application;
 
 public interface IAccountReadRepository
 {
-    Task<UserDto> GetFullInfoUserByIdAsync(
+    Task<UserDto?> GetFullInfoUserByIdAsync(
         Guid userId,
         CancellationToken cancellationToken);
 

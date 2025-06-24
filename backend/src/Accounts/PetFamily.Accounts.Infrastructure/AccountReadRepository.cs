@@ -13,7 +13,7 @@ public class AccountReadRepository : IAccountReadRepository
         _readDbContext = readDbContext;
     }
 
-    public async Task<UserDto> GetFullInfoUserByIdAsync(Guid userId, CancellationToken cancellationToken)
+    public async Task<UserDto?> GetFullInfoUserByIdAsync(Guid userId, CancellationToken cancellationToken)
     {
         var userDto = await _readDbContext.Users
             .Where(x => x.Id == userId)
@@ -22,7 +22,7 @@ public class AccountReadRepository : IAccountReadRepository
             .Include(x => x.ParticipantAccount)
             .Include(x => x.Roles)
             .ThenInclude(x => x.Permissions)
-            .SingleAsync(cancellationToken);
+            .SingleOrDefaultAsync(cancellationToken);
 
         return userDto;
     }
