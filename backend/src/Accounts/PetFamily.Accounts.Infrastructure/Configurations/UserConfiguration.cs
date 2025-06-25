@@ -1,4 +1,8 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -30,7 +34,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .HasColumnType("jsonb");
         });
 
-        builder.Property(x => x.Photo).IsRequired().HasColumnName("username")
+        builder.Property(x => x.Photo).IsRequired().HasColumnName("photo")
             .HasConversion(
                 file => file != null ? file.FullPath : null,
                 value => value == null ? null : File.Create(value).Value)
@@ -55,5 +59,20 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey<VolunteerAccount>(x => x.UserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(x => x.Roles)
+            .WithMany(x => x.Users)
+            .UsingEntity<IdentityUserRole<Guid>>(
+                join =>
+                    join.HasOne<Role>().WithMany().HasForeignKey(x => x.RoleId),
+                join =>
+                    join.HasOne<User>().WithMany().HasForeignKey(x => x.UserId),
+                join =>
+                {
+                    join.HasKey(ur => new { ur.UserId, ur.RoleId });
+                    join.Property(x => x.RoleId).IsRequired().HasColumnName("role_id");
+                    join.Property(x => x.UserId).IsRequired().HasColumnName("user_id");
+                    join.ToTable("users_roles", schema: "Accounts");
+                });
     }
 }

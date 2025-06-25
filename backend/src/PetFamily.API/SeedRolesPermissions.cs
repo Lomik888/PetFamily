@@ -9,16 +9,16 @@ namespace PetFamily.API;
 
 public class SeedRolesPermissions
 {
-    private readonly AccountDbContext _accountDbContext;
+    private readonly WriteAccountDbContext _writeAccountDbContext;
     private readonly ILogger<SeedRolesPermissions> _logger;
     private readonly RoleManager<Role> _roleManager;
 
     public SeedRolesPermissions(
-        AccountDbContext accountDbContext,
+        WriteAccountDbContext writeAccountDbContext,
         ILogger<SeedRolesPermissions> logger,
         RoleManager<Role> roleManager)
     {
-        _accountDbContext = accountDbContext;
+        _writeAccountDbContext = writeAccountDbContext;
         _logger = logger;
         _roleManager = roleManager;
     }
@@ -30,7 +30,7 @@ public class SeedRolesPermissions
         var rolesPermissions = JsonSerializer.Deserialize<RolesPermissions>(json) ??
                                throw new InvalidOperationException("RolesPermissions.json not found or null");
 
-        var roles = await _accountDbContext.Roles
+        var roles = await _writeAccountDbContext.Roles
             .Include(x => x.Permissions)
             .Select(x => new Role()
             {
@@ -69,7 +69,18 @@ public class SeedRolesPermissions
             return;
         }
 
-        await _accountDbContext.Roles.AddRangeAsync(rolesWithPermissions);
-        await _accountDbContext.SaveChangesAsync();
+        // var newRolesFromDb = roles.Except(rolesWithPermissions).ToList();
+        // var newRolesFromJsom = rolesWithPermissions.Except(roles).ToList();
+        //
+        // if (newRolesFromDb.Count > 0)
+        // {
+        //     // добавить в файл 
+        // }
+        //
+        // if (newRolesFromJsom.Count > 0)
+        // {
+        await _writeAccountDbContext.Roles.AddRangeAsync(rolesWithPermissions);
+        await _writeAccountDbContext.SaveChangesAsync();
+        // }
     }
 }

@@ -7,6 +7,11 @@ public static class PermissionTypes
         public const string DeleteSpecieAndBreed = "delete.species.and.breed";
     }
 
+    public static class AccountModule
+    {
+        public const string GetAccountInfo = "get.account.info";
+    }
+
     public static class VolunteersModule
     {
         public static class Pet

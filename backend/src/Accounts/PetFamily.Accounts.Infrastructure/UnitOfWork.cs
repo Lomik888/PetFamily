@@ -6,9 +6,9 @@ namespace PetFamily.Accounts.Infrastructure;
 
 public class UnitOfWork : IUnitOfWork
 {
-    private readonly AccountDbContext _dbContext;
+    private readonly WriteAccountDbContext _dbContext;
 
-    public UnitOfWork(AccountDbContext dbContext)
+    public UnitOfWork(WriteAccountDbContext dbContext)
     {
         _dbContext = dbContext;
     }

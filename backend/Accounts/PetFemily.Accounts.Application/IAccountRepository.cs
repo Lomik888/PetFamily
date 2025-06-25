@@ -1,4 +1,5 @@
-﻿using PetFemily.Accounts.Domain;
+﻿using PetFemily.Accounts.Application.Dto;
+using PetFemily.Accounts.Domain;
 
 namespace PetFemily.Accounts.Application;
 
@@ -11,6 +12,7 @@ public interface IAccountManager
         Guid userId,
         Guid jti,
         CancellationToken cancellationToken);
+
     Task DeleteRefreshSessionAsync(
         RefreshSessions refreshSessions,
         CancellationToken cancellationToken);

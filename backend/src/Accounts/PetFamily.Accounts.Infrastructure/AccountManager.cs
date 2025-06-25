@@ -1,27 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using PetFemily.Accounts.Application;
+using PetFemily.Accounts.Application.Dto;
 using PetFemily.Accounts.Domain;
 
 namespace PetFamily.Accounts.Infrastructure;
 
 public class AccountManager : IAccountManager
 {
-    private readonly AccountDbContext _dbContext;
+    private readonly WriteAccountDbContext _writeDbContext;
 
-    public AccountManager(AccountDbContext dbContext)
+    public AccountManager(
+        WriteAccountDbContext writeDbContext)
     {
-        _dbContext = dbContext;
+        _writeDbContext = writeDbContext;
     }
 
     public async Task<Guid> GetRoleIdByNameAsync(string roleName)
     {
-        return await _dbContext.Roles.Where(x => x.Name == roleName).Select(x => x.Id).FirstAsync();
+        return await _writeDbContext.Roles.Where(x => x.Name == roleName).Select(x => x.Id).FirstAsync();
     }
 
     public async Task AddRefreshSession(RefreshSessions refreshSessions, CancellationToken cancellationToken)
     {
-        await _dbContext.AddAsync(refreshSessions, cancellationToken);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        await _writeDbContext.AddAsync(refreshSessions, cancellationToken);
+        await _writeDbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<RefreshSessions> GetRefreshSessionsAsync(
@@ -29,7 +35,7 @@ public class AccountManager : IAccountManager
         Guid jti,
         CancellationToken cancellationToken)
     {
-        var refreshSessions = await _dbContext.RefreshSessions
+        var refreshSessions = await _writeDbContext.RefreshSessions
             .Where(x => x.UserId == userId && x.Jti == jti)
             .SingleAsync(cancellationToken);
         return refreshSessions;
@@ -39,7 +45,7 @@ public class AccountManager : IAccountManager
         RefreshSessions refreshSessions,
         CancellationToken cancellationToken)
     {
-        _dbContext.Remove(refreshSessions);
-        await _dbContext.SaveChangesAsync(cancellationToken);
+        _writeDbContext.Remove(refreshSessions);
+        await _writeDbContext.SaveChangesAsync(cancellationToken);
     }
 }

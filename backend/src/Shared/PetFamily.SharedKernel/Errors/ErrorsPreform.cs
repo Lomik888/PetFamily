@@ -11,7 +11,7 @@ public static class ErrorsPreform
             return Error.Create(
                 message,
                 ErrorCodes.General.InvalidField,
-                ErrorType.VALIDATION, 
+                ErrorType.VALIDATION,
                 invalidField);
         }
 

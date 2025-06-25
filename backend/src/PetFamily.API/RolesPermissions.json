@@ -3,6 +3,7 @@
     "User": [
     ],
     "Admin": [
+      "get.account.info",
       "create.volunteer",
       "update.main.info.volunteer",
       "activate.account.volunteer",
@@ -35,7 +36,9 @@
       "update.serial.number.pet",
       "update.socials.pet"
     ],
-    "Participant": []
+    "Participant": [
+      "get.account.info"
+    ]
   },
   "Permissions": {
     "Volunteers": [
@@ -58,6 +61,9 @@
     ],
     "Species": [
       "delete.species.and.breed"
+    ],
+    "Accounts": [
+      "get.account.info"
     ]
   }
 }

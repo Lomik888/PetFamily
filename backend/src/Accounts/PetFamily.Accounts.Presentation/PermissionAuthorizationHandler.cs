@@ -22,7 +22,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<HasPermission
         HasPermission requirement)
     {
         using var scope = _scopeFactory.CreateScope();
-        var accountDbContext = scope.ServiceProvider.GetRequiredService<AccountDbContext>();
+        var accountDbContext = scope.ServiceProvider.GetRequiredService<WriteAccountDbContext>();
 
         var roleName = context.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role);
         if (roleName is null)
@@ -37,7 +37,7 @@ public class PermissionAuthorizationHandler : AuthorizationHandler<HasPermission
             context.Succeed(requirement);
             return;
         }
-        
+
         var userHavePermission = await accountDbContext.Roles.Where(x => x.Name == roleName.Value)
             .AnyAsync(x => x.Permissions.Any(x => x.Code == policy));
         if (userHavePermission == false)

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using PetFamily.Accounts.Infrastructure.Options;
 using PetFamily.Accounts.Infrastructure.Providers;
+using PetFamily.Core;
 using PetFamily.Core.Abstrations;
 using PetFamily.Core.Enums;
 using PetFamily.Framework;
@@ -37,7 +38,11 @@ public static class DependencyInjection
         var connectionString = psqlSection.GetValue<string>("Postgres_SQL") ??
                                throw new NullReferenceException("Postgres SQL Connection String missing");
 
-        services.AddDbContext<AccountDbContext>(options =>
+        services.AddKeyedSingleton<ISqlConnectionFactory, SqlConnectionFactory>(SqlConnectionFactoryTypes.Accounts,
+            (_, _) => new SqlConnectionFactory(connectionString));
+        services.AddDbContext<WriteAccountDbContext>(options =>
+            options.UseNpgsql(connectionString));
+        services.AddDbContext<IReadDbContext, ReadAccountDbContext>(options =>
             options.UseNpgsql(connectionString));
     }
 
@@ -62,7 +67,7 @@ public static class DependencyInjection
                 options.User.AllowedUserNameCharacters =
                     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
             })
-            .AddEntityFrameworkStores<AccountDbContext>()
+            .AddEntityFrameworkStores<WriteAccountDbContext>()
             .AddDefaultTokenProviders();
     }
 

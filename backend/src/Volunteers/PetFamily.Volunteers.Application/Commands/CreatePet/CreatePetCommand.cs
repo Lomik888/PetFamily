@@ -1,4 +1,5 @@
 ﻿using PetFamily.Core.Abstrations.Interfaces;
+using PetFamily.Core.Dtos;
 using PetFamily.Volunteers.Application.Dtos.PetDtos;
 using PetFamily.Volunteers.Application.Dtos.SharedDtos;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;

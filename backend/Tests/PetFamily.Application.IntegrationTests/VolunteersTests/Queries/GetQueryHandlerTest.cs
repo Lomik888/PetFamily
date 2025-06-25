@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using PetFamily.Core.Abstrations.Interfaces;
 using PetFamily.Core.Extensions;
 using PetFamily.Core;
+using PetFamily.Core.Dtos;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.Volunteers.Application.Dtos.VolunteerDtos;

@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using PetFamily.Accounts.Infrastructure;
@@ -12,12 +11,10 @@ using PetFamily.Accounts.Infrastructure;
 
 namespace PetFamily.Accounts.Infrastructure.Migrations
 {
-    [DbContext(typeof(AccountDbContext))]
-    [Migration("20250622111826_initial_account_module")]
-    partial class initial_account_module
+    [DbContext(typeof(WriteAccountDbContext))]
+    partial class WriteAccountDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -98,10 +95,12 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
                     b.Property<Guid>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("role_id");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -129,19 +128,220 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                     b.ToTable("user_tokens", "Accounts");
                 });
 
-            modelBuilder.Entity("PermissionRole", b =>
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.AdminAccountDto", b =>
                 {
-                    b.Property<Guid>("PermissionsId")
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("RolesId")
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable((string)null);
+
+                    b.ToView("admins_accounts", "Accounts");
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.ParticipantAccountDto", b =>
+                {
+                    b.Property<Guid>("Id")
                         .HasColumnType("uuid");
 
-                    b.HasKey("PermissionsId", "RolesId");
+                    b.Property<List<Guid>>("FavoritePetsIds")
+                        .IsRequired()
+                        .HasColumnType("uuid[]")
+                        .HasColumnName("favorite_pets_ids");
 
-                    b.HasIndex("RolesId");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
 
-                    b.ToTable("PermissionRole", "Accounts");
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable((string)null);
+
+                    b.ToView("participants_accounts", "Accounts");
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.PermissionDto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("code");
+
+                    b.HasKey("Id");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("permission", "Accounts");
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.RefreshSessionsDto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<DateTime>("ExpireAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("expire_at");
+
+                    b.Property<Guid>("Jti")
+                        .HasColumnType("uuid")
+                        .HasColumnName("jti");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("refresh_sessions", "Accounts");
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.RoleDto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.Property<string>("NormalizedName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("roles", "Accounts");
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.UserDto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("full_name");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasColumnType("text");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Photo")
+                        .HasColumnType("text")
+                        .HasColumnName("photo");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SocialNetworks")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("social_networks");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("UserName")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable((string)null);
+
+                    b.ToView("users_roles", "Accounts");
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.VolunteerAccountDto", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Certificates")
+                        .HasColumnType("text")
+                        .HasColumnName("certificates");
+
+                    b.Property<string>("DetailsForHelps")
+                        .IsRequired()
+                        .HasColumnType("jsonb")
+                        .HasColumnName("details_for_help");
+
+                    b.Property<int>("Experience")
+                        .HasColumnType("integer")
+                        .HasColumnName("experience");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable((string)null);
+
+                    b.ToView("volunteers_accounts", "Accounts");
                 });
 
             modelBuilder.Entity("PetFemily.Accounts.Domain.AdminAccount", b =>
@@ -189,11 +389,13 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
 
                     b.Property<string>("Code")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("code");
 
                     b.HasKey("Id");
 
@@ -309,10 +511,7 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
 
                     b.Property<string>("Photo")
                         .HasColumnType("text")
-                        .HasColumnName("username");
-
-                    b.Property<Guid?>("RoleId")
-                        .HasColumnType("uuid");
+                        .HasColumnName("photo");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("text");
@@ -332,8 +531,6 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("users", "Accounts");
                 });
@@ -362,6 +559,23 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                         .IsUnique();
 
                     b.ToTable("volunteers_accounts", "Accounts");
+                });
+
+            modelBuilder.Entity("System.Collections.Generic.Dictionary<System.Guid, System.Guid>", b =>
+                {
+                    b.Property<Guid>("permissions_id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("role_id")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("permissions_id", "role_id");
+
+                    b.HasIndex("role_id");
+
+                    b.ToTable("permissions_roles", "Accounts");
+
+                    b.ToView("permissions_roles", "Accounts");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -393,9 +607,21 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
+                    b.HasOne("PetFemily.Accounts.Application.Dto.RoleDto", null)
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("PetFemily.Accounts.Domain.Role", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetFemily.Accounts.Application.Dto.UserDto", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -415,17 +641,38 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PermissionRole", b =>
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.AdminAccountDto", b =>
                 {
-                    b.HasOne("PetFemily.Accounts.Domain.Permission", null)
-                        .WithMany()
-                        .HasForeignKey("PermissionsId")
+                    b.HasOne("PetFemily.Accounts.Application.Dto.UserDto", null)
+                        .WithOne("AdminAccount")
+                        .HasForeignKey("PetFemily.Accounts.Application.Dto.AdminAccountDto", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
 
-                    b.HasOne("PetFemily.Accounts.Domain.Role", null)
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.ParticipantAccountDto", b =>
+                {
+                    b.HasOne("PetFemily.Accounts.Application.Dto.UserDto", null)
+                        .WithOne("ParticipantAccount")
+                        .HasForeignKey("PetFemily.Accounts.Application.Dto.ParticipantAccountDto", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.RefreshSessionsDto", b =>
+                {
+                    b.HasOne("PetFemily.Accounts.Application.Dto.UserDto", null)
                         .WithMany()
-                        .HasForeignKey("RolesId")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.VolunteerAccountDto", b =>
+                {
+                    b.HasOne("PetFemily.Accounts.Application.Dto.UserDto", null)
+                        .WithOne("VolunteerAccount")
+                        .HasForeignKey("PetFemily.Accounts.Application.Dto.VolunteerAccountDto", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
@@ -459,10 +706,6 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
 
             modelBuilder.Entity("PetFemily.Accounts.Domain.User", b =>
                 {
-                    b.HasOne("PetFemily.Accounts.Domain.Role", null)
-                        .WithMany("Users")
-                        .HasForeignKey("RoleId");
-
                     b.OwnsOne("PetFemily.Accounts.Domain.ValueObjects.SocialNetworks", "SocialNetworks", b1 =>
                         {
                             b1.Property<Guid>("UserId")
@@ -515,9 +758,40 @@ namespace PetFamily.Accounts.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("PetFemily.Accounts.Domain.Role", b =>
+            modelBuilder.Entity("System.Collections.Generic.Dictionary<System.Guid, System.Guid>", b =>
                 {
-                    b.Navigation("Users");
+                    b.HasOne("PetFemily.Accounts.Application.Dto.PermissionDto", null)
+                        .WithMany()
+                        .HasForeignKey("permissions_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetFemily.Accounts.Domain.Permission", null)
+                        .WithMany()
+                        .HasForeignKey("permissions_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetFemily.Accounts.Application.Dto.RoleDto", null)
+                        .WithMany()
+                        .HasForeignKey("role_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("PetFemily.Accounts.Domain.Role", null)
+                        .WithMany()
+                        .HasForeignKey("role_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("PetFemily.Accounts.Application.Dto.UserDto", b =>
+                {
+                    b.Navigation("AdminAccount");
+
+                    b.Navigation("ParticipantAccount");
+
+                    b.Navigation("VolunteerAccount");
                 });
 
             modelBuilder.Entity("PetFemily.Accounts.Domain.User", b =>
