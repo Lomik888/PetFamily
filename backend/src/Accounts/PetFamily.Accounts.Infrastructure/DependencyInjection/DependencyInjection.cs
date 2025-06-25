@@ -27,7 +27,6 @@ public static class DependencyInjection
         services.AddDatabase(configuration);
         services.AddIdentity();
         services.AddProviders();
-
         services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkTypes.Accounts);
         services.AddScoped<IAccountManager, AccountManager>();
     }
