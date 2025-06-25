@@ -5,19 +5,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using PetFemily.Accounts.Application;
 using PetFemily.Accounts.Application.Dto;
+using PetFemily.Accounts.Domain;
 
 namespace PetFamily.Accounts.Infrastructure;
 
-public class ReadAccountDbContext : DbContext
+public class ReadAccountDbContext : DbContext, IReadDbContext
 {
-    public new DbSet<UserDto> Users { get; set; }
-    public new DbSet<RoleDto> Roles { get; set; }
-    public DbSet<PermissionDto> Permissions { get; set; }
-    public DbSet<AdminAccountDto> AdminAccount { get; set; }
-    public DbSet<VolunteerAccountDto> VolunteerAccount { get; set; }
-    public DbSet<ParticipantAccountDto> ParticipantAccount { get; set; }
-    public DbSet<RefreshSessionsDto> RefreshSessions { get; set; }
+    public IQueryable<User> Users => Set<User>();
+    public IQueryable<Role> Roles => Set<Role>();
+    public IQueryable<Permission> Permissions => Set<Permission>();
+    public IQueryable<AdminAccount> AdminAccount => Set<AdminAccount>();
+    public IQueryable<VolunteerAccount> VolunteerAccount => Set<VolunteerAccount>();
+    public IQueryable<ParticipantAccount> ParticipantAccount => Set<ParticipantAccount>();
+    public IQueryable<RefreshSessions> RefreshSessions => Set<RefreshSessions>();
 
     public ReadAccountDbContext(DbContextOptions<ReadAccountDbContext> options) : base(options)
     {
@@ -33,12 +35,7 @@ public class ReadAccountDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        base.OnModelCreating(builder);
-        // builder.Entity<IdentityUserRole<Guid>>().ToTable("users_roles", schema: "Accounts");
-        // builder.Entity<IdentityUserClaim<Guid>>().ToTable("user_claims", schema: "Accounts");
-        // builder.Entity<IdentityUserToken<Guid>>().ToTable("user_tokens", schema: "Accounts");
-        // builder.Entity<IdentityUserLogin<Guid>>().ToTable("user_logins", schema: "Accounts");
-        // builder.Entity<IdentityRoleClaim<Guid>>().ToTable("role_claims", schema: "Accounts");
+        builder.HasDefaultSchema("Accounts");
         builder.ApplyConfigurationsFromAssembly(typeof(ReadAccountDbContext).Assembly);
     }
 
