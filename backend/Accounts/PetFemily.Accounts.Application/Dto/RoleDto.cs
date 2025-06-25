@@ -8,6 +8,4 @@ public class RoleDto : IdentityRole<Guid>
     public new string Name { get; set; } = default!;
 
     public List<PermissionDto> Permissions { get; set; } = [];
-
-    public List<UserDto> Users { get; set; } = [];
 }

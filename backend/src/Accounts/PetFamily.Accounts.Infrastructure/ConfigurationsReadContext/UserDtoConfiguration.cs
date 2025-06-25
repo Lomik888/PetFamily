@@ -44,7 +44,7 @@ public class UserDtoConfiguration : IEntityTypeConfiguration<UserDto>
             .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(x => x.Roles)
-            .WithMany(x => x.Users)
+            .WithMany()
             .UsingEntity<IdentityUserRole<Guid>>(
                 join =>
                     join.HasOne<RoleDto>().WithMany().HasForeignKey(x => x.RoleId),

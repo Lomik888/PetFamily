@@ -18,6 +18,7 @@ namespace PetFamily.Accounts.Presentation.Controllers;
 
 public class AccountController : ApplicationController
 {
+    //[AllowAnonymous]
     [HasPermission(PermissionTypes.AccountModule.GetAccountInfo)]
     [HttpGet("{accountId:guid}/account-info")]
     public async Task<IActionResult> GetAccountInfo(
