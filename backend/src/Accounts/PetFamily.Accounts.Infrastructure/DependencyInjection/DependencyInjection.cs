@@ -30,7 +30,6 @@ public static class DependencyInjection
 
         services.AddKeyedScoped<IUnitOfWork, UnitOfWork>(UnitOfWorkTypes.Accounts);
         services.AddScoped<IAccountManager, AccountManager>();
-        services.AddScoped<IAccountReadRepository, AccountReadRepository>();
     }
 
     private static void AddDatabase(this IServiceCollection services, IConfiguration configuration)
@@ -43,7 +42,7 @@ public static class DependencyInjection
             (_, _) => new SqlConnectionFactory(connectionString));
         services.AddDbContext<WriteAccountDbContext>(options =>
             options.UseNpgsql(connectionString));
-        services.AddDbContext<ReadAccountDbContext>(options =>
+        services.AddDbContext<IReadDbContext, ReadAccountDbContext>(options =>
             options.UseNpgsql(connectionString));
     }
 

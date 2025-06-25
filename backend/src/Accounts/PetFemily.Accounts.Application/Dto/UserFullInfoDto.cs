@@ -1,11 +1,12 @@
 ﻿using PetFamily.Core.Dtos;
 using PetFamily.SharedKernel.ValueObjects;
+using PetFemily.Accounts.Domain.ValueObjects;
 
 namespace PetFemily.Accounts.Application.Dto;
 
 public record UserFullInfoDto(
     Guid UserId,
-    IEnumerable<SocialNetworkDto> SocialNetworks,
+    IEnumerable<SocialNetwork> SocialNetworks,
     string? Photo,
     string FullName,
     string Email,
@@ -18,5 +19,5 @@ public record UserFullInfoDto(
     Guid? ParticipantAccountId,
     IEnumerable<Guid>? FavoritePetsIds,
     string? Certificates,
-    IEnumerable<DetailsForHelpDto>? DetailsForHelp,
+    IEnumerable<DetailsForHelp>? DetailsForHelp,
     int? Experience);
