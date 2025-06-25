@@ -1,7 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
 
-namespace PetFamily.VolunteerRequest.Domain;
+namespace PetFamily.VolunteersRequests.Domain.ValueObjects.Ids;
 
 public class VolunteerRequestId : ComparableValueObject
 {

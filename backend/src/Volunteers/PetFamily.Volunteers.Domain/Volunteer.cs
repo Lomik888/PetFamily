@@ -8,7 +8,7 @@ using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Collections;
 using PetFamily.Volunteers.Domain.ValueObjects.PetsVO.Enums;
 using PetFamily.Volunteers.Domain.ValueObjects.SharedVO;
 using PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Collections;
-using CreatedAt = PetFamily.Volunteers.Domain.ValueObjects.PetsVO.CreatedAt;
+using CreatedAt = PetFamily.SharedKernel.ValueObjects.CreatedAt;
 using File = PetFamily.SharedKernel.ValueObjects.File;
 using Name = PetFamily.Volunteers.Domain.ValueObjects.VolunteerVO.Name;
 

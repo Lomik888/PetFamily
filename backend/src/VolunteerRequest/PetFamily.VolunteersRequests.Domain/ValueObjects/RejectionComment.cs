@@ -2,7 +2,7 @@
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.Validation;
 
-namespace PetFamily.VolunteerRequest.Domain;
+namespace PetFamily.VolunteersRequests.Domain.ValueObjects;
 
 public class RejectionComment : ValueObject
 {

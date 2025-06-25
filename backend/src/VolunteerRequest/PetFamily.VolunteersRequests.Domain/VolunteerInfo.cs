@@ -3,7 +3,7 @@ using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFemily.Accounts.Domain.ValueObjects;
 
-namespace PetFamily.VolunteerRequest.Domain;
+namespace PetFamily.VolunteersRequests.Domain;
 
 public class VolunteerInfo : ValueObject
 {
@@ -21,7 +21,7 @@ public class VolunteerInfo : ValueObject
         DetailsForHelps = detailsForHelps;
     }
 
-    public Result<VolunteerInfo, Error> Create(
+    public static Result<VolunteerInfo, Error> Create(
         string? certificates,
         Experience experience,
         DetailsForHelps detailsForHelps)

@@ -1,35 +1,36 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
+using PetFamily.SharedKernel.ValueObjects;
 
-namespace PetFamily.SharedKernel.ValueObjects;
+namespace PetFamily.VolunteersRequests.Domain.ValueObjects.Ids;
 
-public class BaseVoId : ValueObject
+public class UserId : ValueObject
 {
     public Guid Value { get; }
 
-    protected BaseVoId(Guid value)
+    protected UserId(Guid value)
     {
         Value = value;
     }
 
-    public static BaseVoId Create()
+    public static UserId Create()
     {
-        return new BaseVoId(Guid.NewGuid());
+        return new UserId(Guid.NewGuid());
     }
 
-    public static Result<BaseVoId, Error> Create(Guid id)
+    public static Result<UserId, Error> Create(Guid id)
     {
         if (id == Guid.Empty)
         {
             return ErrorsPreform.General.Validation("Pet id invalid", nameof(id));
         }
 
-        return new BaseVoId(id);
+        return new UserId(id);
     }
 
-    public static BaseVoId CreateEmpty()
+    public static UserId CreateEmpty()
     {
-        return new BaseVoId(Guid.Empty);
+        return new UserId(Guid.Empty);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

@@ -5,8 +5,7 @@ namespace PetFamily.SharedKernel.ValueObjects;
 
 public class CreatedAt : ValueObject
 {
-    private readonly DateTime _validateDate =
-        new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+    private static readonly DateTime VALUE_DATE_AFTER_INVALID = new DateTime(2000, 1, 26);
 
     public DateTime Value { get; }
 
@@ -15,23 +14,20 @@ public class CreatedAt : ValueObject
         Value = value;
     }
 
-    public Result<CreatedAt, Error> Create(DateTime value)
+    public static Result<CreatedAt, Error> Create(DateTime value)
     {
-        var validateResult = IsValid(value);
-        if (validateResult == false)
+        if (value > DateTime.UtcNow || value < VALUE_DATE_AFTER_INVALID || value.Kind != DateTimeKind.Utc)
         {
-            var error = ErrorsPreform.General.Validation("Date value is invalid", nameof(CreatedAt));
-            return error;
+            return ErrorsPreform.General.Validation("Date created is invalid", nameof(CreatedAt));
         }
 
         return new CreatedAt(value);
     }
 
-    protected virtual bool IsValid(DateTime value)
+    public static CreatedAt UtcNow()
     {
-        var validateDate = _validateDate;
-        var result = value < validateDate;
-        return result;
+        var date = DateTime.UtcNow;
+        return new CreatedAt(date);
     }
 
     protected override IEnumerable<object> GetEqualityComponents()

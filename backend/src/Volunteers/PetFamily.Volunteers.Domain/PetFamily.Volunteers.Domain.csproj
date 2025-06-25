@@ -10,8 +10,4 @@
       <ProjectReference Include="..\..\Shared\PetFamily.SharedKernel\PetFamily.SharedKernel.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ValueObjects\SharedVO\Collections\" />
-    </ItemGroup>
-
 </Project>

@@ -1,4 +1,4 @@
-﻿namespace PetFamily.VolunteerRequest.Domain;
+﻿namespace PetFamily.VolunteersRequests.Domain.Enums;
 
 public enum StatusVolunteerRequest
 {
