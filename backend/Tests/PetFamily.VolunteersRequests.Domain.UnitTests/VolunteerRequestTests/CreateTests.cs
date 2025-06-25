@@ -19,7 +19,6 @@ public class CreateTests
             request.DetailsForHelps.Select(x => DetailsForHelp.Create(x.Title, x.Description).Value);
         var detailsForHelps = DetailsForHelps.Create(detailsForHelpCollection).Value;
         var experience = Experience.Create(request.Experience).Value;
-
         var volunteerInfo = VolunteerInfo.Create(
             request.Certificates,
             experience,
