@@ -7,14 +7,20 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AutoFixture" Version="4.18.1" />
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.15" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.15"/>
+        <PackageReference Include="AutoFixture" Version="4.18.1"/>
+        <PackageReference Include="coverlet.collector" Version="6.0.0"/>
+        <PackageReference Include="FluentAssertions" Version="8.2.0"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0"/>
+        <PackageReference Include="xunit" Version="2.5.3"/>
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\src\Species\PetFamily.Specieses\PetFamily.Specieses.csproj" />
-      <ProjectReference Include="..\..\src\Volunteers\PetFamily.Volunteers.Domain\PetFamily.Volunteers.Domain.csproj" />
-      <ProjectReference Include="..\..\src\Volunteers\PetFamily.Volunteers.Infrastructure\PetFamily.Volunteers.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\src\Species\PetFamily.Specieses\PetFamily.Specieses.csproj"/>
+        <ProjectReference Include="..\..\src\VolunteerRequest\PetFamily.VolunteersRequests.Domain\PetFamily.VolunteersRequests.Domain.csproj" />
+        <ProjectReference Include="..\..\src\Volunteers\PetFamily.Volunteers.Domain\PetFamily.Volunteers.Domain.csproj"/>
+        <ProjectReference Include="..\..\src\Volunteers\PetFamily.Volunteers.Infrastructure\PetFamily.Volunteers.Infrastructure.csproj"/>
     </ItemGroup>
 
 </Project>
