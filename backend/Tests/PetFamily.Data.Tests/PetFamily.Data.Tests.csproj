@@ -17,6 +17,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\..\src\Discussions\PetFamily.Discussions.Domain\PetFamily.Discussions.Domain.csproj" />
         <ProjectReference Include="..\..\src\Species\PetFamily.Specieses\PetFamily.Specieses.csproj"/>
         <ProjectReference Include="..\..\src\VolunteerRequest\PetFamily.VolunteersRequests.Domain\PetFamily.VolunteersRequests.Domain.csproj" />
         <ProjectReference Include="..\..\src\Volunteers\PetFamily.Volunteers.Domain\PetFamily.Volunteers.Domain.csproj"/>

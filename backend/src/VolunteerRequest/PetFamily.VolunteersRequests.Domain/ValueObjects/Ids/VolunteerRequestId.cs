@@ -21,7 +21,7 @@ public class VolunteerRequestId : ComparableValueObject
     {
         if (id == Guid.Empty)
         {
-            return ErrorsPreform.General.Validation("Pet id invalid", nameof(VolunteerRequestId));
+            return ErrorsPreform.General.Validation("Id id invalid", nameof(VolunteerRequestId));
         }
 
         return new VolunteerRequestId(id);
