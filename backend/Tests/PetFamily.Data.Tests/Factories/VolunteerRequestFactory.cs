@@ -2,6 +2,7 @@
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.VolunteersRequests.Domain;
 using PetFamily.VolunteersRequests.Domain.Dtos;
+using PetFamily.VolunteersRequests.Domain.ValueObjects;
 using PetFamily.VolunteersRequests.Domain.ValueObjects.Ids;
 
 namespace PetFamily.Data.Tests.Factories;

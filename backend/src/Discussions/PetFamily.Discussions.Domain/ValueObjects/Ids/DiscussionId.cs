@@ -1,14 +1,13 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
-using PetFamily.SharedKernel.ValueObjects;
 
-namespace PetFamily.VolunteersRequests.Domain.ValueObjects.Ids;
+namespace PetFamily.Discussions.Domain.ValueObjects.Ids;
 
-public class DiscussionId : ValueObject
+public class DiscussionId : ComparableValueObject
 {
     public Guid Value { get; }
 
-    protected DiscussionId(Guid value)
+    private DiscussionId(Guid value)
     {
         Value = value;
     }
@@ -22,7 +21,7 @@ public class DiscussionId : ValueObject
     {
         if (id == Guid.Empty)
         {
-            return ErrorsPreform.General.Validation("Id id invalid", nameof(id));
+            return ErrorsPreform.General.Validation("Id id invalid", nameof(MessageId));
         }
 
         return new DiscussionId(id);
@@ -33,7 +32,7 @@ public class DiscussionId : ValueObject
         return new DiscussionId(Guid.Empty);
     }
 
-    protected override IEnumerable<object> GetEqualityComponents()
+    protected override IEnumerable<IComparable> GetComparableEqualityComponents()
     {
         yield return Value;
     }

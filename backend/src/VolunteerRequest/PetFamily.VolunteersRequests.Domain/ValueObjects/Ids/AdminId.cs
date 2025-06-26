@@ -22,7 +22,7 @@ public class AdminId : ValueObject
     {
         if (id == Guid.Empty)
         {
-            return ErrorsPreform.General.Validation("Pet id invalid", nameof(id));
+            return ErrorsPreform.General.Validation("Id id invalid", nameof(id));
         }
 
         return new AdminId(id);

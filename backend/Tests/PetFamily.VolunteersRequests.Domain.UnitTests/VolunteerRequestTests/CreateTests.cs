@@ -3,6 +3,7 @@ using PetFamily.Data.Tests.Builders;
 using PetFamily.Data.Tests.Factories;
 using PetFamily.SharedKernel.ValueObjects;
 using PetFamily.VolunteersRequests.Domain.Dtos;
+using PetFamily.VolunteersRequests.Domain.ValueObjects;
 using PetFamily.VolunteersRequests.Domain.ValueObjects.Ids;
 
 namespace PetFamily.VolunteersRequests.Domain.UnitTests.VolunteerRequestTests;

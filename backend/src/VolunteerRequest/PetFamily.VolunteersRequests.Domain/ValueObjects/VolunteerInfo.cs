@@ -1,9 +1,8 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
 using PetFamily.SharedKernel.ValueObjects;
-using PetFemily.Accounts.Domain.ValueObjects;
 
-namespace PetFamily.VolunteersRequests.Domain;
+namespace PetFamily.VolunteersRequests.Domain.ValueObjects;
 
 public class VolunteerInfo : ValueObject
 {

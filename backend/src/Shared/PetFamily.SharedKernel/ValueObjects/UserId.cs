@@ -1,8 +1,7 @@
 ﻿using CSharpFunctionalExtensions;
 using PetFamily.SharedKernel.Errors;
-using PetFamily.SharedKernel.ValueObjects;
 
-namespace PetFamily.VolunteersRequests.Domain.ValueObjects.Ids;
+namespace PetFamily.SharedKernel.ValueObjects;
 
 public class UserId : ValueObject
 {
